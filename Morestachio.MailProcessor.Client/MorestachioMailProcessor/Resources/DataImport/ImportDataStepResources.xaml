@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:import="clr-namespace:Morestachio.MailProcessor.Client.ViewModels.Steps.Import"
+                    xmlns:import1="clr-namespace:Morestachio.MailProcessor.Framework.Import;assembly=Morestachio.MailProcessor.Framework"
+                    xmlns:dataImport="clr-namespace:Morestachio.MailProcessor.Client.Services.DataImport"
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+    <DataTemplate DataType="{x:Type import:ImportDataStepViewModel}">
+       <resources:FieldsetGrid>
+           <Label Content="{lex:Loc DataImport.Selector.SelectTitle}" Grid.Column="0"></Label>
+           <mah:SplitButton ItemsSource="{Binding MailDataStrategies}"
+                            SelectedItem="{Binding SelectedStrategy}"
+                            Grid.Column="1">
+               <mah:SplitButton.ItemTemplate>
+                   <DataTemplate DataType="{x:Type dataImport:IMailDataStrategyMetaViewModel}">
+                       <Label Content="{Binding Name}"/>
+                   </DataTemplate>
+               </mah:SplitButton.ItemTemplate>
+           </mah:SplitButton>
+       </resources:FieldsetGrid>
+    </DataTemplate>  
+</ResourceDictionary>

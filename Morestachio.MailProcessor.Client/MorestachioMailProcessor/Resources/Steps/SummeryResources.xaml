@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:steps="clr-namespace:Morestachio.MailProcessor.Client.ViewModels.Steps"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources">
+    <DataTemplate DataType="{x:Type steps:SummeryStepViewModel}">
+        <Grid IsSharedSizeScope="True">
+            <StackPanel>
+                <resources:FieldsetGrid>
+                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.ImportFrom}" />
+                    <Label Grid.Column="1" Content="{Binding DataStrategyName}" />
+                </resources:FieldsetGrid>
+                <resources:FieldsetGrid>
+                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.UseAddress}" />
+                    <Label Grid.Column="1" Content="{Binding MailComposer.AddressExpression}" />
+                </resources:FieldsetGrid>
+                <resources:FieldsetGrid>
+                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.UseName}" />
+                    <Label Grid.Column="1" Content="{Binding MailComposer.NameExpression}" />
+                </resources:FieldsetGrid>
+                <resources:FieldsetGrid>
+                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.SendVia}" />
+                    <Label Grid.Column="1" Content="{Binding DistributorName}" />
+                </resources:FieldsetGrid>
+                <resources:FieldsetGrid>
+                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.GenerateAndSendParallel}" />
+                    <mah:ToggleSwitch Grid.Column="1" IsOn="{Binding MailComposer.SendInParallel}" />
+                </resources:FieldsetGrid>
+                <resources:FieldsetGrid>
+                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <mah:MetroProgressBar Maximum="{Binding Progress.MaxProgress, Mode=OneWay}"
+                                              Value="{Binding Progress.Progress, Mode=OneWay}"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalAlignment="Stretch" />
+                        <Label Content="{Binding Progress.To, Mode=OneWay}" VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    </Grid>
+                </resources:FieldsetGrid>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dataImport="clr-namespace:Morestachio.MailProcessor.Client.Services.DataImport"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources"
+                    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
+    <DataTemplate DataType="{x:Type dataImport:CSVMailDataStrategyMetaViewModel}">
+        <resources:FieldsetGrid Columns="3">
+            <Label Content="{lex:Loc DataImport.Strategy.CSV.FileName}"/>
+            <TextBox Text="{Binding FilePath, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
+                     VerticalContentAlignment="Center"
+                     Grid.Column="1"/>
+            
+            <Button Command="{Binding PickFileCommand}" Grid.Column="2" HorizontalAlignment="Left">
+                <iconPacks:Material Width="22"
+                                    Height="22"
+                                    Kind="FileExcel" />
+            </Button>
+        </resources:FieldsetGrid>
+    </DataTemplate>    
+</ResourceDictionary>
