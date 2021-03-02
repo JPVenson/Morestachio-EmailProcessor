@@ -289,4 +289,52 @@
   <data name="CloseStep.Content" xml:space="preserve">
     <value></value>
   </data>
+  <data name="MailDistributor.Strategy.Smtp.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Description" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Name" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.NoPassword" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.NoUsername" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.NoHost" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.InvalidHost" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.InvalidPort" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Validate.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.Host" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.Port" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.Username" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.Password" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.ValidationResult" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.PrepareStep.FromAddressPath" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.PrepareStep.FromNamePath" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

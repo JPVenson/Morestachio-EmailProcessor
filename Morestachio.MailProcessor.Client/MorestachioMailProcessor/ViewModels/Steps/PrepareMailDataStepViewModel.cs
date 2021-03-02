@@ -41,6 +41,21 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 					e.ExampleSubject = (await ExpressionParser.EvaluateExpression(e.MExpressionSubject, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
 					return context.Errors.Any();
 				}, nameof(MExpressionSubject)));
+
+
+				Add(new AsyncError<PrepareMailDataStepViewModel>("DataImport.PrepareStep.Errors.InvalidExpression", async e =>
+				{
+					var context = TokenzierContext.FromText(e.MExpressionFromName);
+					e.ExampleName = (await ExpressionParser.EvaluateExpression(e.MExpressionFromName, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
+					return context.Errors.Any();
+				}, nameof(MExpressionFromName)));
+
+				Add(new AsyncError<PrepareMailDataStepViewModel>("DataImport.PrepareStep.Errors.InvalidExpression", async e =>
+				{
+					var context = TokenzierContext.FromText(e.MExpressionFromAddress);
+					e.ExampleAddress = (await ExpressionParser.EvaluateExpression(e.MExpressionFromAddress, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
+					return context.Errors.Any();
+				}, nameof(MExpressionFromAddress)));
 			}
 		}
 
@@ -49,7 +64,10 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 			Title = new UiLocalizableString("MailDistributor.Prepare.Title");
 			Description = new UiLocalizableString("MailDistributor.Prepare.Description");
 			GroupKey = "MainGroup";
-
+			MExpressionName = "\"Mr Company\"";
+			MExpressionFromAddress = "\"mr.company@test.com\"";
+			MExpressionSubject = "\"Hot new Newsletter\"";
+			ForceRefreshAsync();
 		}
 
 		public override UiLocalizableString Title { get; }
@@ -63,6 +81,34 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 		private string _exampleName;
 		private string _exampleSubject;
 		private string _mExpressionSubject;
+		private string _mExpressionFromAddress;
+		private string _mExpressionFromName;
+		private string _exampleFromAddress;
+		private string _exampleFromName;
+
+		public string ExampleFromName
+		{
+			get { return _exampleFromName; }
+			set { SetProperty(ref _exampleFromName, value); }
+		}
+
+		public string ExampleFromAddress
+		{
+			get { return _exampleFromAddress; }
+			set { SetProperty(ref _exampleFromAddress, value); }
+		}
+
+		public string MExpressionFromName
+		{
+			get { return _mExpressionFromName; }
+			set { SetProperty(ref _mExpressionFromName, value); }
+		}
+
+		public string MExpressionFromAddress
+		{
+			get { return _mExpressionFromAddress; }
+			set { SetProperty(ref _mExpressionFromAddress, value); }
+		}
 
 		public string ExampleSubject
 		{
@@ -123,9 +169,12 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 #endif
 
 			var mailComposer = IoC.Resolve<MailComposer>();
-			MExpressionAddress = MExpressionAddress ?? StringifyExpression(mailComposer.AddressExpression);
-			MExpressionName = MExpressionName ?? StringifyExpression(mailComposer.NameExpression);
+			MExpressionAddress = MExpressionAddress ?? StringifyExpression(mailComposer.ToAddressExpression);
+			MExpressionName = MExpressionName ?? StringifyExpression(mailComposer.ToNameExpression);
 			MExpressionSubject = MExpressionSubject ?? StringifyExpression(mailComposer.SubjectExpression);
+			MExpressionFromAddress = MExpressionFromAddress ?? StringifyExpression(mailComposer.FromAddressExpression);
+			MExpressionFromName = MExpressionFromName ?? StringifyExpression(mailComposer.FromNameExpression);
+
 			ExampleMailData = ExampleMailData ?? await mailComposer.MailDataStrategy.GetPreviewData();
 		
 
@@ -135,9 +184,11 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
 		{
 			var mailComposer = IoC.Resolve<MailComposer>();
-			mailComposer.AddressExpression = ExpressionParser.ParseExpression(MExpressionAddress, out _);
-			mailComposer.NameExpression = ExpressionParser.ParseExpression(MExpressionName, out _);
+			mailComposer.ToAddressExpression = ExpressionParser.ParseExpression(MExpressionAddress, out _);
+			mailComposer.ToNameExpression = ExpressionParser.ParseExpression(MExpressionName, out _);
 			mailComposer.SubjectExpression = ExpressionParser.ParseExpression(MExpressionSubject, out _);
+			mailComposer.FromAddressExpression = ExpressionParser.ParseExpression(MExpressionFromAddress, out _);
+			mailComposer.FromNameExpression = ExpressionParser.ParseExpression(MExpressionFromName, out _);
 			return base.OnGoNext(defaultGenericImportStepConfigurator);
 		}
 	}

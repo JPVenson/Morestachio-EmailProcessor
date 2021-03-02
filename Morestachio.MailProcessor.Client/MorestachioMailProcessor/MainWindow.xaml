@@ -38,6 +38,7 @@
                 <ResourceDictionary Source="Resources/DataImport/DataImportResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/MailDistributionStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/WriteToDirectoryDistributorResources.xaml"/>
+                <ResourceDictionary Source="Resources/Distributor/SmtpMailDistributorResources.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/JPB.WPFToolsAwesome;component/Error/Resources/Templates/CommonErrorResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
@@ -47,9 +48,24 @@
             <SolidColorBrush x:Key="UnsetStepForegroundColor" Color="{DynamicResource MahApps.Colors.ThemeForeground}"/>
             <SolidColorBrush x:Key="SetStepForegroundColor" Color="{DynamicResource MahApps.Colors.IdealForeground}" />
 
+            
+            <behaviors:UiLocalizableStringResolverConverter ExpectFormattingArgumentsOn2ndPlace="True" 
+                                                            x:Key="StringFormatConverter" />
+
             <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.Fill}" Color="Red"/>
             <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.BorderBrush}" Color="Red"/>
             <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.Background}" Color="Red"/>
+            <DataTemplate x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.ErrorItemTemplate}">
+                <TextBlock TextTrimming="None"
+                           TextWrapping="Wrap">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource StringFormatConverter}">
+                            <Binding Path="ErrorContent.ErrorText.Key"/>
+                            <Binding Path="ErrorContent.ErrorText.Arguments"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </DataTemplate>
 
             <Style TargetType="{x:Type Control}" x:Key="ControlWithValidation">
                 <Setter Property="Validation.ErrorTemplate" Value="{StaticResource MultiErrorControlEx}" />
@@ -62,8 +78,6 @@
             <Style TargetType="{x:Type ComboBox}" 
                    BasedOn="{StaticResource ControlWithValidation}">
             </Style>
-            <behaviors:UiLocalizableStringResolverConverter ExpectFormattingArgumentsOn2ndPlace="True" 
-                                                            x:Key="StringFormatConverter" />
 
             <DataTemplate DataType="{x:Type viewModels:UiLocalizableString}">
                 <TextBlock TextTrimming="None"
@@ -77,11 +91,10 @@
                 </TextBlock>
             </DataTemplate>
 
-
             <SolidColorBrush x:Key="BackgroundPanelColor" Color="{DynamicResource MahApps.Colors.Accent4}"></SolidColorBrush>
             <SolidColorBrush x:Key="BackgroundPanelColorSolid" Color="{DynamicResource MahApps.Colors.ThemeBackground}"></SolidColorBrush>
             <converter:BooleanInverseConverter x:Key="BooleanInverseConverter" />
-            
+
         </ResourceDictionary>
     </Window.Resources>
     <mah:MetroWindow.RightWindowCommands>
@@ -178,11 +191,11 @@
         </DockPanel>
         <DockPanel Dock="Top">
             <Grid>
-                <ContentControl Content="{Binding UiWorkflow.CurrentStep}"
+                <ContentControl Content="{Binding UiWorkflow.CurrentStep, ValidatesOnNotifyDataErrors=False}"
                                Margin="0,0,0,35"
                                IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
                                VerticalAlignment="Stretch"/>
-                
+
                 <Expander VerticalAlignment="Bottom" 
                           Header="{lex:Loc Help.Title}"
                           Background="{StaticResource BackgroundPanelColorSolid}"
@@ -203,7 +216,7 @@
                             <ContentControl VerticalAlignment="Stretch" 
                                    FontSize="22"
                                    HorizontalAlignment="Stretch" 
-                                   Content="{Binding UiWorkflow.CurrentStep.Description}"/>
+                                   Content="{Binding UiWorkflow.CurrentStep.Description, ValidatesOnNotifyDataErrors=False, ValidatesOnDataErrors=False}"/>
                         </Grid>
                     </Expander.Content>
                 </Expander>

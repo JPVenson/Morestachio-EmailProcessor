@@ -25,28 +25,46 @@ namespace Morestachio.MailProcessor.Framework.Sender.Strategies
 			get { return IdKey; }
 		}
 
+		public ParallelSupport ParallelSupport { get; } = ParallelSupport.MultiInstance;
 
-		private SmtpClient _client;
-		public async Task<string> BeginSendMail()
+		private class State : SendMailStatus
 		{
-			_client = new SmtpClient();
+			public SmtpClient SmtpClient { get; set; }
+		}
+		
+		public async Task<IMailDistributorState> BeginSendMail()
+		{
+			var state = new State()
+			{
+				SmtpClient = new SmtpClient()
+			};
 			try
 			{
-				await _client.ConnectAsync(Host, HostPort);
-				await _client.AuthenticateAsync(AuthName, AuthPassword);
+				await state.SmtpClient.ConnectAsync(Host, HostPort);
+				await state.SmtpClient.AuthenticateAsync(AuthName, AuthPassword);
 			}
 			catch (Exception e)
 			{
-				return e.Message;
+				if (state.SmtpClient.IsConnected)
+				{
+					await state.SmtpClient.DisconnectAsync(true);
+					state.SmtpClient.Dispose();
+				}
+
+				return new SendMailStatus()
+				{
+					Success = false,
+					ErrorText = e.Message
+				};
 			}
 
-			return null;
+			return state;
 		}
 
-		public async Task<SendMailResult> SendMail(DistributorData data)
+		public async Task<IMailDistributorState> SendMail(DistributorData data, IMailDistributorState state)
 		{
 			var mailMessage = new MimeMessage();
-			mailMessage.To.Add(new MailboxAddress(data.To, data.Address));
+			mailMessage.To.Add(new MailboxAddress(data.To, data.ToAddress));
 			mailMessage.Subject = data.Subject;
 			mailMessage.Body = new TextPart(TextFormat.Html)
 			{
@@ -54,27 +72,24 @@ namespace Morestachio.MailProcessor.Framework.Sender.Strategies
 			};
 			try
 			{
-				await _client.SendAsync(mailMessage);
+				await (state as State).SmtpClient.SendAsync(mailMessage);
 			}
 			catch (Exception e)
 			{
-				return new SendMailResult()
+				return new SendMailStatus()
 				{
 					Success = false,
-					Error = e.Message
+					ErrorText = e.Message
 				};
 			}
-			return new SendMailResult()
-			{
-				Success = true
-			};
+			return SendMailStatus.Ok();
 		}
 
-		public async Task<string> EndSendMail()
+		public async Task<IMailDistributorState> EndSendMail(IMailDistributorState state)
 		{
-			await _client.DisconnectAsync(true);
-			_client?.Dispose();
-			return null;
+			await (state as State).SmtpClient.DisconnectAsync(true);
+			(state as State).SmtpClient.Dispose();
+			return SendMailStatus.Ok();
 		}
 	}
 }

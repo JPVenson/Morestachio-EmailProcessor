@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Distributor\SmtpMailDistributorResources.xaml" />
     <None Remove="Resources\Steps\EndStepResources.xaml" />
     <None Remove="Resources\Steps\SendReportStepResources.xaml" />
   </ItemGroup>

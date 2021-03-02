@@ -6,18 +6,34 @@
                     xmlns:import="clr-namespace:MorestachioMailProcessor.Services.DataImport.Strategies"
                     xmlns:resources="clr-namespace:MorestachioMailProcessor.Resources">
     <DataTemplate DataType="{x:Type import:ImportDataStepViewModel}">
-       <resources:FieldsetGrid
+        <resources:FieldsetGrid
            Margin="15">
-           <Label Content="{lex:Loc DataImport.Selector.SelectTitle}" Grid.Column="0"></Label>
-           <mah:SplitButton ItemsSource="{Binding MailDataStrategies}"
-                            SelectedItem="{Binding SelectedStrategy}"
-                            Grid.Column="1">
-               <mah:SplitButton.ItemTemplate>
-                   <DataTemplate DataType="{x:Type import:IMailDataStrategyMetaViewModel}">
-                       <Label Content="{Binding Name}"/>
-                   </DataTemplate>
-               </mah:SplitButton.ItemTemplate>
-           </mah:SplitButton>
-       </resources:FieldsetGrid>
-    </DataTemplate>  
+            <Label Content="{lex:Loc DataImport.Selector.SelectTitle}" Grid.Column="0"></Label>
+            <ListBox ItemsSource="{Binding MailDataStrategies}"
+                    SelectedItem="{Binding SelectedStrategy, ValidatesOnNotifyDataErrors=False}"
+                    Grid.Column="1">
+                <ListBox.Resources>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <RadioButton
+                                        Content="{TemplateBinding ContentPresenter.Content}"
+                                        IsChecked="{Binding Path=IsSelected,
+                                RelativeSource={RelativeSource TemplatedParent},
+                                Mode=TwoWay}">
+                                        <RadioButton.ContentTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </RadioButton.ContentTemplate>
+                                    </RadioButton>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
+        </resources:FieldsetGrid>
+    </DataTemplate>
 </ResourceDictionary>

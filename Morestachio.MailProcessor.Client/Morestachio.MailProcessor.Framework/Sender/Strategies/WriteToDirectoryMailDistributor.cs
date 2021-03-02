@@ -24,36 +24,37 @@ namespace Morestachio.MailProcessor.Framework.Sender.Strategies
 			get { return IdKey; }
 		}
 
-		public async Task<string> BeginSendMail()
+		public ParallelSupport ParallelSupport { get; } = ParallelSupport.Full;
+
+		public async Task<IMailDistributorState> BeginSendMail()
 		{
 			await Task.CompletedTask;
-			return null;
+			return SendMailStatus.Ok();
 		}
 
-		public async Task<SendMailResult> SendMail(DistributorData data)
+		public async Task<IMailDistributorState> SendMail(DistributorData data, IMailDistributorState state)
 		{
 			var mailMessage = new MimeMessage();
-			mailMessage.To.Add(new MailboxAddress(data.To, data.Address));
+			mailMessage.To.Add(new MailboxAddress(data.To, data.ToAddress));
+			mailMessage.From.Add(new MailboxAddress(data.From, data.FromAddress));
 			mailMessage.Subject = data.Subject;
 			mailMessage.Body = new TextPart(TextFormat.Html)
 			{
 				Text = data.Content.Stringify(true, Encoding.UTF8),
 			};
-			using (var targetStream = new FileStream(Path.Combine(_workingDirectory, $"mail-to-{data.Address}.mime"),
+			using (var targetStream = new FileStream(Path.Combine(_workingDirectory, $"mail-to-{data.ToAddress}.mime"),
 				FileMode.Create))
 			{
 				await mailMessage.WriteToAsync(targetStream);
 			}
-			return new SendMailResult()
-			{
-				Success = true
-			};
+
+			return SendMailStatus.Ok();
 		}
 
-		public async Task<string> EndSendMail()
+		public async Task<IMailDistributorState> EndSendMail(IMailDistributorState state)
 		{
 			await Task.CompletedTask;
-			return null;
+			return SendMailStatus.Ok();
 		}
 	}
 }

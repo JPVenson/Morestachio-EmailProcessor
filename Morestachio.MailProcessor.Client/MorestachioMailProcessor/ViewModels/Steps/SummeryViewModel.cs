@@ -120,7 +120,7 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 
 			var stringVisitor = new ToParsableStringExpressionVisitor();
 
-			MailComposer.AddressExpression.Accept(stringVisitor);
+			MailComposer.ToAddressExpression.Accept(stringVisitor);
 			AddressExpressionString = stringVisitor.StringBuilder.ToString();
 			stringVisitor.StringBuilder.Clear();
 
@@ -128,7 +128,7 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 			SubjectExpressionString = stringVisitor.StringBuilder.ToString();
 			stringVisitor.StringBuilder.Clear();
 
-			MailComposer.NameExpression.Accept(stringVisitor);
+			MailComposer.ToNameExpression.Accept(stringVisitor);
 			NameExpressionString = stringVisitor.StringBuilder.ToString();
 			stringVisitor.StringBuilder.Clear();
 			return base.OnEntry(data, configurator);

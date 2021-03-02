@@ -9,7 +9,6 @@ using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using Microsoft.Win32;
 using Morestachio;
-using Morestachio.MailProcessor.Client.ViewModels.Steps;
 using Morestachio.MailProcessor.Framework;
 using MorestachioMailProcessor.Services.UiWorkflow;
 
@@ -58,14 +57,21 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 		{
 			SimpleWorkAsync(async () =>
 			{
-				var addressCompiled = MailComposer.AddressExpression.Compile();
+				var addressCompiled = MailComposer.ToAddressExpression.Compile();
+				var compiledFromAddressExpression = MailComposer.FromAddressExpression.Compile();
+				var compiledFromNameExpression = MailComposer.FromNameExpression.Compile();
+
 				var data = new Dictionary<string, object>();
 				data["failedToSend"] = SummeryStepViewModel.Result.SendFailed.Select(e =>
 				{
 					return new Dictionary<string, object>()
 					{
-						{"ComposeValues", MailComposer.Compose(e.Key, null, addressCompiled, null, null)},
-						{"FailReason", e.Value.Error}
+						{
+							"ComposeValues", MailComposer.Compose(e.Key, null, addressCompiled, null, null,
+								compiledFromAddressExpression,
+								compiledFromNameExpression)
+						},
+						{"FailReason", e.Value.ErrorText}
 					};
 				});
 				data["numSuccess"] = SummeryStepViewModel.Result.SendSuccessfully;

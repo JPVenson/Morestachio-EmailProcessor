@@ -307,4 +307,52 @@ Also please note that this will possibly take a large portion of your decices po
   <data name="CloseStep.Content" xml:space="preserve">
     <value>Your processing is done and you can now close the application whoever you like</value>
   </data>
+  <data name="MailDistributor.Strategy.Smtp.Title" xml:space="preserve">
+    <value>Smtp</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Description" xml:space="preserve">
+    <value>This distributor sends generated mails via an smtp server. It will connect to the given host by using the set port. You have to validate your settings before you can continue.</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Name" xml:space="preserve">
+    <value>SMTP server</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.NoPassword" xml:space="preserve">
+    <value>No Password</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.NoUsername" xml:space="preserve">
+    <value>No Username</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.NoHost" xml:space="preserve">
+    <value>No Host</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.InvalidHost" xml:space="preserve">
+    <value>The given text does not seem to be a valid Uri</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Errors.InvalidPort" xml:space="preserve">
+    <value>The Port must be in the range of 1 to 65556. Default is 587</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Validate.Title" xml:space="preserve">
+    <value>Validate</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.Host" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Fields.ValidationResult" xml:space="preserve">
+    <value>Validation Result</value>
+  </data>
+  <data name="DataImport.PrepareStep.FromAddressPath" xml:space="preserve">
+    <value>From Address Expression</value>
+  </data>
+  <data name="DataImport.PrepareStep.FromNamePath" xml:space="preserve">
+    <value>From Name Expression</value>
+  </data>
 </root>

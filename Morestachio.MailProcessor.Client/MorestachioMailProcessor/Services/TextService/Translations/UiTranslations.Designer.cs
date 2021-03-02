@@ -162,6 +162,24 @@ namespace MorestachioMailProcessor.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string DataImport_PrepareStep_FromAddressPath {
+            get {
+                return ResourceManager.GetString("DataImport.PrepareStep.FromAddressPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DataImport_PrepareStep_FromNamePath {
+            get {
+                return ResourceManager.GetString("DataImport.PrepareStep.FromNamePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string DataImport_PrepareStep_Header_ExampleData {
             get {
                 return ResourceManager.GetString("DataImport.PrepareStep.Header.ExampleData", resourceCulture);
@@ -336,6 +354,132 @@ namespace MorestachioMailProcessor.Services.TextService.Translations {
         internal static string MailDistributor_Selector_Title {
             get {
                 return ResourceManager.GetString("MailDistributor.Selector.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Description {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Errors_InvalidHost {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Errors.InvalidHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Errors_InvalidPort {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Errors.InvalidPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Errors_NoHost {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Errors.NoHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Errors_NoPassword {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Errors.NoPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Errors_NoUsername {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Errors.NoUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Fields_Host {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Fields.Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Fields_Password {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Fields.Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Fields_Port {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Fields.Port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Fields_Username {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Fields.Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Fields_ValidationResult {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Fields.ValidationResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Name {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Title {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MailDistributor_Strategy_Smtp_Validate_Title {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Validate.Title", resourceCulture);
             }
         }
         

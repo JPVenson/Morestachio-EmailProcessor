@@ -8,7 +8,33 @@
         <resources:FieldsetGrid
             Margin="15">
             <Label Content="{lex:Loc MailDistributor.Selector.SelectTitle}"/>
-            <mah:SplitButton ItemsSource="{Binding MailDistributors}"
+
+            <ListBox ItemsSource="{Binding MailDistributors}"
+                     SelectedItem="{Binding SelectedDistributor, ValidatesOnNotifyDataErrors=False}"
+                     Grid.Column="1">
+                <ListBox.Resources>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <RadioButton
+                                        Content="{TemplateBinding ContentPresenter.Content}"
+                                        IsChecked="{Binding Path=IsSelected,
+                                RelativeSource={RelativeSource TemplatedParent},
+                                Mode=TwoWay}">
+                                        <RadioButton.ContentTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </RadioButton.ContentTemplate>
+                                    </RadioButton>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
+            <!--<mah:SplitButton ItemsSource="{Binding MailDistributors}"
                              SelectedItem="{Binding SelectedDistributor}"
                              Grid.Column="1">
                 <mah:SplitButton.ItemTemplate>
@@ -16,7 +42,7 @@
                         <Label Content="{Binding Name}"/>
                     </DataTemplate>
                 </mah:SplitButton.ItemTemplate>
-            </mah:SplitButton>
+            </mah:SplitButton>-->
 
 
             <!--<ComboBox ItemsSource="{Binding MailDistributors}"

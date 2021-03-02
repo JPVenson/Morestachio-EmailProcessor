@@ -8,6 +8,7 @@ namespace MorestachioMailProcessor.Resources
 		public FieldsetGrid()
 		{
 			VerticalAlignment = VerticalAlignment.Top;
+			Margin = new Thickness(7,15,15,7);
 		}
 
 		public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(
@@ -29,6 +30,7 @@ namespace MorestachioMailProcessor.Resources
 			ColumnDefinitions.Add(new ColumnDefinition()
 			{
 				SharedSizeGroup = "Fieldset_Value",
+				MinWidth = 275
 			});
 			
 			for (int i = 0; i < Columns - 2; i++)

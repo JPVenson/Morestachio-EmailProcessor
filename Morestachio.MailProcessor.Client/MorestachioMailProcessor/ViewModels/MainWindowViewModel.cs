@@ -13,6 +13,8 @@ namespace MorestachioMailProcessor.ViewModels
 			UiWorkflow.InitSteps();
 			SwitchDarkModeCommand = new DelegateCommand(SwitchDarkModeExecute, CanSwitchDarkModeExecute);
 			IoC.RegisterInstance<IUiWorkflow>(UiWorkflow);
+			ThemeManager.Current.ChangeTheme(App.Current, "Dark.Blue");
+			EnableDarkMode = true;
 		}
 
 		private IUiWorkflow _uiWorkflow;
