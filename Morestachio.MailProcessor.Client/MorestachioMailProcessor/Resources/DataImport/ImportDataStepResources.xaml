@@ -7,7 +7,8 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
     <DataTemplate DataType="{x:Type import:ImportDataStepViewModel}">
-       <resources:FieldsetGrid>
+       <resources:FieldsetGrid
+           Margin="15">
            <Label Content="{lex:Loc DataImport.Selector.SelectTitle}" Grid.Column="0"></Label>
            <mah:SplitButton ItemsSource="{Binding MailDataStrategies}"
                             SelectedItem="{Binding SelectedStrategy}"

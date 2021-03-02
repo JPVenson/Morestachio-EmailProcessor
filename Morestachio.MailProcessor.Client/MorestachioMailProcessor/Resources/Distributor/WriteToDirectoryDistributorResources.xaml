@@ -5,17 +5,24 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
     <DataTemplate DataType="{x:Type strategies:WriteToDirectoryMailDistributorViewModel}">
-        <resources:FieldsetGrid Columns="3">
-            <Label Content="{lex:Loc MailDistributor.Strategy.ToDirectory.DirectoryPath}" />
-            <TextBox
-                Text="{Binding Directory, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=250}"
-                VerticalContentAlignment="Center"
-                Grid.Column="1" />
-            <Button Command="{Binding PickDirectoryCommand}" Grid.Column="2" HorizontalAlignment="Left">
-                <iconPacks:Material Width="22"
-                                    Height="22"
-                                    Kind="FolderOpen" />
-            </Button>
+        <resources:FieldsetGrid
+            Margin="15">
+            <Label Content="{lex:Loc MailDistributor.Strategy.ToDirectory.DirectoryPath}" VerticalAlignment="Center" />
+            <DockPanel Grid.Column="1">
+                <Button Command="{Binding PickDirectoryCommand}" 
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Left">
+                    <iconPacks:Material Width="22"
+                                        Height="22"
+                                        Kind="FolderOpen" />
+                </Button>
+
+                <TextBox Text="{Binding Directory, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=250}"
+                         DockPanel.Dock="Left"
+                         VerticalContentAlignment="Center"
+                />
+                
+            </DockPanel>
         </resources:FieldsetGrid>
     </DataTemplate>
 </ResourceDictionary>

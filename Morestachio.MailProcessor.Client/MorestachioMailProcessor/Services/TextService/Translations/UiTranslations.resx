@@ -238,4 +238,55 @@
   <data name="Application.Header.StartSend" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Summery.Fields.Progress" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Fields.UseSubject" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Fields.NoOfParallism" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Fields.ParallelReadAheadCount" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Result.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Fields.Progress.ProcessedNumber" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Fields.Progress.Failed" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Fields.Progress.Success" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Commands.Reset" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SendReport.Save.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SendReport.Refresh.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SaveReport.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SaveReport.Description" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Commands.Report" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Help.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="CloseStep.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="CloseStep.Content" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

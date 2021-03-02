@@ -3,41 +3,97 @@
                     xmlns:steps="clr-namespace:Morestachio.MailProcessor.Client.ViewModels.Steps"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources">
-    <DataTemplate DataType="{x:Type steps:SummeryStepViewModel}">
-        <Grid IsSharedSizeScope="True">
-            <StackPanel>
-                <resources:FieldsetGrid>
-                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.ImportFrom}" />
-                    <Label Grid.Column="1" Content="{Binding DataStrategyName}" />
-                </resources:FieldsetGrid>
-                <resources:FieldsetGrid>
-                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.UseAddress}" />
-                    <Label Grid.Column="1" Content="{Binding MailComposer.AddressExpression}" />
-                </resources:FieldsetGrid>
-                <resources:FieldsetGrid>
-                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.UseName}" />
-                    <Label Grid.Column="1" Content="{Binding MailComposer.NameExpression}" />
-                </resources:FieldsetGrid>
-                <resources:FieldsetGrid>
-                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.SendVia}" />
-                    <Label Grid.Column="1" Content="{Binding DistributorName}" />
-                </resources:FieldsetGrid>
-                <resources:FieldsetGrid>
-                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.GenerateAndSendParallel}" />
-                    <mah:ToggleSwitch Grid.Column="1" IsOn="{Binding MailComposer.SendInParallel}" />
-                </resources:FieldsetGrid>
-                <resources:FieldsetGrid>
-                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <mah:MetroProgressBar Maximum="{Binding Progress.MaxProgress, Mode=OneWay}"
-                                              Value="{Binding Progress.Progress, Mode=OneWay}"
-                                              VerticalAlignment="Stretch"
-                                              HorizontalAlignment="Stretch" />
-                        <Label Content="{Binding Progress.To, Mode=OneWay}" VerticalAlignment="Center"
-                               HorizontalAlignment="Center" />
-                    </Grid>
-                </resources:FieldsetGrid>
-            </StackPanel>
-        </Grid>
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources"
+                    xmlns:converter="clr-namespace:JPB.WPFToolsAwesome.Converter;assembly=JPB.WPFToolsAwesome"
+                    xmlns:steps1="clr-namespace:MorestachioMailProcessor.ViewModels.Steps">
+    <converter:BooleanVisibilityInverseConverter x:Key="BooleanVisibilityInverseConverter"/>
+    <DataTemplate DataType="{x:Type steps1:SummeryStepViewModel}">
+        <DockPanel LastChildFill="False">
+            
+            <Grid IsSharedSizeScope="True"
+                  DockPanel.Dock="Left" 
+                  Margin="15,15,0,15"
+                  HorizontalAlignment="Left"
+                  Visibility="{Binding IsProcessed, Converter={StaticResource BooleanVisibilityInverseConverter}}"
+                  IsEnabled="{Binding IsNotWorking}">
+                <StackPanel>
+                    <resources:FieldsetGrid>
+                        <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.ImportFrom}" />
+                        <Label Grid.Column="1" Content="{Binding DataStrategyName}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid>
+                        <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.UseAddress}" />
+                        <Label Grid.Column="1" Content="{Binding AddressExpressionString}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid>
+                        <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.UseName}" />
+                        <Label Grid.Column="1" Content="{Binding NameExpressionString}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid>
+                        <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.UseSubject}" />
+                        <Label Grid.Column="1" Content="{Binding SubjectExpressionString}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid>
+                        <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.SendVia}" />
+                        <Label Grid.Column="1" Content="{Binding DistributorName}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid>
+                        <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.GenerateAndSendParallel}" />
+                        <mah:ToggleSwitch Grid.Column="1" IsOn="{Binding MailComposer.SendInParallel}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid Visibility="{Binding MailComposer.SendInParallel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.NoOfParallism}" />
+                        <mah:NumericUpDown Grid.Column="1" Value="{Binding MailComposer.ParallelNoOfParallism}" Minimum="1"/>
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid Visibility="{Binding MailComposer.SendInParallel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.ParallelReadAheadCount}" />
+                        <mah:NumericUpDown Grid.Column="1" Value="{Binding MailComposer.ParallelReadAheadCount}" Minimum="1"/>
+                    </resources:FieldsetGrid>
+                </StackPanel>
+            </Grid>
+            <Grid DockPanel.Dock="Left"
+                  Margin="15"
+                  IsSharedSizeScope="True"
+                  HorizontalAlignment="Left">
+                <HeaderedContentControl Header="{lex:Loc Summery.Result.Title}">
+                    <StackPanel>
+                        <resources:FieldsetGrid>
+                            <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress}" />
+
+                            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1" Width="250">
+                                <mah:MetroProgressBar Maximum="{Binding Progress.MaxProgress, Mode=OneWay}"
+                                                      Value="{Binding Progress.Progress, Mode=OneWay}"
+                                                      VerticalAlignment="Stretch"
+                                                      HorizontalAlignment="Stretch" />
+                                <Label Content="{Binding Progress.To, Mode=OneWay}" VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" />
+                            </Grid>
+                        </resources:FieldsetGrid>
+                        <resources:FieldsetGrid>
+                            <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.ProcessedNumber}" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Label Content="{Binding Progress.Progress}"/>
+                                <Label Content=" - "/>
+                                <Label Content="{Binding Progress.MaxProgress}"/>
+                            </StackPanel>
+                        </resources:FieldsetGrid>
+                        <resources:FieldsetGrid>
+                            <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Success}" />
+                            <StackPanel Grid.Column="1">
+                                <Label Content="{Binding Result.SendSuccessfully}"/>
+                            </StackPanel>
+                        </resources:FieldsetGrid>
+                        <resources:FieldsetGrid>
+                            <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Failed}" />
+                            <StackPanel Grid.Column="1">
+                                <Label Content="{Binding Result.SendFailed.Count}"/>
+                            </StackPanel>
+                        </resources:FieldsetGrid>
+                    </StackPanel>
+
+                </HeaderedContentControl>
+            </Grid>
+        </DockPanel>
+
     </DataTemplate>
 </ResourceDictionary>

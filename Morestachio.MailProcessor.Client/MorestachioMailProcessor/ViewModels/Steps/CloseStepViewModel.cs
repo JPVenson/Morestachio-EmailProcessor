@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Morestachio.MailProcessor.Client;
 using Morestachio.MailProcessor.Client.Services.UiWorkflow;
+using Morestachio.MailProcessor.Client.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.ViewModels.Steps
+namespace MorestachioMailProcessor.ViewModels.Steps
 {
 	public class CloseStepViewModel : WizardStepBaseViewModel
 	{
@@ -14,6 +10,7 @@ namespace Morestachio.MailProcessor.Client.ViewModels.Steps
 		{
 			Title = new UiLocalizableString("Close.Title");
 			Description = new UiLocalizableString("Close.Description");
+			Description = new UiLocalizableString("");
 			GroupKey = "MainGroup";
 			NextButtonText = new UiLocalizableString("Application.Header.Close");
 		}

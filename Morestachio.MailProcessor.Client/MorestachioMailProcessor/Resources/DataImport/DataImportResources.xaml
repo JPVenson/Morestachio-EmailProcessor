@@ -2,9 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dataImport="clr-namespace:Morestachio.MailProcessor.Client.Services.DataImport"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources">
-    <DataTemplate DataType="{x:Type dataImport:PrepareMailDataStepViewModel}">
-        <Grid IsSharedSizeScope="True">
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources"
+                    xmlns:steps="clr-namespace:MorestachioMailProcessor.ViewModels.Steps">
+    <DataTemplate DataType="{x:Type steps:PrepareMailDataStepViewModel}">
+        <Grid IsSharedSizeScope="True"
+              Margin="15">
             <StackPanel Orientation="Vertical">
                 <resources:FieldsetGrid Columns="3">
                     <Label Content="{lex:Loc DataImport.PrepareStep.Header.Field}" Grid.Column="0"/>

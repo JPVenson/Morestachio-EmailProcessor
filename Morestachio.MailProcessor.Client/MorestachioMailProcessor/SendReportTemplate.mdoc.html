@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>Send Report from {{startedAt.ToString("d")}}</title>
+	<meta name="createdAt" content="{{startedAt}}"/>
+	<meta name="finishedAt" content="{{doneAt}}"/>
+</head>
+<body>
+	<p>
+		Send out {{failedToSend.Count + numSuccess}} 
+	</p>
+	<p>
+		{{failedToSend.Count}} failed to send
+	</p>
+<table>
+	<thead>
+	<tr>
+		<td>LOC_ADDRESS</td>
+		<td>LOC_FAILREASON</td>
+	</tr>
+	</thead>
+	<tbody>
+	{{#EACH failedToSend AS failed}}
+	<tr>
+		<td>{{failed.ComposeValues.Address}}</td>
+		<td>{{failed.FailReason}}</td>
+	</tr>
+	{{/EACH}}
+	</tbody>
+</table>
+</body>
+</html>

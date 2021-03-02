@@ -2,6 +2,7 @@
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using JPB.WPFToolsAwesome.MVVM.ViewModel;
 using Morestachio.MailProcessor.Client.Services.UiWorkflow;
+using MorestachioMailProcessor.Services.UiWorkflow;
 
 namespace Morestachio.MailProcessor.Client.ViewModels
 {
@@ -11,8 +12,8 @@ namespace Morestachio.MailProcessor.Client.ViewModels
 		{
 			UiWorkflow = new DefaultGenericImportMailWorkflowViewModel();
 			UiWorkflow.InitSteps();
-
 			SwitchDarkModeCommand = new DelegateCommand(SwitchDarkModeExecute, CanSwitchDarkModeExecute);
+			IoC.RegisterInstance<IUiWorkflow>(UiWorkflow);
 		}
 
 		private IUiWorkflow _uiWorkflow;

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Morestachio.MailProcessor.Client.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
+namespace MorestachioMailProcessor.Services.UiWorkflow
 {
 	public interface IUiWorkflow : INotifyPropertyChanged
 	{
@@ -12,5 +12,6 @@ namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
 		ICommand NextPageCommand { get; }
 		ICommand PreviousPageCommand { get; }
 		void InitSteps();
+		bool HelpRequested { get; set; }
 	}
 }

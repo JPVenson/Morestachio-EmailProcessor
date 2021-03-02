@@ -15,22 +15,29 @@
         xmlns:behaviors="clr-namespace:Morestachio.MailProcessor.Client.Behaviors"
         xmlns:trigger1="clr-namespace:Morestachio.MailProcessor.Client.Behaviors.Trigger"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:converter="clr-namespace:JPB.WPFToolsAwesome.Converter;assembly=JPB.WPFToolsAwesome"
+        xmlns:morestachioMailProcessor="clr-namespace:MorestachioMailProcessor"
         mc:Ignorable="d"
         x:Name="MainWindowRef"
         Title="{lex:Loc Application.Header.Title}" 
+        MinHeight="350"
+        MinWidth="800"
         Height="450" 
         Width="800" 
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/DataImport/ImportDataStepResources.xaml"/>
+                <ResourceDictionary Source="Resources/Steps/TemplateSelectorStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/Steps/WelcomeStepResources.xaml"/>
+                <ResourceDictionary Source="Resources/Steps/SummeryResources.xaml"/>
+                <ResourceDictionary Source="Resources/Steps/EndStepResources.xaml"/>
+                <ResourceDictionary Source="Resources/Steps/SendReportStepResources.xaml"/>
+
+                <ResourceDictionary Source="Resources/DataImport/ImportDataStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/DataImport/Csv/CsvImportResources.xaml"/>
                 <ResourceDictionary Source="Resources/DataImport/DataImportResources.xaml"/>
-                <ResourceDictionary Source="Resources/Steps/TemplateSelectorStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/MailDistributionStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/Steps/SummeryResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/WriteToDirectoryDistributorResources.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/JPB.WPFToolsAwesome;component/Error/Resources/Templates/CommonErrorResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -60,7 +67,8 @@
                                                             x:Key="StringFormatConverter" />
 
             <DataTemplate DataType="{x:Type viewModels:UiLocalizableString}">
-                <TextBlock TextTrimming="CharacterEllipsis">
+                <TextBlock TextTrimming="None"
+                           TextWrapping="Wrap">
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource StringFormatConverter}">
                             <Binding Path="Key"/>
@@ -70,8 +78,11 @@
                 </TextBlock>
             </DataTemplate>
 
+
+            <SolidColorBrush x:Key="BackgroundPanelColor" Color="{DynamicResource MahApps.Colors.Accent4}"></SolidColorBrush>
+            <SolidColorBrush x:Key="BackgroundPanelColorSolid" Color="{DynamicResource MahApps.Colors.ThemeBackground}"></SolidColorBrush>
+            <converter:BooleanInverseConverter x:Key="BooleanInverseConverter" />
             
-            <SolidColorBrush x:Key="BackgroudPanelColor" Color="{DynamicResource MahApps.Colors.Accent4}"></SolidColorBrush>
         </ResourceDictionary>
     </Window.Resources>
     <mah:MetroWindow.RightWindowCommands>
@@ -84,7 +95,7 @@
         <StackPanel DockPanel.Dock="Top"
                     Orientation="Horizontal"
                     Height="35"
-                    Background="{DynamicResource BackgroudPanelColor}">
+                    Background="{DynamicResource BackgroundPanelColor}">
             <Label DockPanel.Dock="Top" Content="{lex:Loc Application.Header.Title}"/>
             <ItemsControl ItemsSource="{Binding UiWorkflow.Steps}" Margin="0,0,0,5">
                 <ItemsControl.ItemsPanel>
@@ -134,7 +145,7 @@
             </ItemsControl>
         </StackPanel>
         <DockPanel Dock="Bottom" Height="45" LastChildFill="False"
-                   Background="{DynamicResource BackgroudPanelColor}">
+                   Background="{DynamicResource BackgroundPanelColor}">
             <Button Command="{Binding UiWorkflow.PreviousPageCommand}" 
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                     DockPanel.Dock="Left">
@@ -144,18 +155,6 @@
                     </PriorityBinding>
                 </Button.Content>
             </Button>
-            <ItemsControl ItemsSource="{Binding UiWorkflow.CurrentStep.Commands}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type delegateCommand:UiDelegateCommand}">
-                        <Button Content="{lex:Loc Content}" Command="{Binding Command}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
             <Button Command="{Binding UiWorkflow.NextPageCommand}" 
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                     DockPanel.Dock="Right">
@@ -165,10 +164,51 @@
                     </PriorityBinding>
                 </Button.Content>
             </Button>
+            <ItemsControl ItemsSource="{Binding UiWorkflow.CurrentStep.Commands}" DockPanel.Dock="Right" Margin="0,0,15,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type delegateCommand:UiDelegateCommand}">
+                        <Button Content="{Binding Content}" Command="{Binding Command}" Margin="0,0,15,0"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </DockPanel>
         <DockPanel Dock="Top">
-            <ContentControl Content="{Binding UiWorkflow.CurrentStep}"
-                            VerticalAlignment="Stretch"/>
+            <Grid>
+                <ContentControl Content="{Binding UiWorkflow.CurrentStep}"
+                               Margin="0,0,0,35"
+                               IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
+                               VerticalAlignment="Stretch"/>
+                
+                <Expander VerticalAlignment="Bottom" 
+                          Header="{lex:Loc Help.Title}"
+                          Background="{StaticResource BackgroundPanelColorSolid}"
+                          IsExpanded="{Binding UiWorkflow.HelpRequested}"
+                          ExpandDirection="Up">
+                    <Expander.Visibility>
+                        <Binding Path="UiWorkflow.CurrentStep.Description">
+                            <Binding.Converter>
+                                <converter:ChainConverter>
+                                    <morestachioMailProcessor:TranslationNullToBooleanConverter />
+                                    <BooleanToVisibilityConverter />
+                                </converter:ChainConverter>
+                            </Binding.Converter>
+                        </Binding>
+                    </Expander.Visibility>
+                    <Expander.Content>
+                        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <ContentControl VerticalAlignment="Stretch" 
+                                   FontSize="22"
+                                   HorizontalAlignment="Stretch" 
+                                   Content="{Binding UiWorkflow.CurrentStep.Description}"/>
+                        </Grid>
+                    </Expander.Content>
+                </Expander>
+            </Grid>
         </DockPanel>
     </DockPanel>
 </mah:MetroWindow>

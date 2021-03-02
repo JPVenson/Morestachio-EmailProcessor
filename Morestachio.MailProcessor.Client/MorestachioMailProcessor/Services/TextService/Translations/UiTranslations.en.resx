@@ -160,7 +160,7 @@
     <value>End</value>
   </data>
   <data name="Summery.Title" xml:space="preserve">
-    <value>Summery</value>
+    <value>Send</value>
   </data>
   <data name="Template.Title" xml:space="preserve">
     <value>Template</value>
@@ -230,5 +230,81 @@
   </data>
   <data name="Application.Header.StartSend" xml:space="preserve">
     <value>Send!</value>
+  </data>
+  <data name="Summery.Fields.Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="Summery.Fields.UseSubject" xml:space="preserve">
+    <value>Get subject line by calling</value>
+  </data>
+  <data name="Summery.Fields.NoOfParallism" xml:space="preserve">
+    <value>Threads for Sending</value>
+  </data>
+  <data name="Summery.Fields.ParallelReadAheadCount" xml:space="preserve">
+    <value>Number of Mails put in Memory</value>
+  </data>
+  <data name="Summery.Result.Title" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="Summery.Fields.Progress.ProcessedNumber" xml:space="preserve">
+    <value>Processed Mails</value>
+  </data>
+  <data name="Summery.Fields.Progress.Failed" xml:space="preserve">
+    <value>Failed to Send or Create</value>
+  </data>
+  <data name="Summery.Fields.Progress.Success" xml:space="preserve">
+    <value>Send Mails</value>
+  </data>
+  <data name="Summery.Commands.Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SendReport.Save.Title" xml:space="preserve">
+    <value>Save to File</value>
+  </data>
+  <data name="SendReport.Refresh.Title" xml:space="preserve">
+    <value>Refresh Report</value>
+  </data>
+  <data name="SaveReport.Title" xml:space="preserve">
+    <value>Send Report</value>
+  </data>
+  <data name="Summery.Commands.Report" xml:space="preserve">
+    <value>Send Report</value>
+  </data>
+  <data name="Help.Title" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="DataImport.Selector.Description" xml:space="preserve">
+    <value>Please select from where the data should be obtained to generate the contents of the mails</value>
+  </data>
+  <data name="Summery.Description" xml:space="preserve">
+    <value>Please review all your settings and if deemed ok, use the "Send" button to start generating and sending your E-Mails via the set Distributor. 
+
+You can also enable parallel processing, this is useful when processing a large number of mails but not all Distributors may support this. 
+
+Also please note that this will possibly take a large portion of your decices power to send the mails.</value>
+  </data>
+  <data name="Template.Description" xml:space="preserve">
+    <value>This is where you set your Morestachio template.</value>
+  </data>
+  <data name="WelcomeStep.Description" xml:space="preserve">
+    <value>This help bar will give you contextual help when used in any following step</value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Description" xml:space="preserve">
+    <value>This imports the data for Mail generation from an CSV file using ; as a seperator</value>
+  </data>
+  <data name="MailDistributor.Prepare.Description" xml:space="preserve">
+    <value>In this step you have to set several expressions that will be used to extract the direct mailing related properties of your data. For more information on Morestachio Expressions please visit: </value>
+  </data>
+  <data name="MailDistributor.Strategy.ToDirectory.Description" xml:space="preserve">
+    <value>This strategy will save each generated mail in the set directory as an .mime file</value>
+  </data>
+  <data name="SaveReport.Description" xml:space="preserve">
+    <value>Here you can see a report of the send out mails including a detailed list of mails that could not been send and the reason for it</value>
+  </data>
+  <data name="CloseStep.Title" xml:space="preserve">
+    <value>All mails Processed</value>
+  </data>
+  <data name="CloseStep.Content" xml:space="preserve">
+    <value>Your processing is done and you can now close the application whoever you like</value>
   </data>
 </root>

@@ -7,6 +7,8 @@ namespace Morestachio.MailProcessor.Framework.Import
 	{
 		string Id { get; } 
 		
-		Task<ICollection<MailData>> GetMails(int? skip, int? take);
+		Task<IAsyncEnumerable<MailData>> GetMails();
+		Task<MailData> GetPreviewData();
+		Task<int> Count();
 	}
 }

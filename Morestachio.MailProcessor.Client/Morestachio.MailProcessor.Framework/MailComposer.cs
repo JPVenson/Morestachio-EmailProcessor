@@ -1,23 +1,62 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Morestachio.Document;
-using Morestachio.Framework;
 using Morestachio.Framework.Context;
 using Morestachio.Framework.Expression;
 using Morestachio.MailProcessor.Framework.Import;
-using Morestachio.MailProcessor.Framework.Import.Strategies;
 using Morestachio.MailProcessor.Framework.Sender;
 
 namespace Morestachio.MailProcessor.Framework
 {
+	public readonly struct SendMailProgress
+	{
+		public SendMailProgress(string to, int progress, int maxProgress, bool success)
+		{
+			To = to;
+			Progress = progress;
+			MaxProgress = maxProgress;
+			Success = success;
+		}
+
+		public int Progress { get; }
+		public int MaxProgress { get; }
+		public string To { get; }
+		public bool Success { get; }
+	}
+
+	public readonly struct SendMailTaskProgress
+	{
+		public SendMailTaskProgress(string to)
+		{
+			To = to;
+			Success = true;
+			Error = null;
+		}
+
+		public SendMailTaskProgress(string to, string error)
+		{
+			To = to;
+			Success = false;
+			Error = error;
+		}
+
+		public string To { get; }
+		public bool Success { get; }
+		public string Error { get; }
+	}
+
 	public class MailComposer
 	{
+		public MailComposer()
+		{
+			ParallelNoOfParallism = Environment.ProcessorCount;
+			ParallelReadAheadCount = ParallelNoOfParallism * 2;
+		}
+
 		public bool SendInParallel { get; set; }
 
 		public IMailDataStrategy MailDataStrategy { get; set; }
@@ -29,36 +68,24 @@ namespace Morestachio.MailProcessor.Framework
 		public IMorestachioExpression NameExpression { get; set; }
 		public IMorestachioExpression SubjectExpression { get; set; }
 
-		public struct SendMailProgress
-		{
-			public SendMailProgress(string to, int progress, int maxProgress)
-			{
-				To = to;
-				Progress = progress;
-				MaxProgress = maxProgress;
-			}
+		public int ParallelReadAheadCount { get; set; }
+		public int ParallelNoOfParallism { get; set; }
 
-			public int Progress { get; private set; }
-			public int MaxProgress { get; private set; }
-			public string To { get; private set; }
-		}
-
-
-		private async Task<DistributorData> Compose(
+		public async Task<DistributorData> Compose(
 			MailData mailData,
 			MorestachioDocumentInfo parsedTemplate,
 			CompiledExpression compiledAddressExpression,
 			CompiledExpression compiledSubjectExpression,
 			CompiledExpression compiledNameExpression)
 		{
-			var context = new ContextObject(parsedTemplate.ParserOptions, ".", null, mailData.Data);
+			var context = new ContextObject(parsedTemplate?.ParserOptions ?? new ParserOptions(), ".", null, mailData.Data);
 
-			return new DistributorData()
+			return new DistributorData
 			{
-				Address = (await compiledAddressExpression(context, new ScopeData())).Value.ToString(),
-				To = (await compiledNameExpression(context, new ScopeData())).Value.ToString(),
-				Subject = (await compiledSubjectExpression(context, new ScopeData())).Value.ToString(),
-				Content = (await parsedTemplate.CreateAsync(mailData.Data)).Stream
+				Address = compiledAddressExpression != null ? (await compiledAddressExpression(context, new ScopeData())).Value.ToString() : null,
+				To = compiledNameExpression != null ? (await compiledNameExpression(context, new ScopeData())).Value.ToString() : null,
+				Subject = compiledSubjectExpression != null ? (await compiledSubjectExpression(context, new ScopeData())).Value.ToString() : null,
+				Content = parsedTemplate != null ? (await parsedTemplate.CreateAsync(mailData.Data)).Stream : null,
 			};
 		}
 
@@ -69,52 +96,119 @@ namespace Morestachio.MailProcessor.Framework
 			var compiledSubjectExpression = SubjectExpression.Compile();
 
 			var parsedTemplate = await Parser.ParseWithOptionsAsync(new ParserOptions(Template));
-			var sendSuccess = 0;
+			var sendData = 0;
 			var sendFailed = new ConcurrentDictionary<MailData, SendMailResult>();
-			var mailDatas = await MailDataStrategy.GetMails(null, null);
+			var mailDatas = await MailDataStrategy.GetMails();
+			var maxSendData = await MailDataStrategy.Count();
+
+
+			void Progress(SendMailTaskProgress taskProgress, MailData mailData)
+			{
+				Interlocked.Add(ref sendData, 1);
+				if (!taskProgress.Success)
+				{
+					sendFailed.TryAdd(mailData, new SendMailResult() { Error = taskProgress.Error });
+				}
+
+				progress.Report(new SendMailProgress(taskProgress.To, sendData, maxSendData, true));
+			}
+
 			if (SendInParallel)
 			{
-				var sendMails = 0;
-
-				Parallel.ForEach(mailDatas, async (mailData, state) =>
-				{
-					var distributorData = await Compose(mailData, parsedTemplate, compiledAddressExpression, compiledSubjectExpression, compiledNameExpression);
-					var sendMailResult = await MailDistributor.SendMail(distributorData);
-					if (sendMailResult.Success)
-					{
-						Interlocked.Add(ref sendSuccess, 1);
-					}
-					else
-					{
-						sendFailed.TryAdd(mailData, sendMailResult);
-					}
-					progress.Report(new SendMailProgress(distributorData.Address, Interlocked.Add(ref sendMails, 1), mailDatas.Count));
-				});
+				await SendParallel(mailDatas,
+					Progress,
+					parsedTemplate,
+					compiledAddressExpression,
+					compiledSubjectExpression, compiledNameExpression);
 			}
 			else
 			{
-				var sendMails = 0;
-				foreach (var mailData in mailDatas)
+				await foreach (var mailData in mailDatas)
 				{
-					var distributorData = await Compose(mailData, parsedTemplate, compiledAddressExpression, compiledSubjectExpression, compiledNameExpression);
-					var sendMailResult = await MailDistributor.SendMail(distributorData);
-					sendMails++;
-					progress.Report(new SendMailProgress(distributorData.Address, sendMails, mailDatas.Count));
-					if (sendMailResult.Success)
-					{
-						Interlocked.Add(ref sendSuccess, 1);
-					}
-					else
-					{
-						sendFailed.TryAdd(mailData, sendMailResult);
-					}
+					await SendSingleItem(taskProgress => Progress(taskProgress, mailData),
+						mailData,
+						parsedTemplate,
+						compiledAddressExpression,
+						compiledSubjectExpression,
+						compiledNameExpression);
 				}
 			}
 
 			var resultData = new ComposeMailResult();
-			resultData.SendSuccessfully = sendSuccess;
+			resultData.SendSuccessfully = sendData;
 			resultData.SendFailed = sendFailed.ToDictionary(e => e.Key, e => e.Value);
 			return resultData;
+		}
+
+		private async Task SendParallel(IAsyncEnumerable<MailData> producer,
+			Action<SendMailTaskProgress, MailData> progress,
+			MorestachioDocumentInfo parsedTemplate,
+			CompiledExpression compiledAddressExpression,
+			CompiledExpression compiledSubjectExpression,
+			CompiledExpression compiledNameExpression)
+		{
+			var consumerItems = new BlockingCollection<MailData>();
+
+			var threads = new Thread[ParallelNoOfParallism];
+			for (int i = 0; i < threads.Length; i++)
+			{
+				var thread = new Thread(async () =>
+				{
+					foreach (var mailData in consumerItems.GetConsumingEnumerable())
+					{
+						await SendSingleItem(taskProgress => progress(taskProgress, mailData), mailData, parsedTemplate, compiledAddressExpression,
+							compiledSubjectExpression, compiledNameExpression);
+					}
+				});
+				thread.IsBackground = true;
+				thread.Priority = ThreadPriority.Normal;
+				thread.TrySetApartmentState(ApartmentState.MTA);
+				threads[i] = thread;
+			}
+
+			foreach (var thread in threads)
+			{
+				thread.Start();
+			}
+
+			var readAheadCount = ParallelReadAheadCount;
+			await foreach (var item in producer)
+			{
+				consumerItems.Add(item);
+				while (consumerItems.Count >= readAheadCount)
+				{
+					await Task.Delay(250);
+				}
+			}
+
+			consumerItems.CompleteAdding();
+
+			foreach (var thread in threads)
+			{
+				thread.Join();
+			}
+		}
+
+		private async Task SendSingleItem(
+			Action<SendMailTaskProgress> progress,
+			MailData mailData,
+			MorestachioDocumentInfo parsedTemplate,
+			CompiledExpression compiledAddressExpression,
+			CompiledExpression compiledSubjectExpression,
+			CompiledExpression compiledNameExpression)
+		{
+			var distributorData = await Compose(mailData, parsedTemplate, compiledAddressExpression,
+				compiledSubjectExpression,
+				compiledNameExpression);
+			var sendMailResult = await MailDistributor.SendMail(distributorData);
+			if (!sendMailResult.Success)
+			{
+				progress(new SendMailTaskProgress(distributorData.Address, sendMailResult.Error));
+			}
+			else
+			{
+				progress(new SendMailTaskProgress(distributorData.Address));
+			}
 		}
 	}
 

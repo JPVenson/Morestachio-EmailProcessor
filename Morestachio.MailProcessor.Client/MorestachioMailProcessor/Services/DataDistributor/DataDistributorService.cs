@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies;
 using Morestachio.MailProcessor.Client.Services.DataImport;
 using Morestachio.MailProcessor.Framework.Sender;
+using MorestachioMailProcessor.Services.DataDistributor.Strategies;
 
 namespace Morestachio.MailProcessor.Client.Services.DataDistributor
 {

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JPB.WPFToolsAwesome.Error;
+﻿using JPB.WPFToolsAwesome.Error;
 using JPB.WPFToolsAwesome.Extensions;
 using Morestachio.MailProcessor.Client.Services.UiWorkflow;
 using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework.Sender;
 
-namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
+namespace MorestachioMailProcessor.Services.DataDistributor.Strategies
 {
 	public interface IMailDistributorBaseViewModel : IWizardStepBaseViewModel
 	{
@@ -22,7 +17,7 @@ namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
 	{
 		protected MailDistributorBaseViewModel()
 		{
-			
+			GroupKey = "Distributors";
 		}
 
 		public UiLocalizableString Name { get; set; }
@@ -31,7 +26,7 @@ namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
 
 		public override bool OnGoPrevious(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
 		{
-			defaultGenericImportStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == GroupKey);
+			defaultGenericImportStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == "Distributors");
 			return base.OnGoPrevious(defaultGenericImportStepConfigurator);
 		}
 	}

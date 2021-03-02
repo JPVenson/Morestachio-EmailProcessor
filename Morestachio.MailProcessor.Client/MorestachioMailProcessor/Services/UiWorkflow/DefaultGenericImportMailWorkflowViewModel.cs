@@ -11,6 +11,8 @@ using Morestachio.MailProcessor.Client.Services.DataImport;
 using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Client.ViewModels.Steps;
 using Morestachio.MailProcessor.Client.ViewModels.Steps.Import;
+using MorestachioMailProcessor.Services.UiWorkflow;
+using MorestachioMailProcessor.ViewModels.Steps;
 
 namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
 {
@@ -40,13 +42,13 @@ namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
 			CurrentStep = Steps.ElementAt(indexOf);
 			SimpleWorkAsync(async () =>
 			{
-				await CurrentStep.OnEntry(Data);
+				await CurrentStep.OnEntry(Data, new DefaultGenericImportStepConfigurator(this, CurrentStep));
 			});
 		}
 
 		private bool CanPreviousPageExecute(object sender)
 		{
-			return IsNotWorking && CurrentStep.CanGoPrevious();
+			return IsNotWorking && !HelpRequested && CurrentStep.CanGoPrevious();
 		}
 
 		private void NextPageExecute(object sender)
@@ -58,13 +60,13 @@ namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
 			CurrentStep = Steps.ElementAt(Steps.IndexOf(CurrentStep) + 1);
 			SimpleWorkAsync(async () =>
 			{
-				await CurrentStep.OnEntry(Data);
+				await CurrentStep.OnEntry(Data, new DefaultGenericImportStepConfigurator(this, CurrentStep));
 			});
 		}
 
 		private bool CanNextPageExecute(object sender)
 		{
-			return IsNotWorking && CurrentStep.CanGoNext();
+			return IsNotWorking && !HelpRequested && CurrentStep.CanGoNext();
 		}
 
 		public virtual void InitSteps()
@@ -104,5 +106,12 @@ namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
 		public ICommand PreviousPageCommand { get; set; }
 
 		public IDictionary<string, object> Data { get; set; }
+		private bool _helpRequested;
+
+		public bool HelpRequested
+		{
+			get { return _helpRequested; }
+			set { SetProperty(ref _helpRequested, value); }
+		}
 	}
 }

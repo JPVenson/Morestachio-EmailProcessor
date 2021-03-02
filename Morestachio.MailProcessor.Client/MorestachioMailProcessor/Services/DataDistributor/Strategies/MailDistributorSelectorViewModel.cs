@@ -4,9 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JPB.WPFToolsAwesome.Extensions;
 using Morestachio.MailProcessor.Client.Services.UiWorkflow;
 using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework;
+using MorestachioMailProcessor.Services.DataDistributor.Strategies;
 
 namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
 {
@@ -16,6 +18,7 @@ namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
 		{
 			Title = new UiLocalizableString("MailDistributor.Selector.Title");
 			Description = new UiLocalizableString("MailDistributor.Selector.Description");
+			Description = new UiLocalizableString("");
 		}
 
 		public override UiLocalizableString Title { get; }
@@ -41,13 +44,14 @@ namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
 			return base.CanGoNext() && SelectedDistributor != null;
 		}
 
-		public override Task OnEntry(IDictionary<string, object> data)
+		public override Task OnEntry(IDictionary<string, object> data,
+			DefaultGenericImportStepConfigurator configurator)
 		{
 			var mailDistributor = IoC.Resolve<MailComposer>().MailDistributor;
 			MailDistributors = new ObservableCollection<IMailDistributorBaseViewModel>(IoC.Resolve<DataDistributorService>().MailDistributors);
 			SelectedDistributor =
 				MailDistributors.FirstOrDefault(e => e.IdKey == mailDistributor?.Id);
-			return base.OnEntry(data);
+			return base.OnEntry(data, configurator);
 		}
 
 		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)

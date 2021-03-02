@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Client.ViewModels.Steps;
+using MorestachioMailProcessor.Services.UiWorkflow;
 
 namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
 {

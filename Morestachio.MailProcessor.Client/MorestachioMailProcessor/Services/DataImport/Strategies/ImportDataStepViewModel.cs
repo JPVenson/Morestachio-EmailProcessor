@@ -52,9 +52,10 @@ namespace Morestachio.MailProcessor.Client.ViewModels.Steps.Import
 			return base.OnGoNext(defaultGenericImportStepConfigurator);
 		}
 
-		public override async Task OnEntry(IDictionary<string, object> data)
+		public override async Task OnEntry(IDictionary<string, object> data,
+			DefaultGenericImportStepConfigurator configurator)
 		{
-			await base.OnEntry(data);
+			await base.OnEntry(data, configurator);
 			var dataImportService = IoC.Resolve<DataImportService>();
 
 			var mailComposer = IoC.Resolve<MailComposer>();

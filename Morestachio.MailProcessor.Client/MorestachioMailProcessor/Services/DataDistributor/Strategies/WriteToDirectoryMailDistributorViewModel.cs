@@ -1,10 +1,12 @@
-﻿using System.Windows.Forms;
+﻿using System.IO;
+using System.Windows.Forms;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework.Sender;
 using Morestachio.MailProcessor.Framework.Sender.Strategies;
+using MorestachioMailProcessor.Services.DataDistributor.Strategies;
 
 namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
 {
@@ -28,7 +30,7 @@ namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
 			Name = new UiLocalizableString("MailDistributor.Strategy.ToDirectory.Name");
 
 #if DEBUG
-			Directory = "H:\\Code\\Morestachio-EmailProcessor\\Morestachio.MailProcessor.Client\\Morestachio.MailProcessor.Client\\bin\\Debug\\Output";
+			Directory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Output");
 #endif
 			PickDirectoryCommand = new DelegateCommand(PickDirectoryExecute, CanPickDirectoryExecute);
 		}

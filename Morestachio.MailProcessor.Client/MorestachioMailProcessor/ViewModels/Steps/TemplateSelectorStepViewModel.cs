@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
+using Morestachio;
+using Morestachio.MailProcessor.Client;
 using Morestachio.MailProcessor.Client.Services.UiWorkflow;
+using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.TemplateContainers;
 
-namespace Morestachio.MailProcessor.Client.ViewModels.Steps
+namespace MorestachioMailProcessor.ViewModels.Steps
 {
 	public class TemplateSelectorStepViewModel : WizardStepBaseViewModel<TemplateSelectorStepViewModel.TemplateSelectorStepViewModelErrors>
 	{

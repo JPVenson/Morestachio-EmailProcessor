@@ -20,7 +20,7 @@ namespace Morestachio.MailProcessor.Client.Services.DataImport
 					e => !File.Exists(e.FilePath), nameof(FilePath)));
 				Add(new AsyncError<CSVMailDataStrategyMetaViewModel>(
 					"DataImport.Strategy.CSV.Errors.InvalidFile",
-					async e => (await e.Create().GetMails(0, 1)).FirstOrDefault() == null, nameof(FilePath)));
+					async e => await e.Create().GetPreviewData() == null, nameof(FilePath)));
 			}
 		}
 
@@ -33,7 +33,7 @@ namespace Morestachio.MailProcessor.Client.Services.DataImport
 
 #if DEBUG
 			FilePath =
-				"H:\\Code\\Morestachio-EmailProcessor\\Morestachio.MailProcessor.Client\\Morestachio.MailProcessor.Client\\TestData.csv";
+				"H:\\Code\\Morestachio-EmailProcessor\\Morestachio.MailProcessor.Client\\MorestachioMailProcessor\\TestData.csv";
 #endif
 		}
 

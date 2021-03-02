@@ -3,14 +3,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
+using Morestachio;
+using Morestachio.Framework.Expression;
 using Morestachio.Framework.Expression.Framework;
 using Morestachio.Framework.Expression.Parser;
+using Morestachio.Framework.Expression.Visitors;
+using Morestachio.MailProcessor.Client;
 using Morestachio.MailProcessor.Client.Services.UiWorkflow;
 using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Import;
+using Morestachio.Parsing.ParserErrors;
 
-namespace Morestachio.MailProcessor.Client.Services.DataImport
+namespace MorestachioMailProcessor.ViewModels.Steps
 {
 	public class PrepareMailDataStepViewModel : WizardStepBaseViewModel<PrepareMailDataStepViewModel.PrepareMailDataStepViewModelErrors>
 	{
@@ -97,20 +102,36 @@ namespace Morestachio.MailProcessor.Client.Services.DataImport
 			set { SetProperty(ref _mExpressionAddress, value); }
 		}
 
-		public override async Task OnEntry(IDictionary<string, object> data)
+		private static string StringifyExpression(IMorestachioExpression expression)
 		{
-			var mailComposer = IoC.Resolve<MailComposer>();
-			MExpressionAddress = mailComposer.AddressExpression?.ToString();
-			MExpressionName = mailComposer.NameExpression?.ToString();
-			ExampleMailData = (await mailComposer.MailDataStrategy.GetMails(0, 1)).FirstOrDefault();
-			
+			if (expression == null)
+			{
+				return "";
+			}
+
+			var visitor = new ToParsableStringExpressionVisitor();
+			visitor.Visit(expression);
+			return visitor.StringBuilder.ToString();
+		}
+
+		public override async Task OnEntry(IDictionary<string, object> data,
+			DefaultGenericImportStepConfigurator configurator)
+		{
+				
 #if DEBUG
-			MExpressionAddress = "Addresse";
-			MExpressionName = "TestName";
-			MExpressionSubject = "\"Subject A\"";
+			MExpressionAddress = MExpressionAddress ?? "email";
+			MExpressionName = MExpressionName ?? "\"Mr or Ms \" + firstname + \", \" + lastname";
+			MExpressionSubject = MExpressionSubject ?? "\"Subject A\"";
 #endif
 
-			await base.OnEntry(data);
+			var mailComposer = IoC.Resolve<MailComposer>();
+			MExpressionAddress = MExpressionAddress ?? StringifyExpression(mailComposer.AddressExpression);
+			MExpressionName = MExpressionName ?? StringifyExpression(mailComposer.NameExpression);
+			MExpressionSubject = MExpressionSubject ?? StringifyExpression(mailComposer.SubjectExpression);
+			ExampleMailData = ExampleMailData ?? await mailComposer.MailDataStrategy.GetPreviewData();
+		
+
+			await base.OnEntry(data, configurator);
 		}
 
 		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)

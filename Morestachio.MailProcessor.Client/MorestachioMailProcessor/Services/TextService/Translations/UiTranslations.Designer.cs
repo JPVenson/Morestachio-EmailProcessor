@@ -126,6 +126,24 @@ namespace MorestachioMailProcessor.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string CloseStep_Content {
+            get {
+                return ResourceManager.GetString("CloseStep.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string CloseStep_Title {
+            get {
+                return ResourceManager.GetString("CloseStep.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string DataImport_PrepareStep_AddressPath {
             get {
                 return ResourceManager.GetString("DataImport.PrepareStep.AddressPath", resourceCulture);
@@ -270,6 +288,15 @@ namespace MorestachioMailProcessor.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string Help_Title {
+            get {
+                return ResourceManager.GetString("Help.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string MailDistributor_Prepare_Description {
             get {
                 return ResourceManager.GetString("MailDistributor.Prepare.Description", resourceCulture);
@@ -360,6 +387,60 @@ namespace MorestachioMailProcessor.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string SaveReport_Description {
+            get {
+                return ResourceManager.GetString("SaveReport.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SaveReport_Title {
+            get {
+                return ResourceManager.GetString("SaveReport.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SendReport_Refresh_Title {
+            get {
+                return ResourceManager.GetString("SendReport.Refresh.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SendReport_Save_Title {
+            get {
+                return ResourceManager.GetString("SendReport.Save.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Commands_Report {
+            get {
+                return ResourceManager.GetString("Summery.Commands.Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Commands_Reset {
+            get {
+                return ResourceManager.GetString("Summery.Commands.Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string Summery_Description {
             get {
                 return ResourceManager.GetString("Summery.Description", resourceCulture);
@@ -387,6 +468,60 @@ namespace MorestachioMailProcessor.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string Summery_Fields_NoOfParallism {
+            get {
+                return ResourceManager.GetString("Summery.Fields.NoOfParallism", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Fields_ParallelReadAheadCount {
+            get {
+                return ResourceManager.GetString("Summery.Fields.ParallelReadAheadCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Fields_Progress {
+            get {
+                return ResourceManager.GetString("Summery.Fields.Progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Fields_Progress_Failed {
+            get {
+                return ResourceManager.GetString("Summery.Fields.Progress.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Fields_Progress_ProcessedNumber {
+            get {
+                return ResourceManager.GetString("Summery.Fields.Progress.ProcessedNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Fields_Progress_Success {
+            get {
+                return ResourceManager.GetString("Summery.Fields.Progress.Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string Summery_Fields_SendVia {
             get {
                 return ResourceManager.GetString("Summery.Fields.SendVia", resourceCulture);
@@ -408,6 +543,24 @@ namespace MorestachioMailProcessor.Services.TextService.Translations {
         internal static string Summery_Fields_UseName {
             get {
                 return ResourceManager.GetString("Summery.Fields.UseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Fields_UseSubject {
+            get {
+                return ResourceManager.GetString("Summery.Fields.UseSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Summery_Result_Title {
+            get {
+                return ResourceManager.GetString("Summery.Result.Title", resourceCulture);
             }
         }
         

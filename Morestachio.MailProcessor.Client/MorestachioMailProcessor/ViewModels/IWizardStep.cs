@@ -25,7 +25,7 @@ namespace Morestachio.MailProcessor.Client.ViewModels
 		string GroupKey { get; set; }
 		void OnAdded(DefaultGenericImportStepConfigurator configurator);
 		void OnRemoved(DefaultGenericImportStepConfigurator configurator);
-		Task OnEntry(IDictionary<string, object> data);
+		Task OnEntry(IDictionary<string, object> data, DefaultGenericImportStepConfigurator configurator);
 		bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator);
 		bool OnGoPrevious(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator);
 		bool CanGoNext();
@@ -85,7 +85,8 @@ namespace Morestachio.MailProcessor.Client.ViewModels
 			configurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == GroupKey);
 		}
 
-		public virtual async Task OnEntry(IDictionary<string, object> data)
+		public virtual async Task OnEntry(IDictionary<string, object> data,
+			DefaultGenericImportStepConfigurator configurator)
 		{
 			Data = data;
 			await Task.CompletedTask;

@@ -3,15 +3,17 @@
                     xmlns:import="clr-namespace:Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources"
-                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:strategies="clr-namespace:MorestachioMailProcessor.Services.DataDistributor.Strategies">
     <DataTemplate DataType="{x:Type import:MailDistributorSelectorViewModel}">
-        <resources:FieldsetGrid>
+        <resources:FieldsetGrid
+            Margin="15">
             <Label Content="{lex:Loc MailDistributor.Selector.SelectTitle}"/>
             <mah:SplitButton ItemsSource="{Binding MailDistributors}"
                              SelectedItem="{Binding SelectedDistributor}"
                              Grid.Column="1">
                 <mah:SplitButton.ItemTemplate>
-                    <DataTemplate DataType="{x:Type import:IMailDistributorBaseViewModel}">
+                    <DataTemplate DataType="{x:Type strategies:IMailDistributorBaseViewModel}">
                         <Label Content="{Binding Name}"/>
                     </DataTemplate>
                 </mah:SplitButton.ItemTemplate>

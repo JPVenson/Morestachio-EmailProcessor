@@ -5,17 +5,22 @@
                     xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
     <DataTemplate DataType="{x:Type dataImport:CSVMailDataStrategyMetaViewModel}">
-        <resources:FieldsetGrid Columns="3">
-            <Label Content="{lex:Loc DataImport.Strategy.CSV.FileName}"/>
-            <TextBox Text="{Binding FilePath, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
-                     VerticalContentAlignment="Center"
-                     Grid.Column="1"/>
+        <resources:FieldsetGrid
+            Margin="15">
+            <Label Content="{lex:Loc DataImport.Strategy.CSV.FileName}" VerticalAlignment="Center"/>
+            <DockPanel Grid.Column="1">
+                
+                <Button Command="{Binding PickFileCommand}"
+                        DockPanel.Dock="Right">
+                    <iconPacks:Material Width="22"
+                                        Height="22"
+                                        Kind="FileExcel" />
+                </Button>
+                <TextBox Text="{Binding FilePath, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
+                         VerticalContentAlignment="Center"
+                         DockPanel.Dock="Left"/>
             
-            <Button Command="{Binding PickFileCommand}" Grid.Column="2" HorizontalAlignment="Left">
-                <iconPacks:Material Width="22"
-                                    Height="22"
-                                    Kind="FileExcel" />
-            </Button>
+            </DockPanel>
         </resources:FieldsetGrid>
     </DataTemplate>    
 </ResourceDictionary>
