@@ -2,7 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:steps1="clr-namespace:MorestachioMailProcessor.ViewModels.Steps">
     <DataTemplate DataType="{x:Type steps1:TemplateSelectorStepViewModel}">
-       <TextBox Text="{Binding Template}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+       <TextBox Text="{Binding Template, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
                 Margin="15">
 
        </TextBox>

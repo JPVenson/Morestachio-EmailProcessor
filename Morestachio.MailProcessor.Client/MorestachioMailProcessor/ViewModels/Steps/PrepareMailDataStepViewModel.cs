@@ -46,14 +46,14 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 				Add(new AsyncError<PrepareMailDataStepViewModel>("DataImport.PrepareStep.Errors.InvalidExpression", async e =>
 				{
 					var context = TokenzierContext.FromText(e.MExpressionFromName);
-					e.ExampleName = (await ExpressionParser.EvaluateExpression(e.MExpressionFromName, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
+					e.ExampleFromName = (await ExpressionParser.EvaluateExpression(e.MExpressionFromName, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
 					return context.Errors.Any();
 				}, nameof(MExpressionFromName)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>("DataImport.PrepareStep.Errors.InvalidExpression", async e =>
 				{
 					var context = TokenzierContext.FromText(e.MExpressionFromAddress);
-					e.ExampleAddress = (await ExpressionParser.EvaluateExpression(e.MExpressionFromAddress, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
+					e.ExampleFromAddress = (await ExpressionParser.EvaluateExpression(e.MExpressionFromAddress, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
 					return context.Errors.Any();
 				}, nameof(MExpressionFromAddress)));
 			}
@@ -64,10 +64,9 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 			Title = new UiLocalizableString("MailDistributor.Prepare.Title");
 			Description = new UiLocalizableString("MailDistributor.Prepare.Description");
 			GroupKey = "MainGroup";
-			MExpressionName = "\"Mr Company\"";
+			MExpressionFromName = "\"Mr Company\"";
 			MExpressionFromAddress = "\"mr.company@test.com\"";
 			MExpressionSubject = "\"Hot new Newsletter\"";
-			ForceRefreshAsync();
 		}
 
 		public override UiLocalizableString Title { get; }
@@ -176,8 +175,8 @@ namespace MorestachioMailProcessor.ViewModels.Steps
 			MExpressionFromName = MExpressionFromName ?? StringifyExpression(mailComposer.FromNameExpression);
 
 			ExampleMailData = ExampleMailData ?? await mailComposer.MailDataStrategy.GetPreviewData();
-		
 
+			await ForceRefreshAsync();
 			await base.OnEntry(data, configurator);
 		}
 

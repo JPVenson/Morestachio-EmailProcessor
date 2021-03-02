@@ -5,22 +5,40 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Morestachio.MailProcessor.Framework", "Morestachio.MailProcessor.Framework\Morestachio.MailProcessor.Framework.csproj", "{0908A5EE-9121-4C3C-802B-61E75F239CD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MorestachioMailProcessor", "MorestachioMailProcessor\MorestachioMailProcessor.csproj", "{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MorestachioMailProcessor", "MorestachioMailProcessor\MorestachioMailProcessor.csproj", "{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Morestachio.MailProcessor.Setup", "Morestachio.MailProcessor.Setup\Morestachio.MailProcessor.Setup.wixproj", "{6D6AC4F9-EDB9-4746-976C-068F616BA386}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0908A5EE-9121-4C3C-802B-61E75F239CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0908A5EE-9121-4C3C-802B-61E75F239CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0908A5EE-9121-4C3C-802B-61E75F239CD3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0908A5EE-9121-4C3C-802B-61E75F239CD3}.Debug|x86.Build.0 = Debug|Any CPU
 		{0908A5EE-9121-4C3C-802B-61E75F239CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0908A5EE-9121-4C3C-802B-61E75F239CD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0908A5EE-9121-4C3C-802B-61E75F239CD3}.Release|x86.ActiveCfg = Release|Any CPU
+		{0908A5EE-9121-4C3C-802B-61E75F239CD3}.Release|x86.Build.0 = Release|Any CPU
 		{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}.Debug|x86.Build.0 = Debug|Any CPU
 		{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}.Release|x86.ActiveCfg = Release|Any CPU
+		{75A62F39-ABDA-45C0-8916-CF2CEEABC4A6}.Release|x86.Build.0 = Release|Any CPU
+		{6D6AC4F9-EDB9-4746-976C-068F616BA386}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{6D6AC4F9-EDB9-4746-976C-068F616BA386}.Debug|x86.ActiveCfg = Debug|x86
+		{6D6AC4F9-EDB9-4746-976C-068F616BA386}.Debug|x86.Build.0 = Debug|x86
+		{6D6AC4F9-EDB9-4746-976C-068F616BA386}.Release|Any CPU.ActiveCfg = Release|x86
+		{6D6AC4F9-EDB9-4746-976C-068F616BA386}.Release|x86.ActiveCfg = Release|x86
+		{6D6AC4F9-EDB9-4746-976C-068F616BA386}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

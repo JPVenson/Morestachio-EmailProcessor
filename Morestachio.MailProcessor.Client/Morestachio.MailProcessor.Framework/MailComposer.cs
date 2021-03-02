@@ -5,8 +5,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Morestachio.Document;
+using Morestachio.Formatter.Framework;
+using Morestachio.Formatter.Predefined;
 using Morestachio.Framework.Context;
 using Morestachio.Framework.Expression;
+using Morestachio.Linq;
 using Morestachio.MailProcessor.Framework.Import;
 using Morestachio.MailProcessor.Framework.Sender;
 
@@ -104,7 +107,11 @@ namespace Morestachio.MailProcessor.Framework
 			var compiledFromAddressExpression = FromAddressExpression.Compile();
 			var compiledFromNameExpression = FromNameExpression.Compile();
 
-			var parsedTemplate = await Parser.ParseWithOptionsAsync(new ParserOptions(Template));
+			var parsingOptions = new ParserOptions(Template);
+			parsingOptions.Timeout = TimeSpan.FromMinutes(1);
+			parsingOptions.Formatters.AddFromType(typeof(LinqFormatter));
+			parsingOptions.Formatters.AddFromType(typeof(DynamicLinq));
+			var parsedTemplate = await Parser.ParseWithOptionsAsync(parsingOptions);
 			var sendData = 0;
 			var sendFailed = new ConcurrentDictionary<MailData, SendMailStatus>();
 			var mailDatas = await MailDataStrategy.GetMails();
