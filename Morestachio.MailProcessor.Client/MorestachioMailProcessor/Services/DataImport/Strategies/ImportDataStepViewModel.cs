@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Morestachio.MailProcessor.Client.Services.DataImport;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
 using Morestachio.MailProcessor.Framework;
-using Morestachio.MailProcessor.Framework.Import;
+using MorestachioMailProcessor.Services.UiWorkflow;
+using MorestachioMailProcessor.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.ViewModels.Steps.Import
+namespace MorestachioMailProcessor.Services.DataImport.Strategies
 {
 	public class ImportDataStepViewModel : WizardStepBaseViewModel
 	{

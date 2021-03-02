@@ -1,10 +1,9 @@
 ﻿using ControlzEx.Theming;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using JPB.WPFToolsAwesome.MVVM.ViewModel;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
 using MorestachioMailProcessor.Services.UiWorkflow;
 
-namespace Morestachio.MailProcessor.Client.ViewModels
+namespace MorestachioMailProcessor.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{

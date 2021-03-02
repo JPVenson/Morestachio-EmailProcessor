@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using Unity;
 
-namespace Morestachio.MailProcessor.Client
+namespace MorestachioMailProcessor
 {
 	public static class IoC
 	{

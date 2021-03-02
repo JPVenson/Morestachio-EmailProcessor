@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using JPB.WPFToolsAwesome.MVVM.ViewModel;
-using Morestachio.MailProcessor.Client.Services.TextService;
+using MorestachioMailProcessor.Services.TextService;
 
-namespace Morestachio.MailProcessor.Client.ViewModels
+namespace MorestachioMailProcessor.ViewModels
 {
 	public class UiLocalizableString : ViewModelBase, IUiLocalizableString, IEquatable<UiLocalizableString>
 	{

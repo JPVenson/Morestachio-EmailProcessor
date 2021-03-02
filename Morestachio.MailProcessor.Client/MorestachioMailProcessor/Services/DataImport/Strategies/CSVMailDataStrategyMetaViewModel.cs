@@ -1,14 +1,13 @@
 ﻿using System.IO;
-using System.Linq;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using Microsoft.Win32;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework.Import;
 using Morestachio.MailProcessor.Framework.Import.Strategies;
+using MorestachioMailProcessor.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.Services.DataImport
+namespace MorestachioMailProcessor.Services.DataImport.Strategies
 {
 	public class CSVMailDataStrategyMetaViewModel : MailDataStrategyMetaViewModel<CSVMailDataStrategyMetaViewModel.CSVMailDataStrategyMetaViewModelErrors>
 	{

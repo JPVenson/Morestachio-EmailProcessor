@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-namespace Morestachio.MailProcessor.Client.Services.TextService
+namespace MorestachioMailProcessor.Services.TextService
 {
 	public class KeyedDictionary<T, TE> : KeyedCollection<T, TE>
 	{

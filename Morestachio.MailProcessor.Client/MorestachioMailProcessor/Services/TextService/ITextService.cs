@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Morestachio.MailProcessor.Client.ViewModels;
+using MorestachioMailProcessor.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.Services.TextService
+namespace MorestachioMailProcessor.Services.TextService
 {
 	public interface ITextService
 	{

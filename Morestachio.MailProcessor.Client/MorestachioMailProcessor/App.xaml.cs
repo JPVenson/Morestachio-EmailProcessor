@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace Morestachio.MailProcessor.Client
+namespace MorestachioMailProcessor
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
@@ -28,7 +23,7 @@ namespace Morestachio.MailProcessor.Client
 		/// <summary>
 		/// Application Entry Point.
 		/// </summary>
-		[System.STAThreadAttribute()]
+		[STAThread()]
 		public static void Main()
 		{
 			var app = new App();

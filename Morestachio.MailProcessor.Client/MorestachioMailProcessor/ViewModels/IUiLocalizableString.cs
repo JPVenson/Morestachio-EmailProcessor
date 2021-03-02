@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Morestachio.MailProcessor.Client.Services.TextService;
+using MorestachioMailProcessor.Services.TextService;
 
-namespace Morestachio.MailProcessor.Client.ViewModels
+namespace MorestachioMailProcessor.ViewModels
 {
 	public interface IUiLocalizableString
 	{

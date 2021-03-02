@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using JPB.WPFToolsAwesome.Error;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ViewModelProvider.Base;
 using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
-using JPB.WPFToolsAwesome.MVVM.ViewModel;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
+using MorestachioMailProcessor.Services.UiWorkflow;
 
-namespace Morestachio.MailProcessor.Client.ViewModels
+namespace MorestachioMailProcessor.ViewModels
 {
 	public abstract class WizardStepBaseViewModel : WizardStepBaseViewModel<NoErrors>
 	{

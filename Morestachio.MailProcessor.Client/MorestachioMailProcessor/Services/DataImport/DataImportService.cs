@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Morestachio.MailProcessor.Framework.Import;
+using MorestachioMailProcessor.Services.DataImport.Strategies;
 
-namespace Morestachio.MailProcessor.Client.Services.DataImport
+namespace MorestachioMailProcessor.Services.DataImport
 {
 	public class DataImportService : IRequireInit
 	{

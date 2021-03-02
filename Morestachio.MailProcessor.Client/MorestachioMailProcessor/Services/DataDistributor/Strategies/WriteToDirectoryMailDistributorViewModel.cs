@@ -3,12 +3,11 @@ using System.Windows.Forms;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework.Sender;
 using Morestachio.MailProcessor.Framework.Sender.Strategies;
-using MorestachioMailProcessor.Services.DataDistributor.Strategies;
+using MorestachioMailProcessor.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
+namespace MorestachioMailProcessor.Services.DataDistributor.Strategies
 {
 	public class WriteToDirectoryMailDistributorViewModel : MailDistributorBaseViewModel<WriteToDirectoryMailDistributorViewModel.WriteToDirectoryMailDistributorViewModelErrors>
 	{

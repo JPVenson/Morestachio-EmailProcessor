@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using Morestachio.MailProcessor.Client.ViewModels;
+using MorestachioMailProcessor.ViewModels;
 
 namespace MorestachioMailProcessor
 {

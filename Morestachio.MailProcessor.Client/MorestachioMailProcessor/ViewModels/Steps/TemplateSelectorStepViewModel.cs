@@ -2,11 +2,9 @@
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using Morestachio;
-using Morestachio.MailProcessor.Client;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.TemplateContainers;
+using MorestachioMailProcessor.Services.UiWorkflow;
 
 namespace MorestachioMailProcessor.ViewModels.Steps
 {

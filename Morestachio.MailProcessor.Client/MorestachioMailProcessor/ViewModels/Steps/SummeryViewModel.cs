@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using Morestachio.Framework.Expression.Visitors;
-using Morestachio.MailProcessor.Client;
-using Morestachio.MailProcessor.Client.Services.DataDistributor;
-using Morestachio.MailProcessor.Client.Services.DataImport;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework;
+using MorestachioMailProcessor.Services.DataDistributor;
+using MorestachioMailProcessor.Services.DataImport;
 using MorestachioMailProcessor.Services.UiWorkflow;
 
 namespace MorestachioMailProcessor.ViewModels.Steps

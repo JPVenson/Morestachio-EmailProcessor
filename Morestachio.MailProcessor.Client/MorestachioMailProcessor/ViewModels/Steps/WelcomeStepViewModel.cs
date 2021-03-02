@@ -1,6 +1,4 @@
-﻿using Morestachio.MailProcessor.Client.ViewModels;
-
-namespace MorestachioMailProcessor.ViewModels.Steps
+﻿namespace MorestachioMailProcessor.ViewModels.Steps
 {
 	public class WelcomeStepViewModel : WizardStepBaseViewModel
 	{

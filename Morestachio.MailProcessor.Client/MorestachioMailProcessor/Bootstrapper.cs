@@ -1,15 +1,12 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using Morestachio.MailProcessor.Client.Services.DataDistributor;
-using Morestachio.MailProcessor.Client.Services.DataImport;
-using Morestachio.MailProcessor.Client.Services.TextService;
-using Morestachio.MailProcessor.Framework;
+﻿using Morestachio.MailProcessor.Framework;
+using MorestachioMailProcessor.Services.DataDistributor;
+using MorestachioMailProcessor.Services.DataImport;
+using MorestachioMailProcessor.Services.TextService;
 using MorestachioMailProcessor.Services.TextService.Translations;
 using Unity;
 using WPFLocalizeExtension.Engine;
-using WPFLocalizeExtension.Providers;
 
-namespace Morestachio.MailProcessor.Client
+namespace MorestachioMailProcessor
 {
 	public class Bootstrapper
 	{

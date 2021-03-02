@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Morestachio.MailProcessor.Client.Services.TextService
+namespace MorestachioMailProcessor.Services.TextService
 {
 	public struct TextResourceEntity
 	{

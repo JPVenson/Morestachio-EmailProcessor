@@ -1,6 +1,4 @@
-﻿using Morestachio.MailProcessor.Client;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
-using Morestachio.MailProcessor.Client.ViewModels;
+﻿using MorestachioMailProcessor.Services.UiWorkflow;
 
 namespace MorestachioMailProcessor.ViewModels.Steps
 {

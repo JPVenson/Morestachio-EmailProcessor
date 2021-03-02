@@ -5,7 +5,7 @@ using System.Windows.Data;
 using JPB.WPFToolsAwesome.Behaviors.Eval.Actions;
 using JPB.WPFToolsAwesome.Behaviors.Eval.Trigger;
 
-namespace Morestachio.MailProcessor.Client.Behaviors.Trigger
+namespace MorestachioMailProcessor.Behaviors.Trigger
 {
 
 

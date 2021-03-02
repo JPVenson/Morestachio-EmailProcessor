@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace Morestachio.MailProcessor.Client.Services.TextService
+namespace MorestachioMailProcessor.Services.TextService
 {
 	public interface IAsyncTranslationProvider : ITranslationProvider
 	{

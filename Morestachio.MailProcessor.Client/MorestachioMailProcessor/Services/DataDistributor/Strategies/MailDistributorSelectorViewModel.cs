@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using JPB.WPFToolsAwesome.Extensions;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework;
-using MorestachioMailProcessor.Services.DataDistributor.Strategies;
+using MorestachioMailProcessor.Services.UiWorkflow;
+using MorestachioMailProcessor.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies
+namespace MorestachioMailProcessor.Services.DataDistributor.Strategies
 {
 	public class MailDistributorSelectorViewModel : WizardStepBaseViewModel
 	{

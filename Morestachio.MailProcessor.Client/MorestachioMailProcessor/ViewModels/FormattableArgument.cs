@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using Morestachio.MailProcessor.Client.Services.TextService;
+using MorestachioMailProcessor.Services.TextService;
 
-namespace Morestachio.MailProcessor.Client.ViewModels
+namespace MorestachioMailProcessor.ViewModels
 {
 	public struct FormattableArgument
 	{

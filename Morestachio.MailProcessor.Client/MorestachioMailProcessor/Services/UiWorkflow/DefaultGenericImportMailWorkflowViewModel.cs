@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using JPB.WPFToolsAwesome.MVVM.ViewModel;
-using Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies;
-using Morestachio.MailProcessor.Client.Services.DataImport;
-using Morestachio.MailProcessor.Client.ViewModels;
-using Morestachio.MailProcessor.Client.ViewModels.Steps;
-using Morestachio.MailProcessor.Client.ViewModels.Steps.Import;
-using MorestachioMailProcessor.Services.UiWorkflow;
+using MorestachioMailProcessor.Services.DataDistributor.Strategies;
+using MorestachioMailProcessor.Services.DataImport.Strategies;
+using MorestachioMailProcessor.ViewModels;
 using MorestachioMailProcessor.ViewModels.Steps;
 
-namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
+namespace MorestachioMailProcessor.Services.UiWorkflow
 {
 	public class DefaultGenericImportMailWorkflowViewModel : AsyncViewModelBase, IUiWorkflow
 	{

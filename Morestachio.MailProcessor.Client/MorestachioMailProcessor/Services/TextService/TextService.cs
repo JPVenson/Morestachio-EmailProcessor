@@ -11,10 +11,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Morestachio.MailProcessor.Client.ViewModels;
+using MorestachioMailProcessor.ViewModels;
 using WPFLocalizeExtension.Providers;
 
-namespace Morestachio.MailProcessor.Client.Services.TextService
+namespace MorestachioMailProcessor.Services.TextService
 {
 	   public class TextServiceUsingLocalizationProvider : ILocalizationProvider
     {

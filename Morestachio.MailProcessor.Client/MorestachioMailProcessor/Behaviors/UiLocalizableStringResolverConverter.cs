@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
-using Morestachio.MailProcessor.Client.Services.TextService;
+using MorestachioMailProcessor.Services.TextService;
 
-namespace Morestachio.MailProcessor.Client.Behaviors
+namespace MorestachioMailProcessor.Behaviors
 {
 	public class UiLocalizableStringResolverConverter : IValueConverter, IMultiValueConverter
 	{

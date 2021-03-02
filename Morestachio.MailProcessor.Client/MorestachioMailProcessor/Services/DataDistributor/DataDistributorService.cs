@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Morestachio.MailProcessor.Client.Services.DataDistributor.Strategies;
-using Morestachio.MailProcessor.Client.Services.DataImport;
-using Morestachio.MailProcessor.Framework.Sender;
 using MorestachioMailProcessor.Services.DataDistributor.Strategies;
+using MorestachioMailProcessor.Services.DataImport;
 
-namespace Morestachio.MailProcessor.Client.Services.DataDistributor
+namespace MorestachioMailProcessor.Services.DataDistributor
 {
 	public class DataDistributorService : IRequireInit
 	{

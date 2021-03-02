@@ -8,12 +8,10 @@ using Morestachio.Framework.Expression;
 using Morestachio.Framework.Expression.Framework;
 using Morestachio.Framework.Expression.Parser;
 using Morestachio.Framework.Expression.Visitors;
-using Morestachio.MailProcessor.Client;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Import;
 using Morestachio.Parsing.ParserErrors;
+using MorestachioMailProcessor.Services.UiWorkflow;
 
 namespace MorestachioMailProcessor.ViewModels.Steps
 {

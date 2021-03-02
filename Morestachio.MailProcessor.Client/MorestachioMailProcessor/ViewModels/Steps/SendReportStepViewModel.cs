@@ -9,11 +9,9 @@ using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using Microsoft.Win32;
 using Morestachio;
-using Morestachio.MailProcessor.Client;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Client.ViewModels.Steps;
 using Morestachio.MailProcessor.Framework;
+using MorestachioMailProcessor.Services.UiWorkflow;
 
 namespace MorestachioMailProcessor.ViewModels.Steps
 {

@@ -3,9 +3,9 @@
                     xmlns:steps="clr-namespace:Morestachio.MailProcessor.Client.ViewModels.Steps"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources"
                     xmlns:converter="clr-namespace:JPB.WPFToolsAwesome.Converter;assembly=JPB.WPFToolsAwesome"
-                    xmlns:steps1="clr-namespace:MorestachioMailProcessor.ViewModels.Steps">
+                    xmlns:steps1="clr-namespace:MorestachioMailProcessor.ViewModels.Steps"
+                    xmlns:resources="clr-namespace:MorestachioMailProcessor.Resources">
     <converter:BooleanVisibilityInverseConverter x:Key="BooleanVisibilityInverseConverter"/>
     <DataTemplate DataType="{x:Type steps1:SummeryStepViewModel}">
         <DockPanel LastChildFill="False">

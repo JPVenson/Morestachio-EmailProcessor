@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Morestachio.MailProcessor.Client.ViewModels;
-using Morestachio.MailProcessor.Client.ViewModels.Steps;
-using MorestachioMailProcessor.Services.UiWorkflow;
+﻿using System.Linq;
+using MorestachioMailProcessor.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.Services.UiWorkflow
+namespace MorestachioMailProcessor.Services.UiWorkflow
 {
 	public class DefaultGenericImportStepConfigurator
 	{

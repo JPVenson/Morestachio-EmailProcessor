@@ -1,8 +1,8 @@
 ﻿using JPB.WPFToolsAwesome.Error;
 using JPB.WPFToolsAwesome.Extensions;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework.Sender;
+using MorestachioMailProcessor.Services.UiWorkflow;
+using MorestachioMailProcessor.ViewModels;
 
 namespace MorestachioMailProcessor.Services.DataDistributor.Strategies
 {

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Security.Cryptography;
-using JPB.WPFToolsAwesome.Error;
+﻿using JPB.WPFToolsAwesome.Error;
 using JPB.WPFToolsAwesome.Extensions;
-using JPB.WPFToolsAwesome.MVVM.ViewModel;
-using Morestachio.Framework.Context;
-using Morestachio.Framework.Tokenizing;
-using Morestachio.MailProcessor.Client.Services.UiWorkflow;
-using Morestachio.MailProcessor.Client.ViewModels;
 using Morestachio.MailProcessor.Framework.Import;
+using MorestachioMailProcessor.Services.UiWorkflow;
+using MorestachioMailProcessor.ViewModels;
 
-namespace Morestachio.MailProcessor.Client.Services.DataImport
+namespace MorestachioMailProcessor.Services.DataImport.Strategies
 {
 	public interface IMailDataStrategyMetaViewModel : IWizardStepBaseViewModel
 	{

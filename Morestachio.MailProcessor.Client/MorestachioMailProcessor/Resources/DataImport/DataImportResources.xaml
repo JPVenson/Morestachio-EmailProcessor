@@ -1,9 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:dataImport="clr-namespace:Morestachio.MailProcessor.Client.Services.DataImport"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Client.Resources"
-                    xmlns:steps="clr-namespace:MorestachioMailProcessor.ViewModels.Steps">
+                    xmlns:steps="clr-namespace:MorestachioMailProcessor.ViewModels.Steps"
+                    xmlns:resources="clr-namespace:MorestachioMailProcessor.Resources">
     <DataTemplate DataType="{x:Type steps:PrepareMailDataStepViewModel}">
         <Grid IsSharedSizeScope="True"
               Margin="15">
