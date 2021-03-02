@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:import1="clr-namespace:Morestachio.MailProcessor.Framework.Import;assembly=Morestachio.MailProcessor.Framework"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:import="clr-namespace:Morestachio.MailProcessor.Ui.Services.DataImport.Strategies"
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
+    <DataTemplate DataType="{x:Type import:ImportDataStepViewModel}">
+        <resources:FieldsetGrid
+           Margin="15">
+            <Label Content="{lex:Loc DataImport.Selector.SelectTitle}" Grid.Column="0"></Label>
+            <ListBox ItemsSource="{Binding MailDataStrategies}"
+                    SelectedItem="{Binding SelectedStrategy, ValidatesOnNotifyDataErrors=False}"
+                    Grid.Column="1">
+                <ListBox.Resources>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <RadioButton
+                                        Content="{TemplateBinding ContentPresenter.Content}"
+                                        IsChecked="{Binding Path=IsSelected,
+                                RelativeSource={RelativeSource TemplatedParent},
+                                Mode=TwoWay}">
+                                        <RadioButton.ContentTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </RadioButton.ContentTemplate>
+                                    </RadioButton>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
+        </resources:FieldsetGrid>
+    </DataTemplate>
+</ResourceDictionary>

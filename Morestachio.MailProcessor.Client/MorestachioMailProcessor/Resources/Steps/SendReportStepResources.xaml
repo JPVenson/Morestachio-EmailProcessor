@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:steps="clr-namespace:MorestachioMailProcessor.ViewModels.Steps">
-    <DataTemplate DataType="{x:Type steps:SendReportStepViewModel}">
-        <TextBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding Report}"
-                 Margin="15"/>
-    </DataTemplate>
-</ResourceDictionary>

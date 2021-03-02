@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-  <?define MorestachioMailProcessor_TargetDir=$(var.MorestachioMailProcessor.TargetDir)?>
+  <?define Morestachio.MailProcessor.Ui_TargetDir=$(var.Morestachio.MailProcessor.Ui.TargetDir)?>
   <?define Morestachio.MailProcessor.Framework_TargetDir=$(var.Morestachio.MailProcessor.Framework.TargetDir)?>
 
   <Product Id="36BAB285-E62A-4B74-87DD-5C9CB82925D9" Name="Morestachio Mail Processor" Language="1033" Version="1.0.0.0" Manufacturer="Morestachio" UpgradeCode="391f8ac2-9ebe-4633-913a-820062e711c6">
@@ -8,7 +8,6 @@
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
-
 
     <UI>
       <UIRef Id="WixUI_Mondo" />
@@ -48,88 +47,82 @@
       <!-- <Component Id="ProductComponent"> -->
       <!-- TODO: Insert files, registry keys, and other resources here. -->
       <!-- </Component> -->
-      <Component Id="MorestachioMailProcessor.exe" Guid="B1BA1AB0-6B38-4BBC-9468-661CB0D8EA54">
-        <File Id="MorestachioMailProcessor.exe" Name="MorestachioMailProcessor.exe" Source="$(var.MorestachioMailProcessor_TargetDir)MorestachioMailProcessor.exe">
+      <Component Id="Morestachio.MailProcessor.Ui.exe" Guid="B1BA1AB0-6B38-4BBC-9468-661CB0D8EA54">
+        <File Id="Morestachio.MailProcessor.Ui.exe" Name="Morestachio.MailProcessor.Ui.exe" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)Morestachio.MailProcessor.Ui.exe">
           <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="Morestachio Mail Processor" WorkingDirectory="INSTALLFOLDER" Advertise="yes" />
-          <netfx:NativeImage Id="ngen_MyApplication.exe" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER" />
+          <!--<netfx:NativeImage Id="ngen_MyApplication.exe" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER" />-->
           <Shortcut Id="ExeShortcut" Directory="ProgramMenuDir" Name="Morestachio Mail Processor" WorkingDirectory="INSTALLFOLDER" Advertise="yes" />
         </File>
       </Component>
       <Component Id="SendReportTemplate.mdoc.html" Guid="2F6B9B93-6303-40BB-9C65-B7C2FAF20874">
-        <File Id="SendReportTemplate.mdoc.html" Name="SendReportTemplate.mdoc.html" Source="$(var.MorestachioMailProcessor_TargetDir)SendReportTemplate.mdoc.html" />
+        <File Id="SendReportTemplate.mdoc.html" Name="SendReportTemplate.mdoc.html" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)SendReportTemplate.mdoc.html" />
+      </Component>
+      <Component Id="Morestachio.MailProcessor.Ui.dll" Guid="36818F90-FDBA-4103-8187-F8A8EC0EEBF0">
+        <File Id="Morestachio.MailProcessor.Ui.dll" Name="Morestachio.MailProcessor.Ui.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)Morestachio.MailProcessor.Ui.dll" />
       </Component>
       <Component Id="MimeKit.dll" Guid="109a9cf8-8f5d-4fc1-b31e-62816c6913d0">
-        <File Id="MimeKit.dll" Name="MimeKit.dll" Source="$(var.MorestachioMailProcessor_TargetDir)MimeKit.dll" />
+        <File Id="MimeKit.dll" Name="MimeKit.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)MimeKit.dll" />
       </Component>
       <Component Id="MailKit.dll" Guid="ab012d78-1abf-49c8-93c8-2a0a0b4008ec">
-        <File Id="MailKit.dll" Name="MailKit.dll" Source="$(var.MorestachioMailProcessor_TargetDir)MailKit.dll" />
+        <File Id="MailKit.dll" Name="MailKit.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)MailKit.dll" />
       </Component>
       <Component Id="System.Management.dll" Guid="7714ffc0-f79a-4626-87dd-98290c2eff36">
-        <File Id="System.Management.dll" Name="System.Management.dll" Source="$(var.MorestachioMailProcessor_TargetDir)System.Management.dll" />
+        <File Id="System.Management.dll" Name="System.Management.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)System.Management.dll" />
       </Component>
       <Component Id="XAMLMarkupExtensions.dll" Guid="3b566ebf-67dd-4604-ac41-07ae0f72f483">
-        <File Id="XAMLMarkupExtensions.dll" Name="XAMLMarkupExtensions.dll" Source="$(var.MorestachioMailProcessor_TargetDir)XAMLMarkupExtensions.dll" />
+        <File Id="XAMLMarkupExtensions.dll" Name="XAMLMarkupExtensions.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)XAMLMarkupExtensions.dll" />
       </Component>
       <Component Id="ControlzEx.dll" Guid="c8d5a749-0e7d-4208-b271-67c0b1061e9b">
-        <File Id="ControlzEx.dll" Name="ControlzEx.dll" Source="$(var.MorestachioMailProcessor_TargetDir)ControlzEx.dll" />
+        <File Id="ControlzEx.dll" Name="ControlzEx.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)ControlzEx.dll" />
       </Component>
       <Component Id="Unity.Container.dll" Guid="f89bb049-4e28-420f-b1fa-e327e4608497">
-        <File Id="Unity.Container.dll" Name="Unity.Container.dll" Source="$(var.MorestachioMailProcessor_TargetDir)Unity.Container.dll" />
+        <File Id="Unity.Container.dll" Name="Unity.Container.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)Unity.Container.dll" />
       </Component>
       <Component Id="Morestachio.dll" Guid="5cdae135-f159-4a65-9fbb-6258f0406d8a">
-        <File Id="Morestachio.dll" Name="Morestachio.dll" Source="$(var.MorestachioMailProcessor_TargetDir)Morestachio.dll" />
+        <File Id="Morestachio.dll" Name="Morestachio.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)Morestachio.dll" />
       </Component>
       <Component Id="Unity.Abstractions.dll" Guid="aeb5dc8a-9db4-4112-8abc-c5529de988d2">
-        <File Id="Unity.Abstractions.dll" Name="Unity.Abstractions.dll" Source="$(var.MorestachioMailProcessor_TargetDir)Unity.Abstractions.dll" />
+        <File Id="Unity.Abstractions.dll" Name="Unity.Abstractions.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)Unity.Abstractions.dll" />
       </Component>
       <Component Id="BouncyCastle.Crypto.dll" Guid="bf37e906-2e8d-48b8-a4db-5729b2a4674a">
-        <File Id="BouncyCastle.Crypto.dll" Name="BouncyCastle.Crypto.dll" Source="$(var.MorestachioMailProcessor_TargetDir)BouncyCastle.Crypto.dll" />
+        <File Id="BouncyCastle.Crypto.dll" Name="BouncyCastle.Crypto.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)BouncyCastle.Crypto.dll" />
       </Component>
       <Component Id="Microsoft.Xaml.Behaviors.dll" Guid="41962c90-d28e-4bc4-aa0a-8873f36c7972">
-        <File Id="Microsoft.Xaml.Behaviors.dll" Name="Microsoft.Xaml.Behaviors.dll" Source="$(var.MorestachioMailProcessor_TargetDir)Microsoft.Xaml.Behaviors.dll" />
+        <File Id="Microsoft.Xaml.Behaviors.dll" Name="Microsoft.Xaml.Behaviors.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)Microsoft.Xaml.Behaviors.dll" />
       </Component>
       <Component Id="MahApps.Metro.IconPacks.Material.dll" Guid="46a4d8a9-45c3-4b17-8ce2-232834be0301">
-        <File Id="MahApps.Metro.IconPacks.Material.dll" Name="MahApps.Metro.IconPacks.Material.dll" Source="$(var.MorestachioMailProcessor_TargetDir)MahApps.Metro.IconPacks.Material.dll" />
+        <File Id="MahApps.Metro.IconPacks.Material.dll" Name="MahApps.Metro.IconPacks.Material.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)MahApps.Metro.IconPacks.Material.dll" />
       </Component>
       <Component Id="MahApps.Metro.IconPacks.Core.dll" Guid="a7af2957-f1f3-4ab6-a0e4-6a42a6914442">
-        <File Id="MahApps.Metro.IconPacks.Core.dll" Name="MahApps.Metro.IconPacks.Core.dll" Source="$(var.MorestachioMailProcessor_TargetDir)MahApps.Metro.IconPacks.Core.dll" />
+        <File Id="MahApps.Metro.IconPacks.Core.dll" Name="MahApps.Metro.IconPacks.Core.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)MahApps.Metro.IconPacks.Core.dll" />
       </Component>
       <Component Id="JPB.WPFToolsAwesome.dll" Guid="89920942-3a34-41c1-b5a8-04caa3c20620">
-        <File Id="JPB.WPFToolsAwesome.dll" Name="JPB.WPFToolsAwesome.dll" Source="$(var.MorestachioMailProcessor_TargetDir)JPB.WPFToolsAwesome.dll" />
+        <File Id="JPB.WPFToolsAwesome.dll" Name="JPB.WPFToolsAwesome.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)JPB.WPFToolsAwesome.dll" />
       </Component>
       <Component Id="MahApps.Metro.dll" Guid="963b2f62-ce79-4b8a-987b-5ba7e0664e5e">
-        <File Id="MahApps.Metro.dll" Name="MahApps.Metro.dll" Source="$(var.MorestachioMailProcessor_TargetDir)MahApps.Metro.dll" />
+        <File Id="MahApps.Metro.dll" Name="MahApps.Metro.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)MahApps.Metro.dll" />
       </Component>
       <Component Id="WPFLocalizeExtension.dll" Guid="76d8ea2f-8b07-4f73-97f6-6021c9978704">
-        <File Id="WPFLocalizeExtension.dll" Name="WPFLocalizeExtension.dll" Source="$(var.MorestachioMailProcessor_TargetDir)WPFLocalizeExtension.dll" />
-      </Component>
-      <Component Id="MorestachioMailProcessor.dll.config" Guid="bb4bbb83-8a45-43fc-8be6-d527e5a69d12">
-        <File Id="MorestachioMailProcessor.dll.config" Name="MorestachioMailProcessor.dll.config" Source="$(var.MorestachioMailProcessor_TargetDir)MorestachioMailProcessor.dll.config" />
-      </Component>
-      <Component Id="MorestachioMailProcessor.dll" Guid="1caa4033-e601-413f-9165-ed88e0cc0817">
-        <File Id="MorestachioMailProcessor.dll" Name="MorestachioMailProcessor.dll" Source="$(var.MorestachioMailProcessor_TargetDir)MorestachioMailProcessor.dll" />
-      </Component>
-      <Component Id="MorestachioMailProcessor.runtimeconfig.json" Guid="8c7211f9-f7aa-4eed-a9a4-bdaeb05560ce">
-        <File Id="MorestachioMailProcessor.runtimeconfig.json" Name="MorestachioMailProcessor.runtimeconfig.json" Source="$(var.MorestachioMailProcessor_TargetDir)MorestachioMailProcessor.runtimeconfig.json" />
+        <File Id="WPFLocalizeExtension.dll" Name="WPFLocalizeExtension.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)WPFLocalizeExtension.dll" />
       </Component>
       <Component Id="Morestachio.MailProcessor.Framework.dll" Guid="82f3878d-8668-40a1-8355-8de899746b8d">
         <File Id="Morestachio.MailProcessor.Framework.dll" Name="Morestachio.MailProcessor.Framework.dll" Source="$(var.Morestachio.MailProcessor.Framework_TargetDir)Morestachio.MailProcessor.Framework.dll" />
       </Component>
       <Component Id="CsvHelper.dll" Guid="4a001b30-239e-4475-95d0-1b673a395ee5">
-        <File Id="CsvHelper.dll" Name="CsvHelper.dll" Source="$(var.MorestachioMailProcessor_TargetDir)CsvHelper.dll" />
+        <File Id="CsvHelper.dll" Name="CsvHelper.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)CsvHelper.dll" />
       </Component>
       <Component Id="Morestachio.Linq.dll" Guid="366633de-7060-40e5-8963-cba894e82462">
-        <File Id="Morestachio.Linq.dll" Name="Morestachio.Linq.dll" Source="$(var.MorestachioMailProcessor_TargetDir)Morestachio.Linq.dll" />
+        <File Id="Morestachio.Linq.dll" Name="Morestachio.Linq.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)Morestachio.Linq.dll" />
       </Component>
       <Component Id="System.Linq.Dynamic.Core.dll" Guid="8ed228e3-9b9d-48ea-8673-f16ea91a436c">
-        <File Id="System.Linq.Dynamic.Core.dll" Name="System.Linq.Dynamic.Core.dll" Source="$(var.MorestachioMailProcessor_TargetDir)System.Linq.Dynamic.Core.dll" />
+        <File Id="System.Linq.Dynamic.Core.dll" Name="System.Linq.Dynamic.Core.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)System.Linq.Dynamic.Core.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>
   <Fragment>
     <ComponentGroup Id="en_files" Directory="en">
       <Component Id="en_MorestachioMailProcessor.resources.dll" Guid="06e5e188-4de4-4ba1-9b79-2834edb384c8">
-        <File Id="en_MorestachioMailProcessor.resources.dll" Name="MorestachioMailProcessor.resources.dll" Source="$(var.MorestachioMailProcessor_TargetDir)en\MorestachioMailProcessor.resources.dll" />
+        <File Id="en_MorestachioMailProcessor.resources.dll" Name="MorestachioMailProcessor.resources.dll" Source="$(var.Morestachio.MailProcessor.Ui_TargetDir)en\MorestachioMailProcessor.resources.dll" />
       </Component>
     </ComponentGroup>
   </Fragment>
