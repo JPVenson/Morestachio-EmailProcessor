@@ -36,8 +36,7 @@ To generate a mail, you have to enter several paths to where certain properties 
 
 From Address Expression: `"newsletter@test.com"`   
 
-![image](https://user-images.githubusercontent.com/6794763/109885242-796f6880-7c7e-11eb-92a1-f0ee31f9d0bc.png)
-
+![image](https://user-images.githubusercontent.com/6794763/109887466-0536c400-7c82-11eb-86b6-81b665246284.png)
 
 ### Template
 To generate an individial email for your sendout you can write a HTML morestachio template that will be used to generate the mail body for each mail.
