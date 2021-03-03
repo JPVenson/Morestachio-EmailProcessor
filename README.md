@@ -55,4 +55,5 @@ When everything is entered, you can review your settings and choose to use a par
 
 When finished, you can ether rest the UI to repeat the operation or generate a "Send Report" containing all failed to send mails.
 
+![image](https://user-images.githubusercontent.com/6794763/109886033-c56edd00-7c7f-11eb-8ef2-9182e6e501a7.png)
 
