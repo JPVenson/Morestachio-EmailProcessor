@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
+using MahApps.Metro.Controls.Dialogs;
 using Morestachio.Framework.Expression.Visitors;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Ui.Services.DataDistributor;
 using Morestachio.MailProcessor.Ui.Services.DataImport;
+using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
@@ -153,13 +156,22 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 			catch (Exception e)
 			{
-				//todo add exception handling
-				Console.WriteLine(e);
-				throw;
+				var uiWorkflow = IoC.Resolve<IUiWorkflow>();
+				var textService = IoC.Resolve<ITextService>();
+
+				await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
+					textService.Compile("Application.Error.Title", CultureInfo.CurrentUICulture, out _).ToString(),
+					textService.Compile("Summery.Error.Message", CultureInfo.CurrentUICulture, out _,
+						new FormattableArgument(e.Message, false)).ToString()
+				);
+				return;
+			}
+			finally
+			{
+				done.Cancel();
 			}
 
 			FinishedAt = DateTime.Now;
-			done.Cancel();
 			ViewModelAction(() =>
 			{
 				SendPropertyChanged(() => Progress);

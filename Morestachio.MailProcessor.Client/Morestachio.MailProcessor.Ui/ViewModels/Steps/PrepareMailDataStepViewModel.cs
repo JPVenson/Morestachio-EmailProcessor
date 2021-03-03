@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
+using Morestachio.Document;
+using Morestachio.Framework.Context;
 using Morestachio.Framework.Expression;
 using Morestachio.Framework.Expression.Framework;
 using Morestachio.Framework.Expression.Parser;
@@ -20,40 +23,48 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			public PrepareMailDataStepViewModelErrors()
 			{
 				var invalidExpression = new UiLocalizableString("DataImport.PrepareStep.Errors.InvalidExpression");
+				var defaultOptions = new ParserOptions()
+				{
+					Timeout = TimeSpan.FromSeconds(3)
+				};
+
+				async ValueTask<string> ExportValue(string expressionValue, object value)
+				{
+					var context = TokenzierContext.FromText(expressionValue);
+					var expression = ExpressionParser.ParseExpression(expressionValue, context);
+					if (expression == null)
+					{
+						return null;
+					}
+
+					return (await expression.GetValue(new ContextObject(defaultOptions, "", null, value),
+							new ScopeData()))
+						.Value?.ToString();
+				}
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					var context = TokenzierContext.FromText(e.MExpressionAddress);
-					e.ExampleAddress = (await ExpressionParser.EvaluateExpression(e.MExpressionAddress, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
-					return context.Errors.Any();
+					return (e.ExampleAddress = await ExportValue(e.MExpressionAddress, e.ExampleMailData.Data)) == null;
 				}, nameof(MExpressionAddress)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					var context = TokenzierContext.FromText(e.MExpressionName);
-					e.ExampleName = (await ExpressionParser.EvaluateExpression(e.MExpressionName, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
-					return context.Errors.Any();
+					return (e.ExampleName = await ExportValue(e.MExpressionName, e.ExampleMailData.Data)) == null;;
 				}, nameof(MExpressionName)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					var context = TokenzierContext.FromText(e.MExpressionSubject);
-					e.ExampleSubject = (await ExpressionParser.EvaluateExpression(e.MExpressionSubject, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
-					return context.Errors.Any();
+					return (e.ExampleSubject = await ExportValue(e.MExpressionSubject, e.ExampleMailData.Data)) == null;
 				}, nameof(MExpressionSubject)));
 
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					var context = TokenzierContext.FromText(e.MExpressionFromName);
-					e.ExampleFromName = (await ExpressionParser.EvaluateExpression(e.MExpressionFromName, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
-					return context.Errors.Any();
+					return (e.ExampleFromName = await ExportValue(e.MExpressionFromName, e.ExampleMailData.Data)) == null;
 				}, nameof(MExpressionFromName)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					var context = TokenzierContext.FromText(e.MExpressionFromAddress);
-					e.ExampleFromAddress = (await ExpressionParser.EvaluateExpression(e.MExpressionFromAddress, new ParserOptions(), e.ExampleMailData.Data, context)).ToString();
-					return context.Errors.Any();
+					return (e.ExampleFromAddress = await ExportValue(e.MExpressionFromAddress, e.ExampleMailData.Data)) == null;
 				}, nameof(MExpressionFromAddress)));
 			}
 		}
@@ -63,9 +74,9 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			Title = new UiLocalizableString("MailDistributor.Prepare.Title");
 			Description = new UiLocalizableString("MailDistributor.Prepare.Description");
 			GroupKey = "MainGroup";
-			MExpressionFromName = "\"Mr Company\"";
-			MExpressionFromAddress = "\"mr.company@test.com\"";
-			MExpressionSubject = "\"Hot new Newsletter\"";
+			//MExpressionFromName = "\"Mr Company\"";
+			//MExpressionFromAddress = "\"mr.company@test.com\"";
+			//MExpressionSubject = "\"Hot new Newsletter\"";
 		}
 
 		public override UiLocalizableString Title { get; }

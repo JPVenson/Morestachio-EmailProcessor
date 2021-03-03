@@ -343,4 +343,10 @@
   <data name="Application.Navigation.Close.Message" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Application.Error.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Error.Message" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

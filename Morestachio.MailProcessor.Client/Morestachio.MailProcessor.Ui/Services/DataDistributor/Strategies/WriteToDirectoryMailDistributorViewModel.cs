@@ -3,8 +3,10 @@ using System.Windows.Forms;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
+using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Sender;
 using Morestachio.MailProcessor.Framework.Sender.Strategies;
+using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.ViewModels;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
@@ -27,14 +29,13 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			Description = new UiLocalizableString("MailDistributor.Strategy.ToDirectory.Description");
 			IdKey = WriteToDirectoryMailDistributor.IdKey;
 			Name = new UiLocalizableString("MailDistributor.Strategy.ToDirectory.Name");
+			
+			Directory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Output");
+			if (!System.IO.Directory.Exists(Directory))
+			{
+				System.IO.Directory.CreateDirectory(Directory);
+			}
 
-//#if DEBUG
-//			Directory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Output");
-//			if (!System.IO.Directory.Exists(Directory))
-//			{
-//				System.IO.Directory.CreateDirectory(Directory);
-//			}
-//#endif
 			PickDirectoryCommand = new DelegateCommand(PickDirectoryExecute, CanPickDirectoryExecute);
 		}
 
@@ -57,6 +58,11 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 		}
 
 		private string _directory;
+		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		{
+			IoC.Resolve<MailComposer>().MailDistributor = Create();
+			return base.OnGoNext(defaultGenericImportStepConfigurator);
+		}
 
 		public string Directory
 		{

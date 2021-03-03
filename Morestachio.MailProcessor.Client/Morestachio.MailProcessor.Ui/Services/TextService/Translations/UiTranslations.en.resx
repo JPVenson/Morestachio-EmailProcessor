@@ -361,4 +361,13 @@ Also please note that this will possibly take a large portion of your decices po
   <data name="Application.Navigation.Close.Message" xml:space="preserve">
     <value>Do you want to close the {Application.Header.Title}?. You will lose all entered Data.</value>
   </data>
+  <data name="Application.Error.Title" xml:space="preserve">
+    <value>There has been an Error</value>
+  </data>
+  <data name="Summery.Error.Message" xml:space="preserve">
+    <value>While generating mails there has been an unrecoverable error.
+
+The Error message is as Follows:
+{0}</value>
+  </data>
 </root>

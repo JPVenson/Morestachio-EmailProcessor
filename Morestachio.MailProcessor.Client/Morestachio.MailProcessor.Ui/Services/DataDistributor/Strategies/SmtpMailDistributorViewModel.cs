@@ -3,8 +3,10 @@ using System.Linq;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
+using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Sender;
 using Morestachio.MailProcessor.Framework.Sender.Strategies;
+using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.ViewModels;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
@@ -148,6 +150,12 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 		private bool CanTestConnectionExecute(object sender)
 		{
 			return IsNotWorking && !HasError;
+		}
+		
+		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		{
+			IoC.Resolve<MailComposer>().MailDistributor = Create();
+			return base.OnGoNext(defaultGenericImportStepConfigurator);
 		}
 
 		public override bool CanGoNext()

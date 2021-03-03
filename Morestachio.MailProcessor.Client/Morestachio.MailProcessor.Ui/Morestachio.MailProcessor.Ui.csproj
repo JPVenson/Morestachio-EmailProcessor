@@ -19,8 +19,8 @@
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.4" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.8.0" />
-    <PackageReference Include="Morestachio" Version="5.0.0.503" />
-    <PackageReference Include="Morestachio.Linq" Version="5.0.0.503" />
+    <PackageReference Include="Morestachio" Version="5.0.0.504" />
+    <PackageReference Include="Morestachio.Linq" Version="5.0.0.504" />
     <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="WPFLocalizeExtension" Version="3.8.0" />
     <PackageReference Include="WPFToolsAwesome" Version="2.0.2" />

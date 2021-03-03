@@ -53,7 +53,6 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
 		{
 			defaultGenericImportStepConfigurator.AddNextToMe(SelectedDistributor);
-			IoC.Resolve<MailComposer>().MailDistributor = SelectedDistributor.Create();
 			return base.OnGoNext(defaultGenericImportStepConfigurator);
 		}
 	}

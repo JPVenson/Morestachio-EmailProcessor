@@ -261,7 +261,7 @@ namespace Morestachio.MailProcessor.Framework
 				compiledSubjectExpression,
 				compiledNameExpression,
 				compiledFromAddressExpression,
-				compiledFromAddressExpression);
+				compiledFromNameExpression);
 			var sendMailResult = await MailDistributor.SendMail(distributorData, state);
 			if (!sendMailResult.Success)
 			{

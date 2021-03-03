@@ -63,6 +63,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Application_Error_Title {
+            get {
+                return ResourceManager.GetString("Application.Error.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Application_Header_Close {
             get {
                 return ResourceManager.GetString("Application.Header.Close", resourceCulture);
@@ -606,6 +615,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string Summery_Description {
             get {
                 return ResourceManager.GetString("Summery.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Summery_Error_Message {
+            get {
+                return ResourceManager.GetString("Summery.Error.Message", resourceCulture);
             }
         }
         

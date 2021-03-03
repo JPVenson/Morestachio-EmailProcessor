@@ -8,8 +8,8 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="12.1.2" />
     <PackageReference Include="MailKit" Version="2.3.1.6" />
-    <PackageReference Include="Morestachio" Version="5.0.0.503" />
-    <PackageReference Include="Morestachio.Linq" Version="5.0.0.503" />
+    <PackageReference Include="Morestachio" Version="5.0.0.504" />
+    <PackageReference Include="Morestachio.Linq" Version="5.0.0.504" />
   </ItemGroup>
 
   <!--Fake path from https://github.com/wixtoolset/issues/issues/5705-->
