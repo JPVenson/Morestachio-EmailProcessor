@@ -355,4 +355,10 @@ Also please note that this will possibly take a large portion of your decices po
   <data name="DataImport.PrepareStep.FromNamePath" xml:space="preserve">
     <value>From Name Expression</value>
   </data>
+  <data name="Application.Navigation.Close.Title" xml:space="preserve">
+    <value>Closing {Application.Header.Title}</value>
+  </data>
+  <data name="Application.Navigation.Close.Message" xml:space="preserve">
+    <value>Do you want to close the {Application.Header.Title}?. You will lose all entered Data.</value>
+  </data>
 </root>

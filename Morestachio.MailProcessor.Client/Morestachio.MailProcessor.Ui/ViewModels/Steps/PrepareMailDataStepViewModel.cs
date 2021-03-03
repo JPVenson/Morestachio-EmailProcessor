@@ -174,6 +174,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			MExpressionFromName = MExpressionFromName ?? StringifyExpression(mailComposer.FromNameExpression);
 
 			ExampleMailData = ExampleMailData ?? await mailComposer.MailDataStrategy.GetPreviewData();
+			await ForceRefreshAsync();
 
 			await base.OnEntry(data, configurator);
 		}

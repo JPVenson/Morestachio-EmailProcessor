@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Windows.Forms;
 using System.Windows.Input;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using JPB.WPFToolsAwesome.MVVM.ViewModel;
+using MahApps.Metro.Controls.Dialogs;
 using Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies;
 using Morestachio.MailProcessor.Ui.Services.DataImport.Strategies;
+using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.ViewModels;
 using Morestachio.MailProcessor.Ui.ViewModels.Steps;
 
@@ -18,6 +22,38 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 		{
 			Data = new Dictionary<string, object>();
 			InitCommands();
+			App.Current.MainWindow.Closing += MainWindow_Closing;
+		}
+
+		private static bool _forceClose = false;
+		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (_forceClose || CurrentStep is CloseStepViewModel || CurrentStep is WelcomeStepViewModel)
+			{
+				return;
+			}
+
+			var textService = IoC.Resolve<ITextService>();
+
+			DialogCoordinator.Instance.ShowMessageAsync(this,
+					textService.Compile("Application.Navigation.Close.Title", CultureInfo.CurrentUICulture, out _).ToString(),
+					textService.Compile("Application.Navigation.Close.Message", CultureInfo.CurrentUICulture, out _).ToString(),
+				MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+				{
+
+				})
+				.ContinueWith(e =>
+				{
+					if (e.Result == MessageDialogResult.Affirmative)
+					{
+						_forceClose = true;
+						ViewModelAction(() =>
+						{
+							App.Current.MainWindow.Close();
+						});
+					}
+				});
+			e.Cancel = true;
 		}
 
 		protected void InitCommands()

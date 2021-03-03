@@ -337,4 +337,10 @@
   <data name="DataImport.PrepareStep.FromNamePath" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Application.Navigation.Close.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Navigation.Close.Message" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

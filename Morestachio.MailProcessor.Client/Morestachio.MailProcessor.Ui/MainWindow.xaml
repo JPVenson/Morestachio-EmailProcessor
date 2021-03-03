@@ -22,6 +22,7 @@
         MinWidth="800"
         Height="450" 
         Width="800" 
+        mah:DialogParticipation.Register="{Binding UiWorkflow}"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
         <ResourceDictionary>
@@ -34,7 +35,7 @@
 
                 <ResourceDictionary Source="Resources/DataImport/ImportDataStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/DataImport/Csv/CsvImportResources.xaml"/>
-                <ResourceDictionary Source="Resources/DataImport/DataImportResources.xaml"/>
+                <ResourceDictionary Source="Resources/DataImport/PrepareMailDataStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/MailDistributionStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/WriteToDirectoryDistributorResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/SmtpMailDistributorResources.xaml"/>

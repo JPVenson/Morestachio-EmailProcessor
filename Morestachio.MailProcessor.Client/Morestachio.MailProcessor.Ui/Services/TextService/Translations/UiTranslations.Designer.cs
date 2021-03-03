@@ -99,6 +99,24 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Application_Navigation_Close_Message {
+            get {
+                return ResourceManager.GetString("Application.Navigation.Close.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Navigation_Close_Title {
+            get {
+                return ResourceManager.GetString("Application.Navigation.Close.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Application_Navigation_Forward {
             get {
                 return ResourceManager.GetString("Application.Navigation.Forward", resourceCulture);
