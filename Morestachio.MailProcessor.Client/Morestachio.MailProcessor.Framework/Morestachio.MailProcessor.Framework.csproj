@@ -7,9 +7,11 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="12.1.2" />
+    <PackageReference Include="JPB.DataAccess" Version="3.1.7.3" />
     <PackageReference Include="MailKit" Version="2.3.1.6" />
     <PackageReference Include="Morestachio" Version="5.0.0.504" />
     <PackageReference Include="Morestachio.Linq" Version="5.0.0.504" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
   <!--Fake path from https://github.com/wixtoolset/issues/issues/5705-->

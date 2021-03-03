@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
@@ -11,21 +12,18 @@ using Morestachio.MailProcessor.Ui.ViewModels;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 {
-	public class CSVMailDataStrategyMetaViewModel : MailDataStrategyMetaViewModel<CSVMailDataStrategyMetaViewModel.CSVMailDataStrategyMetaViewModelErrors>
+	public class CsvMailDataStrategyViewModel : MailDataStrategyBaseViewModel<CsvMailDataStrategyViewModel.CSVMailDataStrategyMetaViewModelErrors>
 	{
-		public class CSVMailDataStrategyMetaViewModelErrors : ErrorCollection<CSVMailDataStrategyMetaViewModel>
+		public class CSVMailDataStrategyMetaViewModelErrors : ErrorCollection<CsvMailDataStrategyViewModel>
 		{
 			public CSVMailDataStrategyMetaViewModelErrors()
 			{
-				Add(new Error<CSVMailDataStrategyMetaViewModel>(new UiLocalizableString("DataImport.Strategy.CSV.Errors.InvalidPath"),
+				Add(new Error<CsvMailDataStrategyViewModel>(new UiLocalizableString("DataImport.Strategy.CSV.Errors.InvalidPath"),
 					e => !File.Exists(e.FilePath), nameof(FilePath)));
-				Add(new AsyncError<CSVMailDataStrategyMetaViewModel>(
-					new UiLocalizableString("DataImport.Strategy.CSV.Errors.InvalidFile"),
-					async e => await e.Create().GetPreviewData() == null, nameof(FilePath)));
 			}
 		}
 
-		public CSVMailDataStrategyMetaViewModel() : base(CsvImportStrategy.IdKey)
+		public CsvMailDataStrategyViewModel() : base(CsvImportStrategy.IdKey, nameof(FilePath))
 		{
 			Title = new UiLocalizableString("DataImport.Strategy.CSV.Title");
 			Description = new UiLocalizableString("DataImport.Strategy.CSV.Description");
@@ -70,12 +68,6 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 		public override IMailDataStrategy Create()
 		{
 			return new CsvImportStrategy(FilePath);
-		}
-
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
-		{
-			IoC.Resolve<MailComposer>().MailDataStrategy = Create();
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
 		}
 
 		public override UiLocalizableString Title { get; }

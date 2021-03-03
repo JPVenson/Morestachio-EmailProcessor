@@ -23,7 +23,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			}
 		}
 
-		public WriteToDirectoryMailDistributorViewModel()
+		public WriteToDirectoryMailDistributorViewModel() : base(nameof(Directory))
 		{
 			Title = new UiLocalizableString("MailDistributor.Strategy.ToDirectory.Title");
 			Description = new UiLocalizableString("MailDistributor.Strategy.ToDirectory.Description");
@@ -58,11 +58,6 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 		}
 
 		private string _directory;
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
-		{
-			IoC.Resolve<MailComposer>().MailDistributor = Create();
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
-		}
 
 		public string Directory
 		{

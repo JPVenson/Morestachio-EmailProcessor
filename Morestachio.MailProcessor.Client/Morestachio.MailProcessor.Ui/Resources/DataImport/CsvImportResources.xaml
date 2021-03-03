@@ -4,7 +4,7 @@
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:strategies="clr-namespace:Morestachio.MailProcessor.Ui.Services.DataImport.Strategies"
                     xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
-    <DataTemplate DataType="{x:Type strategies:CSVMailDataStrategyMetaViewModel}">
+    <DataTemplate DataType="{x:Type strategies:CsvMailDataStrategyViewModel}">
         <resources:FieldsetGrid
             Margin="15">
             <Label Content="{lex:Loc DataImport.Strategy.CSV.FileName}" VerticalAlignment="Center"/>

@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Morestachio.MailProcessor.Framework;
+using Morestachio.MailProcessor.Ui.Services.DataDistributor;
+using Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
-using Morestachio.MailProcessor.Ui.ViewModels;
 
-namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
+namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 {
 	public class MailDistributorSelectorViewModel : WizardStepBaseViewModel
 	{

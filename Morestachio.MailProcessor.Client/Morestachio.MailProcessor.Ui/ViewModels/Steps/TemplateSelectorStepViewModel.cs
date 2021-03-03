@@ -24,10 +24,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		{
 			Title = new UiLocalizableString("Template.Title");
 			Description = new UiLocalizableString("Template.Description");
-
-#if DEBUG
-			Template = "{{Addresse}}";
-#endif
+			ForceRefreshAsync();
 		}
 
 		public override UiLocalizableString Title { get; }

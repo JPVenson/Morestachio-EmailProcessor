@@ -342,9 +342,81 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string DataImport_Strategy_Sql_Description {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Sql.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Sql_Fields_ConnectionString {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Sql.Fields.ConnectionString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Sql_Fields_Query {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Sql.Fields.Query", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Sql_Name {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Sql.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Sql_Title {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Sql.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Help_Title {
             get {
                 return ResourceManager.GetString("Help.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportData_Errors_Validate_Description {
+            get {
+                return ResourceManager.GetString("ImportData.Errors.Validate.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportData_Errors_Validate_GeneralError {
+            get {
+                return ResourceManager.GetString("ImportData.Errors.Validate.GeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportData_Errors_Validate_Title {
+            get {
+                return ResourceManager.GetString("ImportData.Errors.Validate.Title", resourceCulture);
             }
         }
         
@@ -786,6 +858,24 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string Template_Title {
             get {
                 return ResourceManager.GetString("Template.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Validate_Progress_Message {
+            get {
+                return ResourceManager.GetString("Validate.Progress.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Validate_Progress_Title {
+            get {
+                return ResourceManager.GetString("Validate.Progress.Title", resourceCulture);
             }
         }
         

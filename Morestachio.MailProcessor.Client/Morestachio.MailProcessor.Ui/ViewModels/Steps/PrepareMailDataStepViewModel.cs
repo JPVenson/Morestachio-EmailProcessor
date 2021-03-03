@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
+using JPB.WPFToolsAwesome.MVVM.ViewModel;
 using MimeKit;
 using MimeKit.Cryptography;
 using Morestachio.Document;
@@ -26,6 +29,12 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			{
 				var invalidExpression = new UiLocalizableString("DataImport.PrepareStep.Errors.InvalidExpression");
 				var invalidAddress = new UiLocalizableString("DataImport.PrepareStep.Errors.InvalidAddress");
+
+				//https://haacked.com/archive/2007/08/21/i-knew-how-to-validate-an-email-address-until-i.aspx/
+				var mailRegEx = new Regex(@"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|"
+				                          + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
+				                          + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$",
+					RegexOptions.IgnoreCase);
 				var defaultOptions = new ParserOptions()
 				{
 					Timeout = TimeSpan.FromSeconds(3)
@@ -50,8 +59,8 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				}, nameof(MExpressionAddress)));
 				Add(new Error<PrepareMailDataStepViewModel>(invalidAddress, e =>
 				{
-					return MailboxAddress.TryParse(new MimeKit.ParserOptions(), e.ExampleAddress, out _) == false;
-				}, nameof(MExpressionAddress)));
+					return !mailRegEx.IsMatch(e.ExampleAddress);
+				}, nameof(ExampleAddress), nameof(MExpressionAddress)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
@@ -75,8 +84,8 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				}, nameof(MExpressionFromAddress)));
 				Add(new Error<PrepareMailDataStepViewModel>(invalidAddress, e =>
 				{
-					return MailboxAddress.TryParse(new MimeKit.ParserOptions(), e.ExampleFromAddress, out _) == false;
-				}, nameof(MExpressionFromAddress)));
+					return !mailRegEx.IsMatch(e.ExampleFromAddress);
+				}, nameof(ExampleFromAddress), nameof(MExpressionFromAddress)));
 			}
 		}
 
@@ -85,10 +94,14 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			Title = new UiLocalizableString("MailDistributor.Prepare.Title");
 			Description = new UiLocalizableString("MailDistributor.Prepare.Description");
 			GroupKey = "MainGroup";
+			Structure = new ThreadSaveObservableCollection<MailDataStructureViewModel>();
 			//MExpressionFromName = "\"Mr Company\"";
 			//MExpressionFromAddress = "\"mr.company@test.com\"";
 			//MExpressionSubject = "\"Hot new Newsletter\"";
 		}
+
+
+		public ThreadSaveObservableCollection<MailDataStructureViewModel> Structure { get; set; }
 
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
@@ -195,8 +208,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			MExpressionFromAddress = MExpressionFromAddress ?? StringifyExpression(mailComposer.FromAddressExpression);
 			MExpressionFromName = MExpressionFromName ?? StringifyExpression(mailComposer.FromNameExpression);
 
-			ExampleMailData = ExampleMailData ?? await mailComposer.MailDataStrategy.GetPreviewData();
+			ExampleMailData = await mailComposer.MailDataStrategy.GetPreviewData();
 			await ForceRefreshAsync();
+			Structure.Clear();
+			Structure.AddEach(MailDataStructureViewModel.GenerateStructure(ExampleMailData.Data));
 
 			await base.OnEntry(data, configurator);
 		}

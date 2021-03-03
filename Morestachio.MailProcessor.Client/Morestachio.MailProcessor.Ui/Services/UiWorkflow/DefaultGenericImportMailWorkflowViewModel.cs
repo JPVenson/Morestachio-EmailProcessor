@@ -103,7 +103,7 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 		{
 			Steps = new ThreadSaveObservableCollection<IWizardStepBaseViewModel>();
 			Steps.Add(new WelcomeStepViewModel());
-			Steps.Add(new ImportDataStepViewModel());
+			Steps.Add(new ImportDataSelectorStepViewModel());
 
 			Steps.Add(new PrepareMailDataStepViewModel());
 			Steps.Add(new TemplateSelectorStepViewModel());

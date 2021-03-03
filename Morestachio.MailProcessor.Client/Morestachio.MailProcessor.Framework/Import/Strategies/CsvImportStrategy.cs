@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,17 +22,6 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 			Id = IdKey;
 		}
 
-		public string[] GetMetaData()
-		{
-			using (var reader = new StreamReader(_file))
-			using (var csv = new CsvReader(reader))
-			{
-				csv.Read();
-				csv.ReadHeader();
-				return csv.Context.HeaderRecord;
-			}
-		}
-		
 		public IList<string> Exclude { get; }
 
 		public const string IdKey = "CSV_FILE_IMPORTER";
@@ -63,14 +53,12 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 		{
 			private readonly CsvReader _reader;
 			private readonly string[] _headers;
-			private int _index;
 
 			public CsvEnumerator(CsvReader reader, string[] headers)
 			{
 				_reader = reader;
 				_headers = headers;
 			}
-
 
 			public async ValueTask DisposeAsync()
 			{

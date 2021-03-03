@@ -3,8 +3,9 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:strategies="clr-namespace:Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
-    <DataTemplate DataType="{x:Type strategies:MailDistributorSelectorViewModel}">
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
+                    xmlns:steps="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps">
+    <DataTemplate DataType="{x:Type steps:MailDistributorSelectorViewModel}">
         <resources:FieldsetGrid
             Margin="15">
             <Label Content="{lex:Loc MailDistributor.Selector.SelectTitle}"/>

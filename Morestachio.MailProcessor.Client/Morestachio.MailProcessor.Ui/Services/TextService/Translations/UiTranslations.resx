@@ -352,4 +352,34 @@
   <data name="DataImport.PrepareStep.Errors.InvalidAddress" xml:space="preserve">
     <value></value>
   </data>
+  <data name="ImportData.Errors.Validate.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ImportData.Errors.Validate.Description" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ImportData.Errors.Validate.GeneralError" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Description" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Name" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Fields.ConnectionString" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Fields.Query" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Validate.Progress.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Validate.Progress.Message" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

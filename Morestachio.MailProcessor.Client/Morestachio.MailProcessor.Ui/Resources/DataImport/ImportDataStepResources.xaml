@@ -4,8 +4,9 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:import="clr-namespace:Morestachio.MailProcessor.Ui.Services.DataImport.Strategies"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
-    <DataTemplate DataType="{x:Type import:ImportDataStepViewModel}">
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
+                    xmlns:steps="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps">
+    <DataTemplate DataType="{x:Type steps:ImportDataSelectorStepViewModel}">
         <resources:FieldsetGrid
            Margin="15">
             <Label Content="{lex:Loc DataImport.Selector.SelectTitle}" Grid.Column="0"></Label>

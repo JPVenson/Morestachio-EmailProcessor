@@ -373,4 +373,39 @@ The Error message is as Follows:
   <data name="DataImport.PrepareStep.Errors.InvalidAddress" xml:space="preserve">
     <value>The input value does not indicate a valid mail address</value>
   </data>
+  <data name="ImportData.Errors.Validate.Title" xml:space="preserve">
+    <value>Could not validate your settings</value>
+  </data>
+  <data name="ImportData.Errors.Validate.Description" xml:space="preserve">
+    <value>Error is:
+
+{0}</value>
+  </data>
+  <data name="ImportData.Errors.Validate.GeneralError" xml:space="preserve">
+    <value>The configuration did not return any data.</value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Title" xml:space="preserve">
+    <value>SQL Import</value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Description" xml:space="preserve">
+    <value>This step imports data from an MS-SQL server.
+Set the connection string and write your query. The data will be pulled from the select query.
+
+To Continue after writing the connection string and query please validate your settings.</value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Name" xml:space="preserve">
+    <value>MS-SQL Server</value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Fields.ConnectionString" xml:space="preserve">
+    <value>Connection String</value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Fields.Query" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="Validate.Progress.Title" xml:space="preserve">
+    <value>Validating</value>
+  </data>
+  <data name="Validate.Progress.Message" xml:space="preserve">
+    <value>{Application.Header.Title} is validating your settings...</value>
+  </data>
 </root>

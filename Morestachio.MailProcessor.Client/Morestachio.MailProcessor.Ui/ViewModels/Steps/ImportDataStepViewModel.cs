@@ -2,14 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Morestachio.MailProcessor.Framework;
+using Morestachio.MailProcessor.Ui.Services.DataImport;
+using Morestachio.MailProcessor.Ui.Services.DataImport.Strategies;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
-using Morestachio.MailProcessor.Ui.ViewModels;
 
-namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
+namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 {
-	public class ImportDataStepViewModel : WizardStepBaseViewModel
+	public class ImportDataSelectorStepViewModel : WizardStepBaseViewModel
 	{
-		public ImportDataStepViewModel()
+		public ImportDataSelectorStepViewModel()
 		{
 			Title = new UiLocalizableString("DataImport.Selector.Title");
 			Description = new UiLocalizableString("DataImport.Selector.Description");

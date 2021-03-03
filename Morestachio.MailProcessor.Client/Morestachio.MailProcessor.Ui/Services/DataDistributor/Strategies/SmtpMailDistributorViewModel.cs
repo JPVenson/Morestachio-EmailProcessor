@@ -40,7 +40,11 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			}
 		}
 
-		public SmtpMailDistributorViewModel()
+		public SmtpMailDistributorViewModel() : base(
+			nameof(AuthPassword),
+			nameof(AuthUserName),
+			nameof(Host),
+			nameof(HostPort))
 		{
 			Title = new UiLocalizableString("MailDistributor.Strategy.Smtp.Title");
 			Description = new UiLocalizableString("MailDistributor.Strategy.Smtp.Description");
@@ -48,45 +52,12 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			Name = new UiLocalizableString("MailDistributor.Strategy.Smtp.Name");
 
 			HostPort = 587;
-			TestConnectionCommand = new DelegateCommand(TestConnectionExecute, CanTestConnectionExecute);
-			Validated = false;
-			PropertyChanged += SmtpMailDistributorViewModel_PropertyChanged;
-			_contentProperties = new string[]
-			{
-				nameof(AuthPassword),
-				nameof(AuthUserName),
-				nameof(Host),
-				nameof(HostPort)
-			};
-
-			Commands.Add(new UiDelegateCommand(TestConnectionCommand)
-			{
-				Content = new UiLocalizableString("MailDistributor.Strategy.Smtp.Validate.Title")
-			});
 			base.ForceRefreshAsync();
 		}
-
-		private readonly string[] _contentProperties;
-
-		private void SmtpMailDistributorViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-			if (_contentProperties.Contains(e.PropertyName))
-			{
-				Validated = false;
-			}
-		}
-
 		private string _host;
 		private int _hostPort;
 		private string _authUserName;
 		private string _authPassword;
-		private bool _validated;
-
-		public bool Validated
-		{
-			get { return _validated; }
-			set { SetProperty(ref _validated, value); }
-		}
 
 		public string AuthPassword
 		{
@@ -110,57 +81,6 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 		{
 			get { return _host; }
 			set { SetProperty(ref _host, value); }
-		}
-
-		public DelegateCommand TestConnectionCommand { get; private set; }
-
-		private string _testResult;
-
-		public string TestResult
-		{
-			get { return _testResult; }
-			set { SetProperty(ref _testResult, value); }
-		}
-
-		private void TestConnectionExecute(object sender)
-		{
-			SimpleWorkAsync(async () =>
-			{
-				Validated = false;
-				var mailDistributor = Create();
-				var beginResult = await mailDistributor.BeginSendMail();
-				if (!beginResult.Success)
-				{
-					TestResult = beginResult.ErrorText;
-					return;
-				}
-				
-				var endResult = await mailDistributor.EndSendMail(beginResult);
-				if (!endResult.Success)
-				{
-					TestResult = endResult.ErrorText;
-					return;
-				}
-
-				TestResult = "OK!";
-				Validated = true;
-			});
-		}
-
-		private bool CanTestConnectionExecute(object sender)
-		{
-			return IsNotWorking && !HasError;
-		}
-		
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
-		{
-			IoC.Resolve<MailComposer>().MailDistributor = Create();
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
-		}
-
-		public override bool CanGoNext()
-		{
-			return base.CanGoNext() && Validated;
 		}
 
 		public override UiLocalizableString Title { get; }

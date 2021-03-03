@@ -34,8 +34,9 @@
                 <ResourceDictionary Source="Resources/Steps/SendReportStepResources.xaml"/>
 
                 <ResourceDictionary Source="Resources/DataImport/ImportDataStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/DataImport/Csv/CsvImportResources.xaml"/>
-                <ResourceDictionary Source="Resources/DataImport/PrepareMailDataStepResources.xaml"/>
+                <ResourceDictionary Source="Resources/DataImport/CsvImportResources.xaml"/>
+                <ResourceDictionary Source="Resources/DataImport/SqlImportResources.xaml"/>
+                <ResourceDictionary Source="Resources/Steps/PrepareMailDataStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/MailDistributionStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/WriteToDirectoryDistributorResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/SmtpMailDistributorResources.xaml"/>
