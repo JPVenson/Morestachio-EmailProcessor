@@ -5,6 +5,8 @@
        <TextBox Text="{Binding Template, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
                 VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch"
+                AcceptsTab="True"
+                AcceptsReturn="True"
                 Margin="15">
 
        </TextBox>
