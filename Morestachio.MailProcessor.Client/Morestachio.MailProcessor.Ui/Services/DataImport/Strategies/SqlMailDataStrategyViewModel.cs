@@ -15,8 +15,8 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 			Description = new UiLocalizableString("DataImport.Strategy.Sql.Description");
 			Name = new UiLocalizableString("DataImport.Strategy.Sql.Name");
 			IsValidated = false;
-			Query = "SELECT * FROM Address WHERE EMailAddress IS NOT NULL";
-			ConnectionString = @"Server=.\V17;Database=JPB.MyWorksheet.Database;Trusted_Connection=True;";
+			//Query = "SELECT * FROM Address WHERE EMailAddress IS NOT NULL";
+			//ConnectionString = @"Server=.\V17;Database=JPB.MyWorksheet.Database;Trusted_Connection=True;";
 		}
 
 		private string _connectionString;
