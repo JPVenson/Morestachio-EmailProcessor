@@ -28,7 +28,8 @@ You have to add the path to a CSV file (using ; as a seperator)
 #### SQL Import
 You can also import your data from an MS-SQL server using a connection string and a Query.
 
-![image](https://user-images.githubusercontent.com/6794763/109884824-e6cec980-7c7d-11eb-85b0-238236f1cc0e.png)
+![image](https://user-images.githubusercontent.com/6794763/109887188-95283e00-7c81-11eb-97e9-4c305866276b.png)
+
 
 ### Set Mail Properties
 To generate a mail, you have to enter several paths to where certain properties of the mail like the Receivers Address & Name, the Mails subject and the Senders Address & Name is located in your data. To the right of your screen you can see the Data's structur. If you want to set constant values you have to enclose your values with `"` like:    
