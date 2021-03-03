@@ -180,6 +180,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string DataImport_PrepareStep_Errors_InvalidAddress {
+            get {
+                return ResourceManager.GetString("DataImport.PrepareStep.Errors.InvalidAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string DataImport_PrepareStep_Errors_InvalidExpression {
             get {
                 return ResourceManager.GetString("DataImport.PrepareStep.Errors.InvalidExpression", resourceCulture);

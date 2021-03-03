@@ -370,4 +370,7 @@ Also please note that this will possibly take a large portion of your decices po
 The Error message is as Follows:
 {0}</value>
   </data>
+  <data name="DataImport.PrepareStep.Errors.InvalidAddress" xml:space="preserve">
+    <value>The input value does not indicate a valid mail address</value>
+  </data>
 </root>

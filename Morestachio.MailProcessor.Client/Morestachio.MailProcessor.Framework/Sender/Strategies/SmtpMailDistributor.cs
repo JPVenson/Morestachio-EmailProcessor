@@ -64,7 +64,9 @@ namespace Morestachio.MailProcessor.Framework.Sender.Strategies
 		public async Task<IMailDistributorState> SendMail(DistributorData data, IMailDistributorState state)
 		{
 			var mailMessage = new MimeMessage();
+			
 			mailMessage.To.Add(new MailboxAddress(data.To, data.ToAddress));
+			mailMessage.From.Add(new MailboxAddress(data.From, data.FromAddress));
 			mailMessage.Subject = data.Subject;
 			mailMessage.Body = new TextPart(TextFormat.Html)
 			{

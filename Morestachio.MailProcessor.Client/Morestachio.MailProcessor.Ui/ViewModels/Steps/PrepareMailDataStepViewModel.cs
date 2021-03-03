@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
+using MimeKit;
+using MimeKit.Cryptography;
 using Morestachio.Document;
 using Morestachio.Framework.Context;
 using Morestachio.Framework.Expression;
@@ -23,6 +25,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			public PrepareMailDataStepViewModelErrors()
 			{
 				var invalidExpression = new UiLocalizableString("DataImport.PrepareStep.Errors.InvalidExpression");
+				var invalidAddress = new UiLocalizableString("DataImport.PrepareStep.Errors.InvalidAddress");
 				var defaultOptions = new ParserOptions()
 				{
 					Timeout = TimeSpan.FromSeconds(3)
@@ -45,6 +48,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				{
 					return (e.ExampleAddress = await ExportValue(e.MExpressionAddress, e.ExampleMailData.Data)) == null;
 				}, nameof(MExpressionAddress)));
+				Add(new Error<PrepareMailDataStepViewModel>(invalidAddress, e =>
+				{
+					return MailboxAddress.TryParse(new MimeKit.ParserOptions(), e.ExampleAddress, out _) == false;
+				}, nameof(MExpressionAddress)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
@@ -65,6 +72,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
 					return (e.ExampleFromAddress = await ExportValue(e.MExpressionFromAddress, e.ExampleMailData.Data)) == null;
+				}, nameof(MExpressionFromAddress)));
+				Add(new Error<PrepareMailDataStepViewModel>(invalidAddress, e =>
+				{
+					return MailboxAddress.TryParse(new MimeKit.ParserOptions(), e.ExampleFromAddress, out _) == false;
 				}, nameof(MExpressionFromAddress)));
 			}
 		}
