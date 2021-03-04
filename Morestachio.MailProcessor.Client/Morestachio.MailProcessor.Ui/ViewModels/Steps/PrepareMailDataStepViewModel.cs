@@ -17,6 +17,7 @@ using Morestachio.Framework.Expression.Parser;
 using Morestachio.Framework.Expression.Visitors;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Import;
+using Morestachio.MailProcessor.Ui.Services.StructureCache;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
@@ -102,11 +103,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 
 		public ThreadSaveObservableCollection<MailDataStructureViewModel> Structure { get; set; }
+		public MailData ExampleMailData { get; set; }
 
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
-
-		public MailData ExampleMailData { get; set; }
 
 		private string _mExpressionAddress;
 		private string _mExpressionName;
@@ -209,7 +209,8 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			MExpressionFromName = MExpressionFromName ?? StringifyExpression(mailComposer.FromNameExpression);
 
 			ExampleMailData = await mailComposer.MailDataStrategy.GetPreviewData();
-			await ForceRefreshAsync();
+			IoC.Resolve<StructureCacheService>().ExampleMailData = ExampleMailData;
+			
 			Structure.Clear();
 			Structure.AddEach(MailDataStructureViewModel.GenerateStructure(ExampleMailData.Data));
 

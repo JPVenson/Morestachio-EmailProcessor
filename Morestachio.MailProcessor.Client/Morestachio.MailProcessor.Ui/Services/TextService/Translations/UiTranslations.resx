@@ -382,4 +382,10 @@
   <data name="Validate.Progress.Message" xml:space="preserve">
     <value></value>
   </data>
+  <data name="DataImport.Strategy.Sql.Errors.NoConnectionString" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Errors.NoQuery" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

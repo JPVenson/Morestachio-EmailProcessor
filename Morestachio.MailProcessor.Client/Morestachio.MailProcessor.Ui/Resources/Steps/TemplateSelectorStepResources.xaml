@@ -1,14 +1,47 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:steps1="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps">
+                    xmlns:steps1="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Resources/Steps/StructureDisplayResources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     <DataTemplate DataType="{x:Type steps1:TemplateSelectorStepViewModel}">
-       <TextBox Text="{Binding Template, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
-                VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"
-                AcceptsTab="True"
-                AcceptsReturn="True"
-                Margin="15">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="100" />
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition MinWidth="100" />
+            </Grid.ColumnDefinitions>
+            <DockPanel VerticalAlignment="Stretch">
+                <mah:SplitButton Margin="5"
+                                 DockPanel.Dock="Top"
+                                    Command="{Binding SetTemplateCommand}"
+                                    SelectedItem="{Binding SelectedTemplate}"
+                                    ItemsSource="{Binding MailTemplateService.Sources}">
+                    <mah:SplitButton.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Header}"></Label>
+                        </DataTemplate>
+                    </mah:SplitButton.ItemTemplate>
+                    <mah:SplitButton.Icon>
+                        <iconPacks:PackIconMaterial Margin="6" Kind="FileDocumentOutline" />
+                    </mah:SplitButton.Icon>
+                </mah:SplitButton>
+                <TextBox Text="{Binding Template, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Auto"
+                         VerticalAlignment="Stretch"
+                         HorizontalAlignment="Stretch"
+                         AcceptsTab="True"
+                         AcceptsReturn="True"
+                         Margin="5"/>
+            </DockPanel>
+            <GridSplitter Grid.Column="1" />
+            <ContentControl Content="{Binding Structure}"
+                            ContentTemplate="{StaticResource StructureDisplay}"
+                            Grid.Column="2"/>
+        </Grid>
 
-       </TextBox>
     </DataTemplate>
 </ResourceDictionary>

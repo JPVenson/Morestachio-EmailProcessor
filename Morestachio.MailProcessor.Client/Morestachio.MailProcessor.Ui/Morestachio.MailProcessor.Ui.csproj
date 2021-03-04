@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <None Remove="Resources\DataImport\SqlImportResources.xaml" />
+    <None Remove="Resources\Steps\StructureDisplayResources.xaml" />
   </ItemGroup>
 
   <ItemGroup>

@@ -408,4 +408,10 @@ To Continue after writing the connection string and query please validate your s
   <data name="Validate.Progress.Message" xml:space="preserve">
     <value>{Application.Header.Title} is validating your settings...</value>
   </data>
+  <data name="DataImport.Strategy.Sql.Errors.NoConnectionString" xml:space="preserve">
+    <value>Please enter a Connection String</value>
+  </data>
+  <data name="DataImport.Strategy.Sql.Errors.NoQuery" xml:space="preserve">
+    <value>Please enter a SQL Select Query</value>
+  </data>
 </root>

@@ -1,12 +1,27 @@
-﻿using JPB.WPFToolsAwesome.Error.ValidationRules;
+﻿using System.Data.SqlClient;
+using JPB.WPFToolsAwesome.Error.ValidationRules;
+using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using Morestachio.MailProcessor.Framework.Import;
 using Morestachio.MailProcessor.Framework.Import.Strategies;
 using Morestachio.MailProcessor.Ui.ViewModels;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 {
-	public class SqlMailDataStrategyViewModel : MailDataStrategyBaseViewModel<NoErrors>
+	public class SqlMailDataStrategyViewModel : MailDataStrategyBaseViewModel<SqlMailDataStrategyViewModel.SqlMailDataStrategyViewModelErrors>
 	{
+		public class SqlMailDataStrategyViewModelErrors : ErrorCollection<SqlMailDataStrategyViewModel>
+		{
+			public SqlMailDataStrategyViewModelErrors()
+			{
+				Add(new Error<SqlMailDataStrategyViewModel>(new UiLocalizableString("DataImport.Strategy.Sql.Errors.NoConnectionString"),
+					e => string.IsNullOrWhiteSpace(e.ConnectionString),
+					nameof(ConnectionString)));
+				Add(new Error<SqlMailDataStrategyViewModel>(new UiLocalizableString("DataImport.Strategy.Sql.Errors.NoQuery"),
+					e => string.IsNullOrWhiteSpace(e.Query),
+					nameof(Query)));
+			}
+		}
+
 		public SqlMailDataStrategyViewModel() : base(SqlImportStrategy.IdKey,
 			nameof(Query),
 			nameof(ConnectionString))

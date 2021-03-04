@@ -351,6 +351,24 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string DataImport_Strategy_Sql_Errors_NoConnectionString {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Sql.Errors.NoConnectionString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Sql_Errors_NoQuery {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Sql.Errors.NoQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string DataImport_Strategy_Sql_Fields_ConnectionString {
             get {
                 return ResourceManager.GetString("DataImport.Strategy.Sql.Fields.ConnectionString", resourceCulture);
