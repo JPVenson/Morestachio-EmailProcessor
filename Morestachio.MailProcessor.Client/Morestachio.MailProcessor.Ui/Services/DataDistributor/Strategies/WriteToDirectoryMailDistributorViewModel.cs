@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
@@ -6,8 +8,10 @@ using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Sender;
 using Morestachio.MailProcessor.Framework.Sender.Strategies;
+using Morestachio.MailProcessor.Ui.Services.Settings;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.ViewModels;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 {
@@ -41,6 +45,19 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
+		public override async Task<IDictionary<string, string>> SaveSetting()
+		{
+			await Task.CompletedTask;
+			return new Dictionary<string, string>()
+			{
+				{nameof(Directory), Directory}
+			};
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
+			Directory = settings.GetOrNull(nameof(Directory))?.ToString();
+		}
 
 		public DelegateCommand PickDirectoryCommand { get; private set; }
 

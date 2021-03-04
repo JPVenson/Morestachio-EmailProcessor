@@ -1,4 +1,7 @@
-﻿using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 {
@@ -21,7 +24,17 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return true;
 		}
 
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override async Task<IDictionary<string, string>> SaveSetting()
+		{
+			await Task.CompletedTask;
+			return new Dictionary<string, string>();
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
+		}
+
+		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			App.Current.Shutdown();
 			return false;

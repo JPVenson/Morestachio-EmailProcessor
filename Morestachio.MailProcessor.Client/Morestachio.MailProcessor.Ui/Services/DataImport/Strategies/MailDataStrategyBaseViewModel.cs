@@ -10,6 +10,7 @@ using Morestachio.MailProcessor.Framework.Import;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.ViewModels;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 {
@@ -25,9 +26,11 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 			ValidateCommand = new DelegateCommand(ValidateExecute, CanValidateExecute);
 			PropertyChanged += SmtpMailDistributorViewModel_PropertyChanged;
 			_contentProperties = contentProperties;
-			Commands.Add(new UiDelegateCommand(ValidateCommand)
+			ValidateionState = new StepValidationViewModel();
+
+			Commands.Add(new MenuBarCommand(ValidateCommand)
 			{
-				Content = new UiLocalizableString("MailDistributor.Strategy.Smtp.Validate.Title")
+				Content = ValidateionState
 			});
 		}		
 		
@@ -39,13 +42,13 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 		{
 			if (_contentProperties.Contains(e.PropertyName))
 			{
-				IsValidated = false;
+				ValidateionState.IsValidated = false;
 			}
 		}
 
 		private void ValidateExecute(object sender)
 		{
-			IsValidated = false;
+			ValidateionState.IsValidated = false;
 			SimpleWorkAsync(async () =>
 			{
 				var uiWorkflow = IoC.Resolve<IUiWorkflow>();
@@ -60,9 +63,9 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 				{
 					var strategy = Create();
 					var previewData = await strategy.GetPreviewData();
-					IsValidated = previewData != null;
+					ValidateionState.IsValidated = previewData != null;
 					await waiter.CloseAsync();
-					if (!IsValidated)
+					if (!ValidateionState.IsValidated)
 					{
 						await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
 							textService.Compile("ImportData.Errors.Validate.Title", CultureInfo.CurrentUICulture, out _).ToString(),
@@ -90,31 +93,31 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 
 		public UiLocalizableString Name { get; set; }
 		public string Id { get; set; }
-		private bool _isValidated;
+		private StepValidationViewModel _validateionState;
 
-		public bool IsValidated
+		public StepValidationViewModel ValidateionState
 		{
-			get { return _isValidated; }
-			set { SetProperty(ref _isValidated, value); }
+			get { return _validateionState; }
+			set { SetProperty(ref _validateionState, value); }
 		}
 
 		public abstract IMailDataStrategy Create();
 
 		public override bool CanGoNext()
 		{
-			return base.CanGoNext() && IsValidated;
+			return base.CanGoNext() && ValidateionState.IsValidated;
 		}
 
-		public override bool OnGoPrevious(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator)
 		{
-			defaultGenericImportStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == GroupKey);
-			return base.OnGoPrevious(defaultGenericImportStepConfigurator);
+			defaultStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == GroupKey);
+			return base.OnGoPrevious(defaultStepConfigurator);
 		}
 
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			IoC.Resolve<MailComposer>().MailDataStrategy = Create();
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
+			return base.OnGoNext(defaultStepConfigurator);
 		}
 	}
 }

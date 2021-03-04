@@ -32,7 +32,7 @@
                         </ScrollViewer>
                     </Border>
                 </mah:MetroTabItem>
-                <mah:MetroTabItem Header="{lex:Loc Template.PreviewWindow.Html.Title}">
+                <mah:MetroTabItem Header="{lex:Loc Template.PreviewWindow.Html.Title}" IsEnabled="{Binding WebViewService.IsInstalled}">
                     <Border BorderThickness="3" BorderBrush="{StaticResource TabContainerBorderBrush}">
                         <DockPanel>
                             <Label Content="{lex:Loc Template.PreviewWindow.Html.Warning}"

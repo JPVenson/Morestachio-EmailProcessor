@@ -1,13 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
+using MahApps.Metro.Controls.Dialogs;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Sender;
 using Morestachio.MailProcessor.Framework.Sender.Strategies;
+using Morestachio.MailProcessor.Ui.Services.Settings;
+using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.ViewModels;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 {
@@ -50,9 +57,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			Description = new UiLocalizableString("MailDistributor.Strategy.Smtp.Description");
 			IdKey = SmtpMailDistributor.IdKey;
 			Name = new UiLocalizableString("MailDistributor.Strategy.Smtp.Name");
-
 			HostPort = 587;
-			base.ForceRefreshAsync();
 		}
 		private string _host;
 		private int _hostPort;
@@ -85,6 +90,39 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
+		public override async Task<IDictionary<string, string>> SaveSetting()
+		{
+			var uiWorkflow = IoC.Resolve<IUiWorkflow>();
+			var textService = IoC.Resolve<ITextService>();
+			var savePassword = false;
+			if (string.IsNullOrWhiteSpace(AuthPassword))
+			{
+				savePassword = (await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
+					textService.Compile("MailDistributor.Strategy.Smtp.Save.EncryptPassword.Title", CultureInfo.CurrentUICulture, out _).ToString(),
+					textService.Compile("MailDistributor.Strategy.Smtp.Save.EncryptPassword.Message", CultureInfo.CurrentUICulture, out _).ToString()
+				) ) == MessageDialogResult.Affirmative;
+			}
+
+			return new Dictionary<string, string>()
+			{
+				{nameof(Host), Host},
+				{nameof(HostPort), HostPort.ToString()},
+				{nameof(AuthUserName), AuthUserName},
+				{nameof(AuthPassword), savePassword ? AuthPassword : null},
+			};
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
+			Host = settings.GetOrNull(nameof(Host))?.ToString();
+			if (settings.TryGetValue(nameof(HostPort), out var port))
+			{
+				HostPort = int.Parse(port);
+			}
+			AuthUserName = settings.GetOrNull(nameof(AuthUserName))?.ToString();
+			AuthPassword = settings.GetOrNull(nameof(AuthPassword))?.ToString();
+		}
+
 		public override IMailDistributor Create()
 		{
 			return new SmtpMailDistributor()

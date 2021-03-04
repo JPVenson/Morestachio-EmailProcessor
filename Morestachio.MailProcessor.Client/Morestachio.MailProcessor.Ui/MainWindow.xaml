@@ -15,6 +15,8 @@
         xmlns:behaviors="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors"
         xmlns:trigger1="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors.Trigger"
         xmlns:ui="clr-namespace:Morestachio.MailProcessor.Ui"
+        xmlns:localization="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Localization"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
         x:Name="MainWindowRef"
         Title="{lex:Loc Application.Header.Title}" 
@@ -80,7 +82,7 @@
                    BasedOn="{StaticResource ControlWithValidation}">
             </Style>
 
-            <DataTemplate DataType="{x:Type viewModels:UiLocalizableString}">
+            <DataTemplate DataType="{x:Type localization:UiLocalizableString}">
                 <TextBlock TextTrimming="None"
                            TextWrapping="Wrap">
                     <TextBlock.Text>
@@ -96,6 +98,14 @@
             <SolidColorBrush x:Key="BackgroundPanelColorSolid" Color="{DynamicResource MahApps.Colors.ThemeBackground}"></SolidColorBrush>
             <converter:BooleanInverseConverter x:Key="BooleanInverseConverter" />
 
+            <DataTemplate DataType="{x:Type viewModels:StepValidationViewModel}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Margin="6" Kind="CheckboxMarked" Visibility="{Binding IsValidated, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <iconPacks:PackIconMaterial Margin="6" Kind="CheckboxBlank" Visibility="{Binding IsValidated, Converter={StaticResource BooleanVisibilityInverseConverter}}"/>
+                    <Label Content="{lex:Loc Validate.Title}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </DataTemplate>
+
         </ResourceDictionary>
     </Window.Resources>
     <mah:MetroWindow.RightWindowCommands>
@@ -105,12 +115,25 @@
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top"
-                    Orientation="Horizontal"
-                    Height="35"
-                    Background="{DynamicResource BackgroundPanelColor}">
-            <Label DockPanel.Dock="Top" Content="{lex:Loc Application.Header.Title}"/>
-            <ItemsControl ItemsSource="{Binding UiWorkflow.Steps}" Margin="0,0,0,5">
+        <DockPanel DockPanel.Dock="Top"
+                   Height="35"
+                   LastChildFill="True"
+                   Background="{DynamicResource BackgroundPanelColor}">
+            <Label DockPanel.Dock="Left"
+                   VerticalAlignment="Center"
+                   Content="{lex:Loc Application.Header.Title}"/>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Label Content="{lex:Loc Application.Save.Title}"
+                       VerticalAlignment="Center"/>
+                <Button Command="{Binding UiWorkflow.SaveCurrentStateCommand}">
+                    <iconPacks:PackIconMaterial Margin="1" Kind="Floppy" />
+                </Button>
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding UiWorkflow.Steps}" Margin="0,0,0,5"
+                          mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                          VerticalAlignment="Center"
+                          DockPanel.Dock="Left">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
@@ -136,7 +159,8 @@
                                         </eval:TriggerBehavior.TriggerActions>
                                     </eval:TriggerBehavior>
                                 </b:Interaction.Behaviors>
-                                <Label Content="{Binding Title}">
+                                <Label Content="{Binding Title}" 
+                                       VerticalAlignment="Center">
                                     <b:Interaction.Behaviors>
                                         <eval:TriggerBehavior>
                                             <eval:TriggerBehavior.TriggerStep>
@@ -156,7 +180,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+        </DockPanel>
         <DockPanel Dock="Bottom" Height="45" LastChildFill="False"
                    Background="{DynamicResource BackgroundPanelColor}">
             <Button Command="{Binding UiWorkflow.PreviousPageCommand}" 
@@ -180,12 +204,15 @@
             <ItemsControl ItemsSource="{Binding UiWorkflow.CurrentStep.Commands}" DockPanel.Dock="Right" Margin="0,0,15,0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
+                        <DockPanel IsItemsHost="True" LastChildFill="False"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type delegateCommand:UiDelegateCommand}">
-                        <Button Content="{Binding Content}" Command="{Binding Command}" Margin="0,0,15,0"/>
+                    <DataTemplate DataType="{x:Type viewModels:MenuBarCommand}">
+                        <Button Content="{Binding Content}" 
+                                Command="{Binding Command}"
+                                Margin="0,0,15,0"
+                                DockPanel.Dock="{Binding Dock}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -198,13 +225,7 @@
                     IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
                     VerticalAlignment="Stretch"
                     Transition="{Binding UiWorkflow.TransitionType}">
-
                 </mah:TransitioningContentControl>
-
-                <!--<ContentControl Content="{Binding UiWorkflow.CurrentStep, ValidatesOnNotifyDataErrors=False}"
-                                Margin="0,0,0,35"
-                                IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
-                                VerticalAlignment="Stretch"/>-->
 
                 <Expander VerticalAlignment="Bottom" 
                           Header="{lex:Loc Help.Title}"

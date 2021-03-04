@@ -6,7 +6,9 @@ using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ViewModelProvider.Base;
 using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
+using Morestachio.MailProcessor.Ui.Services.Settings;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels
 {
@@ -19,29 +21,34 @@ namespace Morestachio.MailProcessor.Ui.ViewModels
 	{
 		UiLocalizableString Title { get; }
 		UiLocalizableString Description { get; }
-		ObservableCollection<UiDelegateCommand> Commands { get; set; }
+		ObservableCollection<MenuBarCommand> Commands { get; set; }
 		string GroupKey { get; set; }
-		void OnAdded(DefaultGenericImportStepConfigurator configurator);
-		void OnRemoved(DefaultGenericImportStepConfigurator configurator);
-		Task OnEntry(IDictionary<string, object> data, DefaultGenericImportStepConfigurator configurator);
-		bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator);
-		bool OnGoPrevious(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator);
+		Task<IDictionary<string, string>> SaveSetting();
+		void ReadSettings(IDictionary<string, string> settings);
+
+		void OnAdded(DefaultStepConfigurator configurator);
+		void OnRemoved(DefaultStepConfigurator configurator);
+		Task OnEntry(IDictionary<string, object> data, DefaultStepConfigurator configurator);
+		bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator);
+		bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator);
 		bool CanGoNext();
 		bool CanGoPrevious();
 	}
 
-	public abstract class WizardStepBaseViewModel<TErrors> : AsyncErrorProviderBase<TErrors>, IWizardStepBaseViewModel where TErrors : IErrorCollectionBase, new()
+	public abstract class WizardStepBaseViewModel<TErrors> : AsyncErrorProviderBase<TErrors>,
+			IWizardStepBaseViewModel
+		where TErrors : IErrorCollectionBase, new()
 	{
 		protected WizardStepBaseViewModel()
 		{
-			Commands = new ObservableCollection<UiDelegateCommand>();
+			Commands = new ObservableCollection<MenuBarCommand>();
 			NextButtonText = new UiLocalizableString("Application.Navigation.Forward");
 			PreviousButtonText = new UiLocalizableString("Application.Navigation.Back");
 		}
-		
+
 		public abstract UiLocalizableString Title { get; }
 		public abstract UiLocalizableString Description { get; }
-		public ObservableCollection<UiDelegateCommand> Commands { get; set; }
+		public ObservableCollection<MenuBarCommand> Commands { get; set; }
 
 		private UiLocalizableString _nextButtonText;
 		private UiLocalizableString _previousButtonText;
@@ -73,29 +80,32 @@ namespace Morestachio.MailProcessor.Ui.ViewModels
 			}
 		}
 
-		public virtual void OnAdded(DefaultGenericImportStepConfigurator configurator)
+		public abstract Task<IDictionary<string, string>> SaveSetting();
+		public abstract void ReadSettings(IDictionary<string, string> settings);
+
+		public virtual void OnAdded(DefaultStepConfigurator configurator)
 		{
 
 		}
 
-		public virtual void OnRemoved(DefaultGenericImportStepConfigurator configurator)
+		public virtual void OnRemoved(DefaultStepConfigurator configurator)
 		{
 			configurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == GroupKey);
 		}
 
 		public virtual async Task OnEntry(IDictionary<string, object> data,
-			DefaultGenericImportStepConfigurator configurator)
+			DefaultStepConfigurator configurator)
 		{
 			Data = data;
 			await Task.CompletedTask;
 		}
 
-		public virtual bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public virtual bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			return true;
 		}
 
-		public virtual bool OnGoPrevious(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public virtual bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			return true;
 		}

@@ -11,6 +11,7 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 		IWizardStepBaseViewModel CurrentStep { get; }
 		ICommand NextPageCommand { get; }
 		ICommand PreviousPageCommand { get; }
+		ICommand SaveCurrentStateCommand { get; }
 		void InitSteps();
 		bool HelpRequested { get; set; }
 	}

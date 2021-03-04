@@ -81,6 +81,24 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Application_FeatureUnsupported_Message {
+            get {
+                return ResourceManager.GetString("Application.FeatureUnsupported.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_FeatureUnsupported_Title {
+            get {
+                return ResourceManager.GetString("Application.FeatureUnsupported.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Application_Header_Close {
             get {
                 return ResourceManager.GetString("Application.Header.Close", resourceCulture);
@@ -102,6 +120,24 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string Application_Header_Title {
             get {
                 return ResourceManager.GetString("Application.Header.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_LoadSettings_Error_Message {
+            get {
+                return ResourceManager.GetString("Application.LoadSettings.Error.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_LoadSettings_Error_Title {
+            get {
+                return ResourceManager.GetString("Application.LoadSettings.Error.Title", resourceCulture);
             }
         }
         
@@ -138,6 +174,51 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string Application_Navigation_Forward {
             get {
                 return ResourceManager.GetString("Application.Navigation.Forward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Save_Title {
+            get {
+                return ResourceManager.GetString("Application.Save.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Storage_Filename_Message {
+            get {
+                return ResourceManager.GetString("Application.Storage.Filename.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Storage_Filename_Title {
+            get {
+                return ResourceManager.GetString("Application.Storage.Filename.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Storage_OverwriteExisting_Message {
+            get {
+                return ResourceManager.GetString("Application.Storage.OverwriteExisting.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Storage_OverwriteExisting_Title {
+            get {
+                return ResourceManager.GetString("Application.Storage.OverwriteExisting.Title", resourceCulture);
             }
         }
         
@@ -603,18 +684,27 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string MailDistributor_Strategy_Smtp_Title {
+        public static string MailDistributor_Strategy_Smtp_Save_EncryptPassword_Message {
             get {
-                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Title", resourceCulture);
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Save.EncryptPassword.Message", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string MailDistributor_Strategy_Smtp_Validate_Title {
+        public static string MailDistributor_Strategy_Smtp_Save_EncryptPassword_Title {
             get {
-                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Validate.Title", resourceCulture);
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Save.EncryptPassword.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MailDistributor_Strategy_Smtp_Title {
+            get {
+                return ResourceManager.GetString("MailDistributor.Strategy.Smtp.Title", resourceCulture);
             }
         }
         
@@ -1008,6 +1098,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Validate_Title {
+            get {
+                return ResourceManager.GetString("Validate.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Welcome_Content {
             get {
                 return ResourceManager.GetString("Welcome.Content", resourceCulture);
@@ -1017,9 +1116,36 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Welcome_InstallWebViewer {
+            get {
+                return ResourceManager.GetString("Welcome.InstallWebViewer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Welcome_Title {
             get {
                 return ResourceManager.GetString("Welcome.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Welcome_WebViewerInstalled_Title {
+            get {
+                return ResourceManager.GetString("Welcome.WebViewerInstalled.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Welcome_WebViewerNotInstalled_Title {
+            get {
+                return ResourceManager.GetString("Welcome.WebViewerNotInstalled.Title", resourceCulture);
             }
         }
         

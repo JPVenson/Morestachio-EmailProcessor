@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Morestachio.MailProcessor.Ui.ViewModels;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 using WPFLocalizeExtension.Providers;
 
 namespace Morestachio.MailProcessor.Ui.Services.TextService

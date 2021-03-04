@@ -2,7 +2,7 @@
 using System.Globalization;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 
-namespace Morestachio.MailProcessor.Ui.ViewModels
+namespace Morestachio.MailProcessor.Ui.ViewModels.Localization
 {
 	public struct FormattableArgument
 	{

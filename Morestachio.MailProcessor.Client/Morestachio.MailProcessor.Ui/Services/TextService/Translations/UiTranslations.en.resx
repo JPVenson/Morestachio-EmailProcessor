@@ -151,7 +151,9 @@
     <value>Welcome to the Mail Processor</value>
   </data>
   <data name="Welcome.Content" xml:space="preserve">
-    <value>Lorem Ipsum</value>
+    <value>This program allows you to generate E-Mails and send it to your clients.
+
+You can use the "Help" bar to the bottom to get contextual help on most steps</value>
   </data>
   <data name="DataImport.Selector.Title" xml:space="preserve">
     <value>Data Source</value>
@@ -331,7 +333,7 @@ Also please note that this will possibly take a large portion of your decices po
   <data name="MailDistributor.Strategy.Smtp.Errors.InvalidPort" xml:space="preserve">
     <value>The Port must be in the range of 1 to 65556. Default is 587</value>
   </data>
-  <data name="MailDistributor.Strategy.Smtp.Validate.Title" xml:space="preserve">
+  <data name="Validate.Title" xml:space="preserve">
     <value>Validate</value>
   </data>
   <data name="MailDistributor.Strategy.Smtp.Fields.Host" xml:space="preserve">
@@ -451,5 +453,47 @@ Error: {1}</value>
   </data>
   <data name="Template.PreviewWindow.Html.Warning" xml:space="preserve">
     <value>Please note that this HTML view may not represents how your HTML email is rendered within the mail client of the receiver of the mail.</value>
+  </data>
+  <data name="Welcome.WebViewerInstalled.Title" xml:space="preserve">
+    <value>The WebViewer is installed and running</value>
+  </data>
+  <data name="Welcome.WebViewerNotInstalled.Title" xml:space="preserve">
+    <value>To allow preview of your generated HTML templates, please install the Microsoft Evergreen Edge Runtime by clicking the install button</value>
+  </data>
+  <data name="Welcome.InstallWebViewer" xml:space="preserve">
+    <value>Install Edge Runtime</value>
+  </data>
+  <data name="Application.FeatureUnsupported.Title" xml:space="preserve">
+    <value>Unsupported</value>
+  </data>
+  <data name="Application.FeatureUnsupported.Message" xml:space="preserve">
+    <value>I am sorry but this feature is currently not supported.</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Save.EncryptPassword.Title" xml:space="preserve">
+    <value>SMTP Password</value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Save.EncryptPassword.Message" xml:space="preserve">
+    <value>Do you want to save your SMTP password?</value>
+  </data>
+  <data name="Application.LoadSettings.Error.Title" xml:space="preserve">
+    <value>Load Settings error</value>
+  </data>
+  <data name="Application.LoadSettings.Error.Message" xml:space="preserve">
+    <value>Due to an error, no settings could been loaded</value>
+  </data>
+  <data name="Application.Storage.OverwriteExisting.Title" xml:space="preserve">
+    <value>Overwrite?</value>
+  </data>
+  <data name="Application.Storage.OverwriteExisting.Message" xml:space="preserve">
+    <value>Do you want to overwrite the existing set '{0}'</value>
+  </data>
+  <data name="Application.Save.Title" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Application.Storage.Filename.Title" xml:space="preserve">
+    <value>Please enter a Name for your Set</value>
+  </data>
+  <data name="Application.Storage.Filename.Message" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>

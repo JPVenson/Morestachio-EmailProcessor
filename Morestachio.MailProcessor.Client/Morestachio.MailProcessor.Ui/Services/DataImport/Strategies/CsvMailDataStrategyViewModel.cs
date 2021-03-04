@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
@@ -7,8 +9,10 @@ using Microsoft.Win32;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Import;
 using Morestachio.MailProcessor.Framework.Import.Strategies;
+using Morestachio.MailProcessor.Ui.Services.Settings;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.ViewModels;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 {
@@ -56,6 +60,20 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 				_filePath = value;
 				SendPropertyChanged(() => FilePath);
 			}
+		}
+
+		public override async Task<IDictionary<string, string>> SaveSetting()
+		{
+			await Task.CompletedTask;
+			return new Dictionary<string, string>()
+			{
+				{nameof(FilePath), FilePath}
+			};
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
+			FilePath = settings.GetOrNull(nameof(FilePath))?.ToString();
 		}
 
 		public override bool CanGoNext()

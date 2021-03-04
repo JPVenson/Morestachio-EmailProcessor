@@ -5,7 +5,7 @@ using System.Linq;
 using JPB.WPFToolsAwesome.MVVM.ViewModel;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 
-namespace Morestachio.MailProcessor.Ui.ViewModels
+namespace Morestachio.MailProcessor.Ui.ViewModels.Localization
 {
 	public class UiLocalizableString : ViewModelBase, IUiLocalizableString, IEquatable<UiLocalizableString>
 	{

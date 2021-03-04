@@ -8,6 +8,7 @@ using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using Microsoft.Win32;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 {
@@ -19,12 +20,12 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			SaveReportCommand = new DelegateCommand(SaveReportExecute, CanSaveReportExecute);
 			RefreshReportCommand = new DelegateCommand(RefreshReportExecute, CanRefreshReportExecute);
 
-			Commands.Add(new UiDelegateCommand(SaveReportCommand)
+			Commands.Add(new MenuBarCommand(SaveReportCommand)
 			{
 				Content = new UiLocalizableString("SendReport.Save.Title")
 			});	
 			
-			Commands.Add(new UiDelegateCommand(RefreshReportCommand)
+			Commands.Add(new MenuBarCommand(RefreshReportCommand)
 			{
 				Content = new UiLocalizableString("SendReport.Refresh.Title")
 			});
@@ -101,14 +102,24 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return IsNotWorking;
 		}
 
-		public override bool OnGoPrevious(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator)
 		{
-			defaultGenericImportStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == "Report");
-			return base.OnGoPrevious(defaultGenericImportStepConfigurator);
+			defaultStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == "Report");
+			return base.OnGoPrevious(defaultStepConfigurator);
+		}
+
+		public override async Task<IDictionary<string, string>> SaveSetting()
+		{
+			await Task.CompletedTask;
+			return new Dictionary<string, string>();
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
 		}
 
 		public override Task OnEntry(IDictionary<string, object> data,
-			DefaultGenericImportStepConfigurator configurator)
+			DefaultStepConfigurator configurator)
 		{
 			MailComposer = IoC.Resolve<MailComposer>();
 

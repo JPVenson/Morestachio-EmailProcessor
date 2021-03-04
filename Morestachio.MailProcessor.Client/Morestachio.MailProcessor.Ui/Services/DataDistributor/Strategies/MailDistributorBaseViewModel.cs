@@ -10,6 +10,7 @@ using Morestachio.MailProcessor.Framework.Sender;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.ViewModels;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 {
@@ -22,11 +23,11 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			PropertyChanged += SmtpMailDistributorViewModel_PropertyChanged;
 
 			TestConnectionCommand = new DelegateCommand(TestConnectionExecute, CanTestConnectionExecute);
-			IsValidated = false;
+			ValidationState = new StepValidationViewModel();
 			
-			Commands.Add(new UiDelegateCommand(TestConnectionCommand)
+			Commands.Add(new MenuBarCommand(TestConnectionCommand)
 			{
-				Content = new UiLocalizableString("MailDistributor.Strategy.Smtp.Validate.Title")
+				Content = ValidationState
 			});
 		}
 
@@ -36,7 +37,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 		{
 			if (_contentProperties.Contains(e.PropertyName))
 			{
-				IsValidated = false;
+				ValidationState.IsValidated = false;
 			}
 		}
 
@@ -44,7 +45,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 		public DelegateCommand TestConnectionCommand { get; private set; }
 		private void TestConnectionExecute(object sender)
 		{
-			IsValidated = false;
+			ValidationState.IsValidated = false;
 			SimpleWorkAsync(async () =>
 			{
 				var uiWorkflow = IoC.Resolve<IUiWorkflow>();
@@ -95,7 +96,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 					return;
 				}
 
-				IsValidated = true;
+				ValidationState.IsValidated = true;
 			});
 		}
 
@@ -106,31 +107,31 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 
 		public UiLocalizableString Name { get; set; }
 		public string IdKey { get; set; }
-		private bool _isValidated;
+		private StepValidationViewModel _validationState;
 
-		public bool IsValidated
+		public StepValidationViewModel ValidationState
 		{
-			get { return _isValidated; }
-			set { SetProperty(ref _isValidated, value); }
+			get { return _validationState; }
+			set { SetProperty(ref _validationState, value); }
 		}
 
 		public abstract IMailDistributor Create();
 
 		public override bool CanGoNext()
 		{
-			return base.CanGoNext() && IsValidated;
+			return base.CanGoNext() && ValidationState.IsValidated;
 		}
 
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			IoC.Resolve<MailComposer>().MailDistributor = Create();
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
+			return base.OnGoNext(defaultStepConfigurator);
 		}
 
-		public override bool OnGoPrevious(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator)
 		{
-			defaultGenericImportStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == "Distributors");
-			return base.OnGoPrevious(defaultGenericImportStepConfigurator);
+			defaultStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == "Distributors");
+			return base.OnGoPrevious(defaultStepConfigurator);
 		}
 	}
 }

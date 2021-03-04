@@ -1,5 +1,6 @@
 ﻿using Morestachio.MailProcessor.Framework.Sender;
 using Morestachio.MailProcessor.Ui.ViewModels;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,23 +10,25 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies;
 using Morestachio.MailProcessor.Ui.Services.DataImport.Strategies;
+using Morestachio.MailProcessor.Ui.Services.Settings;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.ViewModels;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 using Morestachio.MailProcessor.Ui.ViewModels.Steps;
 
 namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 {
-	public class DefaultGenericImportMailWorkflowViewModel : AsyncViewModelBase, IUiWorkflow
+	public class DefaultWorkflow : AsyncViewModelBase, IUiWorkflow
 	{
 		private IWizardStepBaseViewModel _currentStep;
 
-		public DefaultGenericImportMailWorkflowViewModel()
+		public DefaultWorkflow()
 		{
 			Data = new Dictionary<string, object>();
 			InitCommands();
 			App.Current.MainWindow.Closing += MainWindow_Closing;
 		}
-
+		
 		private static bool _forceClose = false;
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
@@ -61,21 +64,84 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 		{
 			NextPageCommand = new DelegateCommand(NextPageExecute, CanNextPageExecute);
 			PreviousPageCommand = new DelegateCommand(PreviousPageExecute, CanPreviousPageExecute);
+			SaveCurrentStateCommand = new DelegateCommand(SaveCurrentStateExecute, CanSaveCurrentStateExecute);
+		}
+
+		public ICommand SaveCurrentStateCommand { get; private set; }
+
+		private void SaveCurrentStateExecute(object sender)
+		{
+			SimpleWorkAsync(async () =>
+			{
+				var textService = IoC.Resolve<ITextService>();
+				var persistantSettingsService = IoC.Resolve<PersistantSettingsService>();
+				var settingsToSave = persistantSettingsService.LoadedSettings;
+				if (persistantSettingsService.LoadedSettings != null)
+				{
+					if ((await DialogCoordinator.Instance.ShowMessageAsync(this,
+						textService.Compile("Application.Storage.OverwriteExisting.Title",
+							CultureInfo.CurrentUICulture, out _).ToString(),
+						textService.Compile("Application.Storage.OverwriteExisting.Message",
+							CultureInfo.CurrentUICulture, out _,
+							new FormattableArgument(persistantSettingsService.LoadedSettings.Name, false)).ToString()
+					)) == MessageDialogResult.Negative)
+					{
+						settingsToSave = new SettingsEntry();
+					}
+				}
+				else
+				{
+					settingsToSave = new SettingsEntry();	
+				}
+
+				if (settingsToSave.Name == null)
+				{
+					var name = (await DialogCoordinator.Instance.ShowInputAsync(this,
+						textService.Compile("Application.Storage.Filename.Title", CultureInfo.CurrentUICulture, out _).ToString(),
+						textService.Compile("Application.Storage.Filename.Message", CultureInfo.CurrentUICulture, out _).ToString()));
+					if (string.IsNullOrWhiteSpace(name))
+					{
+						return;
+					}
+
+					settingsToSave.Name = name;
+				}
+
+				foreach (var wizardStepBaseViewModel in Steps)
+				{
+					var saveSetting = await wizardStepBaseViewModel.SaveSetting();
+					foreach (var setting in saveSetting)
+					{
+						settingsToSave.Values[setting.Key] = setting.Value;
+					}
+				}
+
+				persistantSettingsService.SaveSetting(settingsToSave);
+
+			});
+
+
+		}
+
+		private bool CanSaveCurrentStateExecute(object sender)
+		{
+			return IsNotWorking;
 		}
 		
 		private void PreviousPageExecute(object sender)
 		{
 			var indexOf = Steps.IndexOf(CurrentStep) - 1;
-			if (!CurrentStep.OnGoPrevious(new DefaultGenericImportStepConfigurator(this, CurrentStep)))
+			if (!CurrentStep.OnGoPrevious(new DefaultStepConfigurator(CurrentStep)))
 			{
 				return;
 			}
 
 			TransitionType = TransitionType.Left;
-			CurrentStep = Steps.ElementAt(indexOf);
 			SimpleWorkAsync(async () =>
 			{
-				await CurrentStep.OnEntry(Data, new DefaultGenericImportStepConfigurator(this, CurrentStep));
+				var previousStep = Steps.ElementAt(indexOf); 
+				await previousStep.OnEntry(Data, new DefaultStepConfigurator(previousStep));
+				CurrentStep = previousStep;
 			});
 		}
 
@@ -86,15 +152,16 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 
 		private void NextPageExecute(object sender)
 		{
-			if (!CurrentStep.OnGoNext(new DefaultGenericImportStepConfigurator(this, CurrentStep)))
+			if (!CurrentStep.OnGoNext(new DefaultStepConfigurator(CurrentStep)))
 			{
 				return;
 			}
 			TransitionType = TransitionType.Right;
-			CurrentStep = Steps.ElementAt(Steps.IndexOf(CurrentStep) + 1);
 			SimpleWorkAsync(async () =>
 			{
-				await CurrentStep.OnEntry(Data, new DefaultGenericImportStepConfigurator(this, CurrentStep));
+				var nextStep = Steps.ElementAt(Steps.IndexOf(CurrentStep) + 1);
+				await nextStep.OnEntry(Data, new DefaultStepConfigurator(nextStep));
+				CurrentStep = nextStep;
 			});
 		}
 
@@ -118,7 +185,7 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 
 			foreach (var wizardStepBaseViewModel in Steps)
 			{
-				wizardStepBaseViewModel.OnAdded(new DefaultGenericImportStepConfigurator(this, wizardStepBaseViewModel));
+				wizardStepBaseViewModel.OnAdded(new DefaultStepConfigurator(wizardStepBaseViewModel));
 			}
 
 

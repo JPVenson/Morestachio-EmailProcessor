@@ -10,7 +10,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels
 	{
 		public MainWindowViewModel()
 		{
-			UiWorkflow = new DefaultGenericImportMailWorkflowViewModel();
+			UiWorkflow = new DefaultWorkflow();
 			UiWorkflow.InitSteps();
 			SwitchDarkModeCommand = new DelegateCommand(SwitchDarkModeExecute, CanSwitchDarkModeExecute);
 			InstallWebEnvCommand = new DelegateCommand(InstallWebEnvExecute, CanInstallWebEnvExecute);

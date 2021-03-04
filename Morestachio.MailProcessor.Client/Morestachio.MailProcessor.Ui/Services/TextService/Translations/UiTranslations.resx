@@ -313,7 +313,7 @@
   <data name="MailDistributor.Strategy.Smtp.Errors.InvalidPort" xml:space="preserve">
     <value></value>
   </data>
-  <data name="MailDistributor.Strategy.Smtp.Validate.Title" xml:space="preserve">
+  <data name="Validate.Title" xml:space="preserve">
     <value></value>
   </data>
   <data name="MailDistributor.Strategy.Smtp.Fields.Host" xml:space="preserve">
@@ -422,6 +422,48 @@
     <value></value>
   </data>
   <data name="Template.PreviewWindow.Html.Warning" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Welcome.WebViewerInstalled.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Welcome.WebViewerNotInstalled.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Welcome.InstallWebViewer" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.FeatureUnsupported.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.FeatureUnsupported.Message" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Save.EncryptPassword.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MailDistributor.Strategy.Smtp.Save.EncryptPassword.Message" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.LoadSettings.Error.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.LoadSettings.Error.Message" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Storage.OverwriteExisting.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Storage.OverwriteExisting.Message" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Save.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Storage.Filename.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Storage.Filename.Message" xml:space="preserve">
     <value></value>
   </data>
 </root>

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using MahApps.Metro.Controls.Dialogs;
@@ -13,6 +14,7 @@ using Morestachio.MailProcessor.Ui.Services.DataDistributor;
 using Morestachio.MailProcessor.Ui.Services.DataImport;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 {
@@ -26,6 +28,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			NextButtonText = new UiLocalizableString("Application.Header.StartSend");
 			ResetCommand = new DelegateCommand(ResetExecute, CanResetExecute);
 			SaveSendReportCommand = new DelegateCommand(SaveSendReportExecute, CanSaveSendReportExecute);
+			MailComposer = IoC.Resolve<MailComposer>();
 		}
 
 		public override UiLocalizableString Title { get; }
@@ -83,7 +86,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		private void SaveSendReportExecute(object sender)
 		{
 			var uiWorkflow = IoC.Resolve<IUiWorkflow>();
-			var defaultGenericImportStepConfigurator = new DefaultGenericImportStepConfigurator(uiWorkflow, this);
+			var defaultGenericImportStepConfigurator = new DefaultStepConfigurator(this);
 			defaultGenericImportStepConfigurator.AddNextToMe(new SendReportStepViewModel()
 			{
 				SummeryStepViewModel = this
@@ -111,10 +114,36 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return IsProcessed;
 		}
 
-		public override Task OnEntry(IDictionary<string, object> data,
-			DefaultGenericImportStepConfigurator configurator)
+		public override async Task<IDictionary<string, string>> SaveSetting()
 		{
-			MailComposer = IoC.Resolve<MailComposer>();
+			await Task.CompletedTask;
+			return new Dictionary<string, string>()
+			{
+				{nameof(MailComposer.SendInParallel), MailComposer.SendInParallel.ToString()},
+				{nameof(MailComposer.ParallelNoOfParallism), MailComposer.ParallelNoOfParallism.ToString()},
+				{nameof(MailComposer.ParallelReadAheadCount), MailComposer.ParallelReadAheadCount.ToString()},
+			};
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
+			if (settings.TryGetValue(nameof(MailComposer.SendInParallel), out var sendInParallel))
+			{
+				MailComposer.SendInParallel = sendInParallel == bool.TrueString;
+			}
+			if (settings.TryGetValue(nameof(MailComposer.ParallelNoOfParallism), out var noOfParallism))
+			{
+				MailComposer.ParallelNoOfParallism = int.Parse(noOfParallism);
+			}
+			if (settings.TryGetValue(nameof(MailComposer.ParallelReadAheadCount), out var readAhead))
+			{
+				MailComposer.ParallelReadAheadCount = int.Parse(readAhead);
+			}
+		}
+
+		public override Task OnEntry(IDictionary<string, object> data,
+			DefaultStepConfigurator configurator)
+		{
 			DataStrategyName = IoC.Resolve<DataImportService>().MailDataStrategy
 				.First(e => e.Id == MailComposer.MailDataStrategy.Id).Name;
 
@@ -177,12 +206,13 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				SendPropertyChanged(() => Progress);
 				IsProcessed = true;
 				NextButtonText = new UiLocalizableString("Application.Navigation.Forward");
-				Commands.Add(new UiDelegateCommand(ResetCommand)
+				Commands.Add(new MenuBarCommand(ResetCommand)
 				{
 					Content = new UiLocalizableString("Summery.Commands.Reset"),
 					Tag = "AfterButton.ResetCommand",
+					Dock = Dock.Left
 				});
-				Commands.Add(new UiDelegateCommand(SaveSendReportCommand)
+				Commands.Add(new MenuBarCommand(SaveSendReportCommand)
 				{
 					Content = new UiLocalizableString("Summery.Commands.Report"),
 					Tag = "AfterButton.ReportCommand",
@@ -195,7 +225,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return base.CanGoPrevious() && !IsProcessed;
 		}
 
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			if (IsProcessed == false)
 			{
@@ -203,7 +233,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				return false;
 			}
 
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
+			return base.OnGoNext(defaultStepConfigurator);
 		}
 
 		public void Report(SendMailProgress value)

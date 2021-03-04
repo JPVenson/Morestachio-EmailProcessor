@@ -25,13 +25,12 @@
 									   HorizontalAlignment="Left" />
 							</resources:FieldsetGrid>
 							<resources:FieldsetGrid Columns="3">
-								<Label Content="{lex:Loc DataImport.PrepareStep.AddressPath}" Grid.Column="0"
-									   Grid.Row="0" />
+								<Label Content="{lex:Loc DataImport.PrepareStep.AddressPath}" Grid.Column="0" />
 								<TextBox
 									Text="{Binding MExpressionAddress, UpdateSourceTrigger=PropertyChanged, Delay=250, ValidatesOnNotifyDataErrors=True}"
 									VerticalContentAlignment="Center"
-									Grid.Column="1" Grid.Row="0" />
-								<Label Content="{Binding ExampleAddress}" Grid.Column="2" Grid.Row="0" />
+									Grid.Column="1" />
+								<Label Content="{Binding ExampleAddress, ValidatesOnNotifyDataErrors=False}" Grid.Column="2" />
 							</resources:FieldsetGrid>
 							<resources:FieldsetGrid Columns="3">
 								<Label Content="{lex:Loc DataImport.PrepareStep.NamePath}" Grid.Column="0" />
@@ -39,7 +38,7 @@
 									Text="{Binding MExpressionName, UpdateSourceTrigger=PropertyChanged, Delay=250, ValidatesOnNotifyDataErrors=True}"
 									VerticalContentAlignment="Center"
 									Grid.Column="1" />
-								<Label Content="{Binding ExampleName}" Grid.Column="2" />
+								<Label Content="{Binding ExampleName, ValidatesOnNotifyDataErrors=False}" Grid.Column="2" />
 							</resources:FieldsetGrid>
 							<resources:FieldsetGrid Columns="3">
 								<Label Content="{lex:Loc DataImport.PrepareStep.SubjectPath}" Grid.Column="0" />
@@ -47,7 +46,7 @@
 									Text="{Binding MExpressionSubject, UpdateSourceTrigger=PropertyChanged, Delay=250, ValidatesOnNotifyDataErrors=True}"
 									VerticalContentAlignment="Center"
 									Grid.Column="1" />
-								<Label Content="{Binding ExampleSubject}" Grid.Column="2" />
+								<Label Content="{Binding ExampleSubject, ValidatesOnNotifyDataErrors=False}" Grid.Column="2" />
 							</resources:FieldsetGrid>
 							<resources:FieldsetGrid Columns="3">
 								<Label Content="{lex:Loc DataImport.PrepareStep.FromAddressPath}" Grid.Column="0" />
@@ -55,7 +54,7 @@
 									Text="{Binding MExpressionFromAddress, UpdateSourceTrigger=PropertyChanged, Delay=250, ValidatesOnNotifyDataErrors=True}"
 									VerticalContentAlignment="Center"
 									Grid.Column="1" />
-								<Label Content="{Binding ExampleFromAddress}" Grid.Column="2" />
+								<Label Content="{Binding ExampleFromAddress, ValidatesOnNotifyDataErrors=False}" Grid.Column="2" />
 							</resources:FieldsetGrid>
 							<resources:FieldsetGrid Columns="3">
 								<Label Content="{lex:Loc DataImport.PrepareStep.FromNamePath}" Grid.Column="0" />
@@ -63,7 +62,7 @@
 									Text="{Binding MExpressionFromName, UpdateSourceTrigger=PropertyChanged, Delay=250, ValidatesOnNotifyDataErrors=True}"
 									VerticalContentAlignment="Center"
 									Grid.Column="1" />
-								<Label Content="{Binding ExampleFromName}" Grid.Column="2" />
+								<Label Content="{Binding ExampleFromName, ValidatesOnNotifyDataErrors=False}" Grid.Column="2" />
 							</resources:FieldsetGrid>
 						</StackPanel>
 					</Grid>

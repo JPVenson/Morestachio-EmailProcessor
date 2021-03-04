@@ -16,9 +16,12 @@ using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Import;
 using Morestachio.MailProcessor.Ui.Resources.Steps;
 using Morestachio.MailProcessor.Ui.Services.MailTemplates;
+using Morestachio.MailProcessor.Ui.Services.Settings;
 using Morestachio.MailProcessor.Ui.Services.StructureCache;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+using Morestachio.MailProcessor.Ui.Services.WebView;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 using Morestachio.Parsing.ParserErrors;
 using Morestachio.TemplateContainers;
 
@@ -54,11 +57,12 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			Structure = new ThreadSaveObservableCollection<MailDataStructureViewModel>();
 			SetTemplateCommand = new DelegateCommand(SetTemplateExecute, CanSetTemplateExecute);
 			MailTemplateService = IoC.Resolve<MailTemplateService>();
+			WebViewService = IoC.Resolve<WebViewService>();
 			GeneratePreviewCommand = new DelegateCommand(GeneratePreviewExecute, CanGeneratePreviewExecute);
 			MorestachioErrors = new ThreadSaveObservableCollection<IMorestachioError>();
 			ShowPreviewWindowCommand = new DelegateCommand(ShowPreviewWindowExecute, CanShowPreviewWindowExecute);
 			PropertyChanged += TemplateSelectorStepViewModel_PropertyChanged;
-			Commands.Add(new UiDelegateCommand(ShowPreviewWindowCommand)
+			Commands.Add(new MenuBarCommand(ShowPreviewWindowCommand)
 			{
 				Content = new UiLocalizableString("Template.Preview.Title")
 			});
@@ -92,6 +96,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public DelegateCommand ShowPreviewWindowCommand { get; private set; }
 		public PreviewTemplateWindow PreviewTemplateWindow { get; set; }
 		public bool PreviewGenerationRequested { get; set; }
+		public WebViewService WebViewService { get; set; }
 
 		public CompilationResult ErrorDisplayTemplate { get; set; }
 
@@ -247,7 +252,21 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return IsNotWorking && SelectedTemplate != null;
 		}
 
-		public override Task OnEntry(IDictionary<string, object> data, DefaultGenericImportStepConfigurator configurator)
+		public override async Task<IDictionary<string, string>> SaveSetting()
+		{
+			await Task.CompletedTask;
+			return new Dictionary<string, string>()
+			{
+				{nameof(Template), Template}
+			};
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
+			Template = settings.GetOrNull(nameof(Template))?.ToString();
+		}
+
+		public override Task OnEntry(IDictionary<string, object> data, DefaultStepConfigurator configurator)
 		{
 			ExampleMailData = IoC.Resolve<StructureCacheService>().ExampleMailData;
 			Structure.Clear();
@@ -256,17 +275,17 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return base.OnEntry(data, configurator);
 		}
 
-		public override bool OnGoPrevious(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			PreviewTemplateWindow?.Close();
-			return base.OnGoPrevious(defaultGenericImportStepConfigurator);
+			return base.OnGoPrevious(defaultStepConfigurator);
 		}
 
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			PreviewTemplateWindow?.Close();
 			IoC.Resolve<MailComposer>().Template = Template;
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
+			return base.OnGoNext(defaultStepConfigurator);
 		}
 	}
 }

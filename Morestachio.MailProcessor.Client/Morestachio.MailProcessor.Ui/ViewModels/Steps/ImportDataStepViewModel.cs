@@ -5,6 +5,7 @@ using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Ui.Services.DataImport;
 using Morestachio.MailProcessor.Ui.Services.DataImport.Strategies;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 {
@@ -15,8 +16,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			Title = new UiLocalizableString("DataImport.Selector.Title");
 			Description = new UiLocalizableString("DataImport.Selector.Description");
 			GroupKey = "MainGroup";
+			DataImportService = IoC.Resolve<DataImportService>();
 		}
 
+		public DataImportService DataImportService { get; set; }
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
 
@@ -45,22 +48,39 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 		}
 
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
-			defaultGenericImportStepConfigurator.AddNextToMe(SelectedStrategy);
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
+			defaultStepConfigurator.AddNextToMe(SelectedStrategy);
+			return base.OnGoNext(defaultStepConfigurator);
+		}
+
+		public override async Task<IDictionary<string, string>> SaveSetting()
+		{
+			await Task.CompletedTask;
+			return new Dictionary<string, string>()
+			{
+				{"ImportDataStep.SelectedImporterStrategy", SelectedStrategy?.Id}
+			};
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
+			if (settings.TryGetValue("ImportDataStep.SelectedImporterStrategy", out var strategyId))
+			{
+				IoC.Resolve<MailComposer>().MailDataStrategy = DataImportService.MailDataStrategy
+					.FirstOrDefault(e => e.Id == strategyId)?.Create();
+			}
 		}
 
 		public override async Task OnEntry(IDictionary<string, object> data,
-			DefaultGenericImportStepConfigurator configurator)
+			DefaultStepConfigurator configurator)
 		{
 			await base.OnEntry(data, configurator);
-			var dataImportService = IoC.Resolve<DataImportService>();
 
 			var mailComposer = IoC.Resolve<MailComposer>();
-			MailDataStrategies = dataImportService.MailDataStrategy;
-			SelectedStrategy = dataImportService.MailDataStrategy
-				.FirstOrDefault(e => e.Id == mailComposer.MailDataStrategy.Id);
+			MailDataStrategies = DataImportService.MailDataStrategy;
+			SelectedStrategy = DataImportService.MailDataStrategy
+				.FirstOrDefault(e => e.Id == mailComposer.MailDataStrategy?.Id);
 		}
 
 		public override bool CanGoNext()

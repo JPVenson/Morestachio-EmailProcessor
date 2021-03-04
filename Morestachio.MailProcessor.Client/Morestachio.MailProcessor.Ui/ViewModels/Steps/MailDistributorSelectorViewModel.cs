@@ -6,6 +6,7 @@ using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Ui.Services.DataDistributor;
 using Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 {
@@ -16,10 +17,15 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			Title = new UiLocalizableString("MailDistributor.Selector.Title");
 			Description = new UiLocalizableString("MailDistributor.Selector.Description");
 			Description = new UiLocalizableString("");
+			MailComposer = IoC.Resolve<MailComposer>();
+			DataDistributorService = IoC.Resolve<DataDistributorService>();
+			MailDistributors = new ObservableCollection<IMailDistributorBaseViewModel>(DataDistributorService.MailDistributors);
 		}
 
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
+		public MailComposer MailComposer { get; set; }
+		public DataDistributorService DataDistributorService { get; set; }
 
 		private ObservableCollection<IMailDistributorBaseViewModel> _mailDistributors;
 		private IMailDistributorBaseViewModel _selectedDistributor;
@@ -41,20 +47,36 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return base.CanGoNext() && SelectedDistributor != null;
 		}
 
-		public override Task OnEntry(IDictionary<string, object> data,
-			DefaultGenericImportStepConfigurator configurator)
+		public override async Task<IDictionary<string, string>> SaveSetting()
 		{
-			var mailDistributor = IoC.Resolve<MailComposer>().MailDistributor;
-			MailDistributors = new ObservableCollection<IMailDistributorBaseViewModel>(IoC.Resolve<DataDistributorService>().MailDistributors);
+			await Task.CompletedTask;
+			return new Dictionary<string, string>()
+			{
+				{ "MailDistributor.SelectedStrategy", SelectedDistributor?.IdKey }
+			};
+		}
+
+		public override void ReadSettings(IDictionary<string, string> settings)
+		{
+			if (settings.TryGetValue("MailDistributor.SelectedStrategy", out var selectedDistributorId))
+			{
+				SelectedDistributor =
+					MailDistributors.FirstOrDefault(e => e.IdKey == selectedDistributorId);
+			}
+		}
+
+		public override Task OnEntry(IDictionary<string, object> data,
+			DefaultStepConfigurator configurator)
+		{
 			SelectedDistributor =
-				MailDistributors.FirstOrDefault(e => e.IdKey == mailDistributor?.Id);
+				MailDistributors.FirstOrDefault(e => e.IdKey == MailComposer.MailDistributor?.Id);
 			return base.OnEntry(data, configurator);
 		}
 
-		public override bool OnGoNext(DefaultGenericImportStepConfigurator defaultGenericImportStepConfigurator)
+		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
-			defaultGenericImportStepConfigurator.AddNextToMe(SelectedDistributor);
-			return base.OnGoNext(defaultGenericImportStepConfigurator);
+			defaultStepConfigurator.AddNextToMe(SelectedDistributor);
+			return base.OnGoNext(defaultStepConfigurator);
 		}
 	}
 }
