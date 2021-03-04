@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<td>Line</td>
+				<td>Error</td>
+			</tr>
+		</thead>
+		<tbody>
+			{{#EACH this AS error}}
+			<tr>
+				<td>{{error.Location}}</td>
+				<td>{{error.HelpText}}</td>
+			</tr>
+			{{/EACH}}
+		</tbody>
+	</table>
+</body>
+</html>

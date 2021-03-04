@@ -49,7 +49,7 @@
             <SolidColorBrush x:Key="UnsetStepForegroundColor" Color="{DynamicResource MahApps.Colors.ThemeForeground}"/>
             <SolidColorBrush x:Key="SetStepForegroundColor" Color="{DynamicResource MahApps.Colors.IdealForeground}" />
 
-            
+
             <behaviors:UiLocalizableStringResolverConverter ExpectFormattingArgumentsOn2ndPlace="True" 
                                                             x:Key="StringFormatConverter" />
 
@@ -192,10 +192,19 @@
         </DockPanel>
         <DockPanel Dock="Top">
             <Grid>
-                <ContentControl Content="{Binding UiWorkflow.CurrentStep, ValidatesOnNotifyDataErrors=False}"
-                               Margin="0,0,0,35"
-                               IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
-                               VerticalAlignment="Stretch"/>
+                <mah:TransitioningContentControl
+                    Content="{Binding UiWorkflow.CurrentStep, ValidatesOnNotifyDataErrors=False}"
+                    Margin="0,0,0,35"
+                    IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
+                    VerticalAlignment="Stretch"
+                    Transition="{Binding UiWorkflow.TransitionType}">
+
+                </mah:TransitioningContentControl>
+
+                <!--<ContentControl Content="{Binding UiWorkflow.CurrentStep, ValidatesOnNotifyDataErrors=False}"
+                                Margin="0,0,0,35"
+                                IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
+                                VerticalAlignment="Stretch"/>-->
 
                 <Expander VerticalAlignment="Bottom" 
                           Header="{lex:Loc Help.Title}"

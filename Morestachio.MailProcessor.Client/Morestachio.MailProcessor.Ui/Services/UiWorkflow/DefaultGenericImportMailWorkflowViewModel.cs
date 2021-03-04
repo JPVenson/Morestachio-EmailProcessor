@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using JPB.WPFToolsAwesome.MVVM.ViewModel;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies;
 using Morestachio.MailProcessor.Ui.Services.DataImport.Strategies;
@@ -69,6 +70,8 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 			{
 				return;
 			}
+
+			TransitionType = TransitionType.Left;
 			CurrentStep = Steps.ElementAt(indexOf);
 			SimpleWorkAsync(async () =>
 			{
@@ -87,6 +90,7 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 			{
 				return;
 			}
+			TransitionType = TransitionType.Right;
 			CurrentStep = Steps.ElementAt(Steps.IndexOf(CurrentStep) + 1);
 			SimpleWorkAsync(async () =>
 			{
@@ -123,13 +127,18 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 
 		public IList<IWizardStepBaseViewModel> Steps { get; set; }
 
+		private TransitionType _transitionType;
+
+		public TransitionType TransitionType
+		{
+			get { return _transitionType; }
+			set { SetProperty(ref _transitionType, value); }
+		}
+
 		public IWizardStepBaseViewModel CurrentStep
 		{
 			get { return _currentStep; }
-			set
-			{
-				SetProperty(ref _currentStep, value);
-			}
+			set { SetProperty(ref _currentStep, value); }
 		}		
 
 		public ICommand NextPageCommand { get; set; }

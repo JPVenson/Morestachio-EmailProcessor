@@ -18,17 +18,19 @@
 
   <ItemGroup>
     <None Remove="Resources\DataImport\SqlImportResources.xaml" />
+    <None Remove="Resources\Steps\PreviewTemplateWindow.xaml" />
     <None Remove="Resources\Steps\StructureDisplayResources.xaml" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.4" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.8.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.705.50" />
     <PackageReference Include="Morestachio" Version="5.0.0.504" />
     <PackageReference Include="Morestachio.Linq" Version="5.0.0.504" />
     <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="WPFLocalizeExtension" Version="3.8.0" />
-    <PackageReference Include="WPFToolsAwesome" Version="2.0.2" />
+    <PackageReference Include="WPFToolsAwesome" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +50,9 @@
     </None>
     <None Update="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="preview_error_template.mdoc.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SendReportTemplate.mdoc.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

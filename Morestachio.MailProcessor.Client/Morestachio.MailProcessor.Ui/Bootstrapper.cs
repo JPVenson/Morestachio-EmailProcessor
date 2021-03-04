@@ -5,6 +5,7 @@ using Morestachio.MailProcessor.Ui.Services.MailTemplates;
 using Morestachio.MailProcessor.Ui.Services.StructureCache;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.TextService.Translations;
+using Morestachio.MailProcessor.Ui.Services.WebView;
 using Unity;
 using WPFLocalizeExtension.Engine;
 
@@ -27,6 +28,7 @@ namespace Morestachio.MailProcessor.Ui
 			IoC.RegisterInstance(new DataDistributorService());
 			IoC.RegisterInstance(new StructureCacheService());
 			IoC.RegisterInstance(new MailTemplateService());
+			IoC.RegisterInstance(new WebViewService());
 			IoC.RegisterInstance<ITextService>(new TextService());
 
 			foreach (var requireInit in IoC.ResolveMany<IRequireInit>())

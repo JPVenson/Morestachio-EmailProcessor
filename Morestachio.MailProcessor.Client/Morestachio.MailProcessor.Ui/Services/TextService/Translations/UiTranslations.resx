@@ -388,4 +388,40 @@
   <data name="DataImport.Strategy.Sql.Errors.NoQuery" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Structure.Display.Name" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Structure.Display.Type" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Template.Errors.LoadTemplate" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.ConfirmQuestion.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Template.Confirm.Message" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Progress.ObtainTemplate.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Progress.ObtainTemplate.Message" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Template.Preview.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Template.PreviewWindow.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Template.PreviewWindow.Plain.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Template.PreviewWindow.Html.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Template.PreviewWindow.Html.Warning" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

@@ -84,7 +84,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 					}
 					await waiter.CloseAsync();
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					await waiter.CloseAsync();
 					await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,

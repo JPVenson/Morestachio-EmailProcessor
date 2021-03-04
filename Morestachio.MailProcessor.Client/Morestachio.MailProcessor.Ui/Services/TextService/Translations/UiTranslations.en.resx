@@ -414,4 +414,42 @@ To Continue after writing the connection string and query please validate your s
   <data name="DataImport.Strategy.Sql.Errors.NoQuery" xml:space="preserve">
     <value>Please enter a SQL Select Query</value>
   </data>
+  <data name="Structure.Display.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Structure.Display.Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Template.Errors.LoadTemplate" xml:space="preserve">
+    <value>Could not load the template '{0}'.
+
+Error: {1}</value>
+  </data>
+  <data name="Application.ConfirmQuestion.Title" xml:space="preserve">
+    <value>Please Confirm</value>
+  </data>
+  <data name="Summery.Template.Confirm.Message" xml:space="preserve">
+    <value>You still have an template in the editor. Do you want to overwrite the template?</value>
+  </data>
+  <data name="Summery.Progress.ObtainTemplate.Title" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="Summery.Progress.ObtainTemplate.Message" xml:space="preserve">
+    <value>Loading the selected Template. Please wait ...</value>
+  </data>
+  <data name="Template.Preview.Title" xml:space="preserve">
+    <value>Open Preview Window</value>
+  </data>
+  <data name="Template.PreviewWindow.Title" xml:space="preserve">
+    <value>Template Preview</value>
+  </data>
+  <data name="Template.PreviewWindow.Plain.Title" xml:space="preserve">
+    <value>Text View</value>
+  </data>
+  <data name="Template.PreviewWindow.Html.Title" xml:space="preserve">
+    <value>Html View</value>
+  </data>
+  <data name="Template.PreviewWindow.Html.Warning" xml:space="preserve">
+    <value>Please note that this HTML view may not represents how your HTML email is rendered within the mail client of the receiver of the mail.</value>
+  </data>
 </root>

@@ -1,0 +1,51 @@
+﻿<mah:MetroWindow x:Class="Morestachio.MailProcessor.Ui.Resources.Steps.PreviewTemplateWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:Morestachio.MailProcessor.Ui.Resources.Steps"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:steps="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps"
+                 xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                 xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+                 xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:behaviors="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors"
+                 mc:Ignorable="d"
+                 Title="{lex:Loc Template.PreviewWindow.Title}" Height="450" Width="800" d:DataContext="{d:DesignInstance steps:TemplateSelectorStepViewModel}">
+    <mah:MetroWindow.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="TabContainerBorderBrush" Color="{DynamicResource MahApps.Colors.Highlight}"/>
+        </ResourceDictionary>
+    </mah:MetroWindow.Resources>
+    <DockPanel IsEnabled="{Binding IsNotWorking}">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+
+        </StackPanel>
+        <DockPanel  DockPanel.Dock="Top">
+            <mah:MetroTabControl>
+                <mah:MetroTabItem Header="{lex:Loc Template.PreviewWindow.Plain.Title}">
+                    <Border BorderThickness="3" BorderBrush="{StaticResource TabContainerBorderBrush}">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding Preview}"
+                                       VerticalAlignment="Stretch"
+                                       HorizontalAlignment="Stretch"/>
+                        </ScrollViewer>
+                    </Border>
+                </mah:MetroTabItem>
+                <mah:MetroTabItem Header="{lex:Loc Template.PreviewWindow.Html.Title}">
+                    <Border BorderThickness="3" BorderBrush="{StaticResource TabContainerBorderBrush}">
+                        <DockPanel>
+                            <Label Content="{lex:Loc Template.PreviewWindow.Html.Warning}"
+                                   DockPanel.Dock="Top"/>
+                            <wpf:WebView2 Name="WebView2" Source="https:\\www.github.com">
+                                <b:Interaction.Behaviors>
+                                    <behaviors:WebView2HtmlContentBehavior Html="{Binding Preview}"/>
+                                </b:Interaction.Behaviors>
+                            </wpf:WebView2>
+                        </DockPanel>
+                    </Border>
+                </mah:MetroTabItem>
+            </mah:MetroTabControl>
+        </DockPanel>
+    </DockPanel>
+</mah:MetroWindow>

@@ -63,6 +63,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Application_ConfirmQuestion_Title {
+            get {
+                return ResourceManager.GetString("Application.ConfirmQuestion.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Application_Error_Title {
             get {
                 return ResourceManager.GetString("Application.Error.Title", resourceCulture);
@@ -693,6 +702,24 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Structure_Display_Name {
+            get {
+                return ResourceManager.GetString("Structure.Display.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Structure_Display_Type {
+            get {
+                return ResourceManager.GetString("Structure.Display.Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Summery_Commands_Report {
             get {
                 return ResourceManager.GetString("Summery.Commands.Report", resourceCulture);
@@ -837,9 +864,36 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Summery_Progress_ObtainTemplate_Message {
+            get {
+                return ResourceManager.GetString("Summery.Progress.ObtainTemplate.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Summery_Progress_ObtainTemplate_Title {
+            get {
+                return ResourceManager.GetString("Summery.Progress.ObtainTemplate.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Summery_Result_Title {
             get {
                 return ResourceManager.GetString("Summery.Result.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Summery_Template_Confirm_Message {
+            get {
+                return ResourceManager.GetString("Summery.Template.Confirm.Message", resourceCulture);
             }
         }
         
@@ -867,6 +921,60 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string Template_Errors_InvalidTemplate {
             get {
                 return ResourceManager.GetString("Template.Errors.InvalidTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Template_Errors_LoadTemplate {
+            get {
+                return ResourceManager.GetString("Template.Errors.LoadTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Template_Preview_Title {
+            get {
+                return ResourceManager.GetString("Template.Preview.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Template_PreviewWindow_Html_Title {
+            get {
+                return ResourceManager.GetString("Template.PreviewWindow.Html.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Template_PreviewWindow_Html_Warning {
+            get {
+                return ResourceManager.GetString("Template.PreviewWindow.Html.Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Template_PreviewWindow_Plain_Title {
+            get {
+                return ResourceManager.GetString("Template.PreviewWindow.Plain.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Template_PreviewWindow_Title {
+            get {
+                return ResourceManager.GetString("Template.PreviewWindow.Title", resourceCulture);
             }
         }
         
