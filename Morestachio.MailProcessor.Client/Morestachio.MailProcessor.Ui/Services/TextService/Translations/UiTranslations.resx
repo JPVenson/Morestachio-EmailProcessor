@@ -466,4 +466,7 @@
   <data name="Application.Storage.Filename.Message" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Welcome.Savefiles" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

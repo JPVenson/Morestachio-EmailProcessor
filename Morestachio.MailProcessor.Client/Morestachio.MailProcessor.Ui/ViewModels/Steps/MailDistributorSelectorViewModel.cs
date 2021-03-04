@@ -62,6 +62,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			{
 				SelectedDistributor =
 					MailDistributors.FirstOrDefault(e => e.IdKey == selectedDistributorId);
+				MailComposer.MailDistributor = SelectedDistributor?.Create();
 			}
 		}
 

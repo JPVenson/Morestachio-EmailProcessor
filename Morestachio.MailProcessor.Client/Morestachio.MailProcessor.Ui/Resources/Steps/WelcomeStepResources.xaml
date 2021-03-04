@@ -8,7 +8,7 @@
                     xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
     <converter:BooleanVisibilityInverseConverter x:Key="BooleanVisibilityInverseConverter" />
     <DataTemplate DataType="{x:Type steps1:WelcomeStepViewModel}">
-        <DockPanel LastChildFill="True">
+        <DockPanel LastChildFill="True" Margin="15">
             <StackPanel DockPanel.Dock="Left">
                 <Label Content="{lex:Loc Welcome.Savefiles}"></Label>
                 <Grid IsSharedSizeScope="True">

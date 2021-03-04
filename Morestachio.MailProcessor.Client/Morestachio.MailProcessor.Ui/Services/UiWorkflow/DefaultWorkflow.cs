@@ -83,7 +83,8 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 							CultureInfo.CurrentUICulture, out _).ToString(),
 						textService.Compile("Application.Storage.OverwriteExisting.Message",
 							CultureInfo.CurrentUICulture, out _,
-							new FormattableArgument(persistantSettingsService.LoadedSettings.Name, false)).ToString()
+							new FormattableArgument(persistantSettingsService.LoadedSettings.Name, false)).ToString(),
+						MessageDialogStyle.AffirmativeAndNegative
 					)) == MessageDialogResult.Negative)
 					{
 						settingsToSave = new SettingsEntry();

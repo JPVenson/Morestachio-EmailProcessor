@@ -1125,6 +1125,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Welcome_Savefiles {
+            get {
+                return ResourceManager.GetString("Welcome.Savefiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Welcome_Title {
             get {
                 return ResourceManager.GetString("Welcome.Title", resourceCulture);
