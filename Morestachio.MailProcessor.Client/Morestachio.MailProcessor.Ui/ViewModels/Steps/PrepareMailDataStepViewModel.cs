@@ -36,8 +36,8 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 				//https://haacked.com/archive/2007/08/21/i-knew-how-to-validate-an-email-address-until-i.aspx/
 				var mailRegEx = new Regex(@"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|"
-				                          + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
-				                          + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$",
+										  + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
+										  + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$",
 					RegexOptions.IgnoreCase);
 				var defaultOptions = new ParserOptions()
 				{
@@ -66,6 +66,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				{
 					return (e.ExampleAddress = await ExportValue(e.MExpressionAddress, e.ExampleMailData.Data)) == null;
 				}, nameof(MExpressionAddress), nameof(ExampleMailData)));
+
 				Add(new Error<PrepareMailDataStepViewModel>(invalidAddress, e =>
 				{
 					if (string.IsNullOrWhiteSpace(e.ExampleAddress))
@@ -78,7 +79,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					return (e.ExampleName = await ExportValue(e.MExpressionName, e.ExampleMailData.Data)) == null;;
+					return (e.ExampleName = await ExportValue(e.MExpressionName, e.ExampleMailData.Data)) == null; ;
 				}, nameof(MExpressionName), nameof(ExampleMailData)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
@@ -96,6 +97,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				{
 					return (e.ExampleFromAddress = await ExportValue(e.MExpressionFromAddress, e.ExampleMailData.Data)) == null;
 				}, nameof(MExpressionFromAddress), nameof(ExampleMailData)));
+
 				Add(new Error<PrepareMailDataStepViewModel>(invalidAddress, e =>
 				{
 					if (string.IsNullOrWhiteSpace(e.ExampleFromAddress))
@@ -207,7 +209,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		{
 			if (expression == null)
 			{
-				return "";
+				return null;
 			}
 
 			var visitor = new ToParsableStringExpressionVisitor();
@@ -243,12 +245,12 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public override async Task OnEntry(IDictionary<string, object> data,
 			DefaultStepConfigurator configurator)
 		{
-				
-//#if DEBUG
-//			MExpressionAddress = MExpressionAddress ?? "email";
-//			MExpressionName = MExpressionName ?? "\"Mr or Ms \" + firstname + \", \" + lastname";
-//			MExpressionSubject = MExpressionSubject ?? "\"Subject A\"";
-//#endif
+
+			//#if DEBUG
+			//			MExpressionAddress = MExpressionAddress ?? "email";
+			//			MExpressionName = MExpressionName ?? "\"Mr or Ms \" + firstname + \", \" + lastname";
+			//			MExpressionSubject = MExpressionSubject ?? "\"Subject A\"";
+			//#endif
 
 			var mailComposer = IoC.Resolve<MailComposer>();
 			ExampleMailData = await mailComposer.MailDataStrategy.GetPreviewData();
@@ -256,17 +258,58 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 			using (base.DeferNotification())
 			{
-				MExpressionAddress = MExpressionAddress ?? StringifyExpression(mailComposer.ToAddressExpression);
-				MExpressionName = MExpressionName ?? StringifyExpression(mailComposer.ToNameExpression);
-				MExpressionSubject = MExpressionSubject ?? StringifyExpression(mailComposer.SubjectExpression);
+				MExpressionAddress = MExpressionAddress ?? StringifyExpression(mailComposer.ToAddressExpression) ?? GuessAddressExpression();
+				MExpressionName = MExpressionName ?? StringifyExpression(mailComposer.ToNameExpression) ?? GuessNameExpression();
+				MExpressionSubject = MExpressionSubject ?? StringifyExpression(mailComposer.SubjectExpression) ?? "\"subject\"";
 				MExpressionFromAddress = MExpressionFromAddress ?? StringifyExpression(mailComposer.FromAddressExpression);
 				MExpressionFromName = MExpressionFromName ?? StringifyExpression(mailComposer.FromNameExpression);
 			}
-			
+
 			Structure.Clear();
 			Structure.AddEach(MailDataStructureViewModel.GenerateStructure(ExampleMailData.Data));
-			
+
 			await base.OnEntry(data, configurator);
+		}
+
+		private string GetLike(string value)
+		{
+			foreach (var o in ExampleMailData.Data)
+			{
+				if (o.Key.Contains(value, StringComparison.InvariantCultureIgnoreCase) ||
+					o.Key.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+				{
+					return o.Key;
+				}
+			}
+
+			return null;
+		}
+
+		private string GuessAddressExpression()
+		{
+			return GetLike("mail")
+				   ?? GetLike("webaddress")
+				   ?? GetLike("www")
+				   ?? GetLike("web")
+				   ?? GetLike("message")
+				   ?? GetLike("e-dress");
+		}
+
+		private string GuessNameExpression()
+		{
+			return GetLike("firstname")
+			       ?? GetLike("christian name") ?? GetLike("christian_name") ?? GetLike("christianname")
+			       ?? GetLike("given name") ?? GetLike("given_name") ?? GetLike("givenname")
+			       ?? GetLike("prename")
+			       ?? GetLike("birth name") ?? GetLike("birth_name") ?? GetLike("birthname")
+			       ?? GetLike("fore name") ?? GetLike("fore_name") ?? GetLike("forename")
+			       ?? GetLike("proper name") ?? GetLike("proper_name") ?? GetLike("propername")
+			       ?? GetLike("maiden name") ?? GetLike("maiden_name") ?? GetLike("maidenname")
+			       ?? GetLike("salutation")
+			       ?? GetLike("family name") ?? GetLike("family_name") ?? GetLike("familyname")
+			       ?? GetLike("surname")
+			       ?? GetLike("last name") ?? GetLike("last_name") ?? GetLike("lastname")
+			       ?? GetLike("name");
 		}
 
 		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
