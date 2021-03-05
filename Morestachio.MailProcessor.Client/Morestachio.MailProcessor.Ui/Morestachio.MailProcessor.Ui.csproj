@@ -17,12 +17,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="MorestachioHightlight-darkThemeColors.xml" />
+    <None Remove="MorestachioHightlight-lightThemeColors.xml" />
+    <None Remove="MorestachioHightlight.xml" />
     <None Remove="Resources\DataImport\SqlImportResources.xaml" />
     <None Remove="Resources\Steps\PreviewTemplateWindow.xaml" />
     <None Remove="Resources\Steps\StructureDisplayResources.xaml" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="MorestachioHightlight-darkThemeColors.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MorestachioHightlight-lightThemeColors.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MorestachioHightlight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.1.0-preview1" />
     <PackageReference Include="MahApps.Metro" Version="2.4.4" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.8.0" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.705.50" />

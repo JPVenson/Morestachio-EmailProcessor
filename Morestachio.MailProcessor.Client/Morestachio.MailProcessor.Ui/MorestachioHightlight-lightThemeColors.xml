@@ -1,0 +1,14 @@
+﻿<SyntaxDefinition name="morestachio"
+				xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<Color name="Comment" fontWeight="bold" foreground="DarkGreen" exampleText="{{! comment}}" />
+	<Color name="String" foreground="Red" exampleText="&quot;Hello, World!&quot;"/>
+	<Color name="Char" foreground="Black" exampleText="{{ }}"/>
+	<Color name="TagDelimiter" fontWeight="bold" foreground="Blue" exampleText="{{ }}"/>
+	<Color name="Keyword" fontWeight="bold" foreground="Blue"/>
+	<Color name="Expression" foreground="MidnightBlue" exampleText="e.x"/>
+	<Color name="DefaultExpression" fontWeight="normal" foreground="Black" exampleText="e.x"/>
+	<Color name="Punctuation" exampleText="a(b.c);" />
+	<Color name="NumberLiteral" foreground="MidnightBlue" exampleText="3.1415f"/>
+	<Color name="MethodCall" foreground="MidnightBlue" exampleText="o.ToString();"/>
+	<Color name="NoExpression" foreground="Black" exampleText="e.x"/>
+</SyntaxDefinition>

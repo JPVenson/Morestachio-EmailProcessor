@@ -3,10 +3,17 @@
                     xmlns:steps1="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
+                    xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:behaviors="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Resources/Steps/StructureDisplayResources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+        
+    <SolidColorBrush x:Key="UiForeground" Color="{DynamicResource MahApps.Colors.ThemeForeground}"/>
+    <SolidColorBrush x:Key="UiBackground" Color="{DynamicResource MahApps.Colors.ThemeBackground}" />
+
     <DataTemplate DataType="{x:Type steps1:TemplateSelectorStepViewModel}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -36,19 +43,95 @@
                             <iconPacks:PackIconMaterial Margin="6" Kind="FileDocumentOutline" />
                         </mah:SplitButton.Icon>
                     </mah:SplitButton>
-                    <TextBox Text="{Binding Template, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
-                             DockPanel.Dock="Top"
-                             VerticalScrollBarVisibility="Auto"
-                             HorizontalScrollBarVisibility="Auto"
-                             VerticalAlignment="Stretch"
-                             HorizontalAlignment="Stretch"
-                             AcceptsTab="True"
-                             AcceptsReturn="True"
-                             Margin="5"/>
+                    <avalonEdit:TextEditor
+                        Name="textEditor"
+                        SyntaxHighlighting="{Binding MorestachioHtmlMixDefinition}"
+                        FontSize="10pt"
+                        DockPanel.Dock="Top"
+                        VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalAlignment="Stretch"
+                        ShowLineNumbers="True"
+                        HorizontalAlignment="Stretch"
+                        Background="{DynamicResource UiBackground}"
+                        Foreground="{DynamicResource UiForeground}"
+                        Margin="5">
+                        <b:Interaction.Behaviors>
+                            <behaviors:AvalonEditBehaviour 
+                                Text="{Binding Template, UpdateSourceTrigger=PropertyChanged, Delay=250}"/>
+                        </b:Interaction.Behaviors>
+
+                        <avalonEdit:TextEditor.Template>
+                            <ControlTemplate TargetType="{x:Type avalonEdit:TextEditor}">
+                                <ControlTemplate.Resources>
+                                    <Style TargetType="{x:Type avalonEdit:TextView}">
+                                        <Setter Property="NonPrintableCharacterBrush" Value="#3F8080FF" />
+                                        <Setter Property="LinkTextForegroundBrush" Value="#FF4040FF" />
+                                        <!--  Style hyperlink displayed within text in text editor  -->
+                                        <Setter Property="LinkTextBackgroundBrush" Value="White" />
+                                    </Style>
+
+                                    <Style TargetType="{x:Type avalonEdit:TextArea}">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                        <Setter Property="SelectionBrush" Value="#1ba1e2" />
+                                        <Setter Property="SelectionBorder">
+                                            <Setter.Value>
+                                                <Pen Brush="#1ba1e2" Thickness="1" />
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="SelectionCornerRadius" Value="0" />
+                                        <Setter Property="SelectionForeground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type avalonEdit:TextArea}">
+                                                    <DockPanel Focusable="False">
+                                                        <ItemsControl
+                                                        DockPanel.Dock="Left"
+                                                        Focusable="False"
+                                                        ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LeftMargins}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <StackPanel Orientation="Horizontal" />
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                        </ItemsControl>
+                                                        <ContentPresenter
+                                                        Panel.ZIndex="-1"
+                                                        Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextView}"
+                                                        Focusable="False" />
+                                                    </DockPanel>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ControlTemplate.Resources>
+                                <Border
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ScrollViewer
+                                    Name="PART_ScrollViewer"
+                                    Padding="{TemplateBinding Padding}"
+                                    HorizontalContentAlignment="Left"
+                                    VerticalContentAlignment="Top"
+                                    CanContentScroll="True"
+                                    Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextArea}"
+                                    Focusable="False"
+                                    HorizontalScrollBarVisibility="Auto"
+                                    VerticalScrollBarVisibility="Auto" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="WordWrap" Value="True">
+                                        <Setter TargetName="PART_ScrollViewer" Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </avalonEdit:TextEditor.Template>
+                    </avalonEdit:TextEditor>
                 </DockPanel>
 
                 <GridSplitter Grid.Row="1" />
-               
+
                 <ListBox ItemsSource="{Binding MorestachioErrors}"
                          Grid.Row="2">
                     <ListBox.ItemTemplate>

@@ -1,0 +1,13 @@
+﻿<SyntaxDefinition xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<Color name="Comment" foreground="#8B949E" exampleText="{{! comment}}" />
+	<Color name="String" foreground="Red" exampleText="&quot;Hello, World!&quot;"/>
+	<Color name="Char" foreground="#A5D6FF" exampleText="{{ }}"/>
+	<Color name="TagDelimiter" fontWeight="bold" foreground="#C9D1D9" background="#191919" exampleText="{{ }}"/>
+	<Color name="Keyword" fontWeight="bold" foreground="#7EE787"/>
+	<Color name="Expression" foreground="MidnightBlue" exampleText="e.x"/>
+	<Color name="DefaultExpression" fontWeight="normal" foreground="#FFFFFF" exampleText="e.x"/>
+	<Color name="Punctuation" exampleText="a(b.c);" />
+	<Color name="NumberLiteral" foreground="#7EE787" exampleText="3.1415f"/>
+	<Color name="MethodCall" foreground="#D2A8FF" exampleText="o.ToString();"/>
+	<Color name="NoExpression" foreground="White" exampleText="e.x"/>
+</SyntaxDefinition>

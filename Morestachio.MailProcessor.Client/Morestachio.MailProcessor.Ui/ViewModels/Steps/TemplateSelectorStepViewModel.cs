@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using ControlzEx.Theming;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
 using JPB.WPFToolsAwesome.Error.ValidationTypes;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
@@ -72,6 +77,56 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				var errorTemplateOptions = new ParserOptions(File.ReadAllText("preview_error_template.mdoc.html"));
 				ErrorDisplayTemplate = Parser.ParseWithOptions(errorTemplateOptions).Compile();
 			}
+
+			SetSyntax();
+			ThemeManager.Current.ThemeChanged += Current_ThemeChanged;
+		}
+
+		private void Current_ThemeChanged(object sender, ThemeChangedEventArgs e)
+		{
+			SetSyntax();
+		}
+
+		private void SetSyntax()
+		{
+			var syntaxDefinition = "";
+			using (var manifestResourceStream = GetType().Assembly
+				.GetManifestResourceStream("Morestachio.MailProcessor.Ui.MorestachioHightlight.xml"))
+			{
+				using (var reader = new StreamReader(manifestResourceStream, null, true, -1, true))
+				{
+					syntaxDefinition = reader.ReadToEnd();
+				}
+			}
+
+			string themeName;
+			if (ThemeManager.Current.DetectTheme().Name == "Dark.Blue")
+			{
+				themeName = "darkThemeColors";
+			}
+			else
+			{
+				themeName = "lightThemeColors";
+			}
+
+			var themeData = "";
+			using (var manifestResourceStream = GetType().Assembly
+				.GetManifestResourceStream($"Morestachio.MailProcessor.Ui.MorestachioHightlight-{themeName}.xml"))
+			{
+				using (var reader = new StreamReader(manifestResourceStream, null, true, -1, true))
+				{
+					themeData = reader.ReadToEnd();
+				}
+			}
+
+			var endOfRoot = themeData.IndexOf(">") + 1;
+			themeData = themeData.Substring(endOfRoot, themeData.LastIndexOf("<") - endOfRoot);
+
+			syntaxDefinition = syntaxDefinition.Replace("<ThemeData/>", themeData);
+			var xshdSyntaxDefinition = HighlightingLoader.Load(new XmlTextReader(new StringReader(syntaxDefinition)), null);
+
+			//HighlightingManager.Instance.RegisterHighlighting("Morestachio", new string[0], xshdSyntaxDefinition);
+			MorestachioHtmlMixDefinition = xshdSyntaxDefinition;
 		}
 
 		private void TemplateSelectorStepViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -82,6 +137,35 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 		}
 
+		private string _template;
+		private string _preview;
+		private MailTemplate _selectedTemplate;
+		private IHighlightingDefinition _morestachioHtmlMixDefinition;
+
+		public IHighlightingDefinition MorestachioHtmlMixDefinition
+		{
+			get { return _morestachioHtmlMixDefinition; }
+			set { SetProperty(ref _morestachioHtmlMixDefinition, value); }
+		}
+
+		public MailTemplate SelectedTemplate
+		{
+			get { return _selectedTemplate; }
+			set { SetProperty(ref _selectedTemplate, value); }
+		}
+
+		public string Preview
+		{
+			get { return _preview; }
+			set { SetProperty(ref _preview, value); }
+		}
+
+		public string Template
+		{
+			get { return _template; }
+			set { SetProperty(ref _template, value); }
+		}
+
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
 		public ThreadSaveObservableCollection<MailDataStructureViewModel> Structure { get; set; }
@@ -89,8 +173,6 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public DelegateCommand SetTemplateCommand { get; private set; }
 
 		public MailTemplateService MailTemplateService { get; set; }
-		private MailTemplate _selectedTemplate;
-		private string _template;
 		public DelegateCommand GeneratePreviewCommand { get; private set; }
 		public ThreadSaveObservableCollection<IMorestachioError> MorestachioErrors { get; set; }
 		public DelegateCommand ShowPreviewWindowCommand { get; private set; }
@@ -131,7 +213,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				return;
 			}
 
-			PreviewGenerationRequested = true; 
+			PreviewGenerationRequested = true;
 			SimpleWorkAsync(async () =>
 			{
 				await LoopPreview();
@@ -167,7 +249,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 			else
 			{
-				Preview = preview;	
+				Preview = preview;
 			}
 		}
 
@@ -176,25 +258,6 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return IsNotWorking && !HasErrors;
 		}
 
-		public MailTemplate SelectedTemplate
-		{
-			get { return _selectedTemplate; }
-			set { SetProperty(ref _selectedTemplate, value); }
-		}
-
-		private string _preview;
-
-		public string Preview
-		{
-			get { return _preview; }
-			set { SetProperty(ref _preview, value); }
-		}
-
-		public string Template
-		{
-			get { return _template; }
-			set { SetProperty(ref _template, value); }
-		}
 
 		private void SetTemplateExecute(object sender)
 		{
@@ -226,19 +289,19 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 					return;
 				}
-				
+
 				await loadingScreen.CloseAsync();
 				if (newTemplate != null)
 				{
 					if (((string.IsNullOrWhiteSpace(Template) == false && Template != newTemplate)
-					     &&
-					     (await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
-						     textService.Compile("Application.ConfirmQuestion.Title", CultureInfo.CurrentUICulture,
-							     out _).ToString(),
-						     textService.Compile("Summery.Template.Confirm.Message", CultureInfo.CurrentUICulture,
-							     out _).ToString(),
-						     MessageDialogStyle.AffirmativeAndNegative
-					     )) == MessageDialogResult.Negative))
+						 &&
+						 (await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
+							 textService.Compile("Application.ConfirmQuestion.Title", CultureInfo.CurrentUICulture,
+								 out _).ToString(),
+							 textService.Compile("Summery.Template.Confirm.Message", CultureInfo.CurrentUICulture,
+								 out _).ToString(),
+							 MessageDialogStyle.AffirmativeAndNegative
+						 )) == MessageDialogResult.Negative))
 					{
 						return;
 					}

@@ -1,0 +1,115 @@
+﻿<SyntaxDefinition name="morestachio"
+				xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<ThemeData/>
+	<RuleSet>
+		<Span color="Keyword" ruleSet="HtmlCode" multiline="true">
+			<Begin>{{!\?}}</Begin>
+			<End>{{/!\?}}</End>
+		</Span>
+		<Span color="Comment" multiline="true">
+			<Begin>{{!}}</Begin>
+			<End>{{/!}}</End>
+		</Span>
+		<Span color="Comment" multiline="true">
+			<Begin>{{!</Begin>
+			<End>}}</End>
+		</Span>
+		<Span color="TagDelimiter" ruleSet="MTag" multiline="true">
+			<Begin>{{</Begin>
+			<End>}}</End>
+		</Span>
+	</RuleSet>
+
+	<RuleSet name="HtmlCode">
+		<Rule color="DefaultExpression">
+			.+
+		</Rule>
+	</RuleSet>
+
+	<!-- This is the main ruleset. -->
+	<RuleSet ignoreCase="true" name="MTag">
+		<Keywords color="Keyword">
+			<Word>#if</Word>
+			<Word>^if</Word>
+			<Word>/if</Word>
+			<Word>#else</Word>
+			<Word>#elseif</Word>
+			<Word>/elseif</Word>
+			<Word>/else</Word>
+			<Word>#each</Word>
+			<Word>/each</Word>
+			<Word>#do</Word>
+			<Word>/do</Word>
+			<Word>#repeat</Word>
+			<Word>/repeat</Word>
+			<Word>#while</Word>
+			<Word>/while</Word>
+			<Word>#var</Word>
+			<Word>#let</Word>
+			<Word>#NL</Word>
+			<Word>#TNL</Word>
+			<Word>#TNLS</Word>
+			<Word>#declare</Word>
+			<Word>/declare</Word>
+			<Word>#include</Word>
+			<Word>#import</Word>
+			<Word>#scope</Word>
+			<Word>/scope</Word>
+			<Word>#</Word>
+			<Word>^</Word>
+			<Word>/</Word>
+			<Word>$index</Word>
+			<Word>$fist</Word>
+			<Word>$last</Word>
+			<Word>$odd</Word>
+			<Word>$even</Word>
+			<Word>$middel</Word>
+			<Word>$name</Word>
+			<Word>--|</Word>
+			<Word>-|</Word>
+			<Word>|--</Word>
+			<Word>|-</Word>
+		</Keywords>
+
+		<Keywords color="Keyword">
+			<Word>true</Word>
+			<Word>false</Word>
+			<Word>null</Word>
+		</Keywords>
+
+		<!--<Rule color="Keyword"> AS|as </Rule>-->
+		<Span color="String">
+			<Begin>"</Begin>
+			<End>"</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+
+		<Span color="String">
+			<Begin>'</Begin>
+			<End>'</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+
+		<Rule color="NumberLiteral">
+			\b0[xX][0-9a-fA-F]+  # hex number
+			|	
+			(	\b\d+(\.[0-9]+)?   #number with optional floating point
+			|	\.[0-9]+           #or just starting with floating point
+			)
+			([eE][+-]?[0-9]+)? # optional exponent
+		</Rule>
+		<Rule color="MethodCall">
+			\b[\d\w_]+(?=\s*\()
+		</Rule>
+		<Rule color="Punctuation">
+			[?,.;()\[\]{}+\-/%*&lt;&gt;^+~!|&amp;]+
+		</Rule>
+		<Rule color="Char">
+[\w*]
+		</Rule>
+	</RuleSet>
+</SyntaxDefinition>
