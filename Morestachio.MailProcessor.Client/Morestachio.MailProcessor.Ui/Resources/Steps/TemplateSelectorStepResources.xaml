@@ -6,7 +6,8 @@
                     xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
                     xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:behaviors="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors">
+                    xmlns:behaviors="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors"
+                    xmlns:avalon="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors.Avalon">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Resources/Steps/StructureDisplayResources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -57,8 +58,9 @@
                         Foreground="{DynamicResource UiForeground}"
                         Margin="5">
                         <b:Interaction.Behaviors>
-                            <behaviors:AvalonEditBehaviour 
-                                Text="{Binding Template, UpdateSourceTrigger=PropertyChanged, Delay=250}"/>
+                            <avalon:AvalonEditBehaviour 
+                                Text="{Binding Template, UpdateSourceTrigger=PropertyChanged}"
+                                TextMarkerService="{Binding TextMarkerService, Mode=OneWayToSource}"/>
                         </b:Interaction.Behaviors>
 
                         <avalonEdit:TextEditor.Template>

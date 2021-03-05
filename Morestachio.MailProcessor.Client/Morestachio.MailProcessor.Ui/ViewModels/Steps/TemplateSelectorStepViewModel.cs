@@ -7,6 +7,7 @@ using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Xml;
 using ControlzEx.Theming;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -19,6 +20,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Morestachio.Helper;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Import;
+using Morestachio.MailProcessor.Ui.Behaviors.Avalon;
 using Morestachio.MailProcessor.Ui.Resources.Steps;
 using Morestachio.MailProcessor.Ui.Services.MailTemplates;
 using Morestachio.MailProcessor.Ui.Services.Settings;
@@ -49,6 +51,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 						e.MorestachioErrors.Clear();
 						e.MorestachioErrors.AddEach(
 							await Parser.Validate(new StringTemplateContainer(e.Template)));
+						e.RefreshErrorMarkers();
 						return e.MorestachioErrors.Count > 0;
 					},
 					nameof(Template)));
@@ -141,6 +144,13 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		private string _preview;
 		private MailTemplate _selectedTemplate;
 		private IHighlightingDefinition _morestachioHtmlMixDefinition;
+		private ITextMarkerService _textMarkerService;
+
+		public ITextMarkerService TextMarkerService
+		{
+			get { return _textMarkerService; }
+			set { SetProperty(ref _textMarkerService, value); }
+		}
 
 		public IHighlightingDefinition MorestachioHtmlMixDefinition
 		{
@@ -179,8 +189,35 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public PreviewTemplateWindow PreviewTemplateWindow { get; set; }
 		public bool PreviewGenerationRequested { get; set; }
 		public WebViewService WebViewService { get; set; }
-
 		public CompilationResult ErrorDisplayTemplate { get; set; }
+
+		private void RefreshErrorMarkers()
+		{
+			if (TextMarkerService == null)
+			{
+				return;
+			}
+
+			BeginViewModelAction(() =>
+			{
+				TextMarkerService.RemoveAll(f => true);
+				foreach (var morestachioError in MorestachioErrors)
+				{
+					var textMarker = TextMarkerService.Create(
+						morestachioError.Location.Line,
+						morestachioError.Location.Character,
+						morestachioError.Location.Snipped.Snipped.Length);
+					textMarker.MarkerColor = Colors.Red;
+					textMarker.MarkerTypes = TextMarkerTypes.SquigglyUnderline;
+					textMarker.ToolTip = morestachioError;
+				}
+
+				//if (e.InferredTemplateModel != null)
+				//{
+				//	MorestachioFoldingStrategy.UpdateFolding(FoldingManager, Template, e.InferredTemplateModel);
+				//}
+			});
+		}
 
 		private void ShowPreviewWindowExecute(object sender)
 		{
@@ -232,6 +269,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				if (morestachioDocumentInfo.Errors.Any())
 				{
 					MorestachioErrors.AddEach(morestachioDocumentInfo.Errors);
+					RefreshErrorMarkers();
 					continue;
 				}
 

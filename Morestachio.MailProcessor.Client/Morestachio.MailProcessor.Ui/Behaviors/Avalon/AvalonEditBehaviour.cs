@@ -1,26 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ICSharpCode.AvalonEdit;
-using JPB.WPFToolsAwesome.MVVM.ViewModel;
 using Microsoft.Xaml.Behaviors;
 
-namespace Morestachio.MailProcessor.Ui.Behaviors
+namespace Morestachio.MailProcessor.Ui.Behaviors.Avalon
 {
 	public sealed class AvalonEditBehaviour : Behavior<TextEditor>
 	{
 		public static readonly DependencyProperty TextProperty =
-				DependencyProperty.Register("Text", typeof(string), typeof(AvalonEditBehaviour),
+			DependencyProperty.Register("Text", typeof(string), typeof(AvalonEditBehaviour),
 				new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, TextChangedCallback));
 
 		public static readonly DependencyProperty CaretOffsetProperty = DependencyProperty.Register(
 			"CaretOffset", typeof(int), typeof(AvalonEditBehaviour), new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, CaretOffsetChangedCallback));
-		
+
+		public static readonly DependencyProperty TextMarkerServiceProperty = DependencyProperty.Register(
+			nameof(TextMarkerService), typeof(ITextMarkerService), typeof(AvalonEditBehaviour), new PropertyMetadata(default(ITextMarkerService)));
+
+		public ITextMarkerService TextMarkerService
+		{
+			get { return (ITextMarkerService) GetValue(TextMarkerServiceProperty); }
+			set { SetValue(TextMarkerServiceProperty, value); }
+		}
 
 		private static void CaretOffsetChangedCallback(DependencyObject dependencyObject,
 			DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
@@ -61,6 +63,10 @@ namespace Morestachio.MailProcessor.Ui.Behaviors
 			{
 				AssociatedObject.TextChanged += AssociatedObjectOnTextChanged;
 				AssociatedObject.PreviewMouseWheel += AssociatedObject_PreviewMouseWheel;
+				TextMarkerService = new TextMarkerService(AssociatedObject.Document);
+				
+				AssociatedObject.TextArea.TextView.BackgroundRenderers.Add(TextMarkerService);
+				AssociatedObject.TextArea.TextView.LineTransformers.Add(TextMarkerService);
 			}
 		}
 
