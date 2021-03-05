@@ -40,13 +40,16 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 		private void PickFileCommandExecute(object sender)
 		{
 			var filePicker = new OpenFileDialog();
-			filePicker.ShowDialog(App.Current.MainWindow);
-			FilePath = filePicker.FileName;
+			filePicker.Filter = "comma seperated file|*.csv";
+			if (filePicker.ShowDialog(App.Current.MainWindow) == true)
+			{
+				FilePath = filePicker.FileName;
+			}
 		}
 
 		private bool CanPickFileCommandExecute(object sender)
 		{
-			return true;
+			return IsNotWorking;
 		}
 
 		private string _filePath;
