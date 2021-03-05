@@ -1,6 +1,9 @@
 # Morestachio-EmailProcessor
 A Simple Mass E-Mail Processor.
 
+Version: 1.0.1.
+Link: https://github.com/JPVenson/Morestachio-EmailProcessor
+
 The Ui allows an end-user to be guided trough the steps: Data Import, Templating, Mail Distributor and sending.
 
 ## Prerequisites
