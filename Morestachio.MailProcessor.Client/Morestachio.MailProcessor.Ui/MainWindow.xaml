@@ -36,7 +36,7 @@
                 <ResourceDictionary Source="Resources/Steps/SendReportStepResources.xaml"/>
 
                 <ResourceDictionary Source="Resources/DataImport/ImportDataStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/DataImport/CsvImportResources.xaml"/>
+                <ResourceDictionary Source="Resources/DataImport/ImportFileResources.xaml"/>
                 <ResourceDictionary Source="Resources/DataImport/SqlImportResources.xaml"/>
                 <ResourceDictionary Source="Resources/Steps/PrepareMailDataStepResources.xaml"/>
                 <ResourceDictionary Source="Resources/Distributor/MailDistributionStepResources.xaml"/>
@@ -114,9 +114,13 @@
             <mah:ToggleSwitch Content="Dark Mode" IsOn="{Binding EnableDarkMode}" Command="{Binding SwitchDarkModeCommand}"/>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
-    <DockPanel>
-        <DockPanel DockPanel.Dock="Top"
-                   Height="35"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="45" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0"
                    LastChildFill="True"
                    Background="{DynamicResource BackgroundPanelColor}">
             <Label DockPanel.Dock="Left"
@@ -181,7 +185,43 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </DockPanel>
-        <DockPanel Dock="Bottom" Height="45" LastChildFill="False"
+        <Grid Grid.Row="1">
+            <mah:TransitioningContentControl
+                Content="{Binding UiWorkflow.CurrentStep, ValidatesOnNotifyDataErrors=False}"
+                Margin="0,0,0,35"
+                IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
+                VerticalAlignment="Stretch"
+                Transition="{Binding UiWorkflow.TransitionType}">
+            </mah:TransitioningContentControl>
+
+            <Expander VerticalAlignment="Bottom" 
+                      Header="{lex:Loc Help.Title}"
+                      Background="{StaticResource BackgroundPanelColorSolid}"
+                      IsExpanded="{Binding UiWorkflow.HelpRequested}"
+                      ExpandDirection="Up">
+                <Expander.Visibility>
+                    <Binding Path="UiWorkflow.CurrentStep.Description">
+                        <Binding.Converter>
+                            <converter:ChainConverter>
+                                <ui:TranslationNullToBooleanConverter />
+                                <BooleanToVisibilityConverter />
+                            </converter:ChainConverter>
+                        </Binding.Converter>
+                    </Binding>
+                </Expander.Visibility>
+                <Expander.Content>
+                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <ContentControl VerticalAlignment="Stretch" 
+                                        FontSize="22"
+                                        HorizontalAlignment="Stretch" 
+                                        Content="{Binding UiWorkflow.CurrentStep.Description, ValidatesOnNotifyDataErrors=False, ValidatesOnDataErrors=False}"/>
+                    </Grid>
+                </Expander.Content>
+            </Expander>
+        </Grid>
+        
+        <DockPanel Grid.Row="2"
+                   LastChildFill="False"
                    Background="{DynamicResource BackgroundPanelColor}">
             <Button Command="{Binding UiWorkflow.PreviousPageCommand}" 
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
@@ -217,41 +257,5 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </DockPanel>
-        <DockPanel Dock="Top">
-            <Grid>
-                <mah:TransitioningContentControl
-                    Content="{Binding UiWorkflow.CurrentStep, ValidatesOnNotifyDataErrors=False}"
-                    Margin="0,0,0,35"
-                    IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
-                    VerticalAlignment="Stretch"
-                    Transition="{Binding UiWorkflow.TransitionType}">
-                </mah:TransitioningContentControl>
-
-                <Expander VerticalAlignment="Bottom" 
-                          Header="{lex:Loc Help.Title}"
-                          Background="{StaticResource BackgroundPanelColorSolid}"
-                          IsExpanded="{Binding UiWorkflow.HelpRequested}"
-                          ExpandDirection="Up">
-                    <Expander.Visibility>
-                        <Binding Path="UiWorkflow.CurrentStep.Description">
-                            <Binding.Converter>
-                                <converter:ChainConverter>
-                                    <ui:TranslationNullToBooleanConverter />
-                                    <BooleanToVisibilityConverter />
-                                </converter:ChainConverter>
-                            </Binding.Converter>
-                        </Binding>
-                    </Expander.Visibility>
-                    <Expander.Content>
-                        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                            <ContentControl VerticalAlignment="Stretch" 
-                                   FontSize="22"
-                                   HorizontalAlignment="Stretch" 
-                                   Content="{Binding UiWorkflow.CurrentStep.Description, ValidatesOnNotifyDataErrors=False, ValidatesOnDataErrors=False}"/>
-                        </Grid>
-                    </Expander.Content>
-                </Expander>
-            </Grid>
-        </DockPanel>
-    </DockPanel>
+    </Grid>
 </mah:MetroWindow>

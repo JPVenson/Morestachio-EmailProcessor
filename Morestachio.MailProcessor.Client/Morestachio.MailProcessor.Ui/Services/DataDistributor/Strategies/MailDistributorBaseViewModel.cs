@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error;
 using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
@@ -24,7 +26,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 
 			TestConnectionCommand = new DelegateCommand(TestConnectionExecute, CanTestConnectionExecute);
 			ValidationState = new StepValidationViewModel();
-			
+
 			Commands.Add(new MenuBarCommand(TestConnectionCommand)
 			{
 				Content = ValidationState
@@ -41,26 +43,34 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			}
 		}
 
-
 		public DelegateCommand TestConnectionCommand { get; private set; }
 		private void TestConnectionExecute(object sender)
 		{
 			ValidationState.IsValidated = false;
-			SimpleWorkAsync(async () =>
+			SimpleWorkAsync(async () => { await ValidateData(false); });
+		}
+
+		private async Task ValidateData(bool silent)
+		{
+			var uiWorkflow = IoC.Resolve<IUiWorkflow>();
+			var textService = IoC.Resolve<ITextService>();
+
+			ProgressDialogController waiter = null;
+			if (!silent)
 			{
-				var uiWorkflow = IoC.Resolve<IUiWorkflow>();
-				var textService = IoC.Resolve<ITextService>();
-				
-				var waiter = await DialogCoordinator.Instance.ShowProgressAsync(uiWorkflow,
-					textService.Compile("Validate.Progress.Title", CultureInfo.CurrentUICulture, out _).ToString(),
-					textService.Compile("Validate.Progress.Message", CultureInfo.CurrentUICulture, out _).ToString()
-				);
-				waiter.SetIndeterminate();
-				try
+				waiter = await DialogCoordinator.Instance.ShowProgressAsync(uiWorkflow,
+				textService.Compile("Validate.Progress.Title", CultureInfo.CurrentUICulture, out _).ToString(),
+				textService.Compile("Validate.Progress.Message", CultureInfo.CurrentUICulture, out _).ToString()
+			);
+			}
+			waiter?.SetIndeterminate();
+			try
+			{
+				var mailDistributor = Create();
+				var beginResult = await mailDistributor.BeginSendMail();
+				if (!beginResult.Success)
 				{
-					var mailDistributor = Create();
-					var beginResult = await mailDistributor.BeginSendMail();
-					if (!beginResult.Success)
+					if (!silent)
 					{
 						await waiter.CloseAsync();
 						await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
@@ -68,36 +78,51 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 							textService.Compile("ImportData.Errors.Validate.Description", CultureInfo.CurrentUICulture, out _,
 								new FormattableArgument(beginResult.ErrorText, false)).ToString()
 						);
-						return;
 					}
-
-					var endResult = await mailDistributor.EndSendMail(beginResult);
-					if (!endResult.Success)
-					{
-						await waiter.CloseAsync();
-						await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
-							textService.Compile("ImportData.Errors.Validate.Title", CultureInfo.CurrentUICulture, out _).ToString(),
-							textService.Compile("ImportData.Errors.Validate.Description", CultureInfo.CurrentUICulture, out _,
-								new FormattableArgument(endResult.ErrorText, false)).ToString()
-						);
-
-						return;
-					}
-					await waiter.CloseAsync();
-				}
-				catch (Exception)
-				{
-					await waiter.CloseAsync();
-					await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
-						textService.Compile("ImportData.Errors.Validate.Title", CultureInfo.CurrentUICulture, out _).ToString(),
-						textService.Compile("ImportData.Errors.Validate.Description", CultureInfo.CurrentUICulture, out _,
-							new FormattableArgument("ImportData.Errors.Validate.GeneralError", true)).ToString()
-					);
 					return;
 				}
 
-				ValidationState.IsValidated = true;
-			});
+				var endResult = await mailDistributor.EndSendMail(beginResult);
+				if (!endResult.Success)
+				{
+					if (!silent)
+					{
+						await waiter.CloseAsync();
+						await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
+							textService.Compile("ImportData.Errors.Validate.Title", CultureInfo.CurrentUICulture, out _)
+								.ToString(),
+							textService.Compile("ImportData.Errors.Validate.Description", CultureInfo.CurrentUICulture,
+								out _,
+								new FormattableArgument(endResult.ErrorText, false)).ToString()
+						);
+					}
+
+					return;
+				}
+
+				if (!silent)
+				{
+					await waiter.CloseAsync();
+				}
+			}
+			catch (Exception)
+			{
+				if (!silent)
+				{
+					await waiter.CloseAsync();
+					await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
+						textService.Compile("ImportData.Errors.Validate.Title", CultureInfo.CurrentUICulture, out _)
+							.ToString(),
+						textService.Compile("ImportData.Errors.Validate.Description", CultureInfo.CurrentUICulture,
+							out _,
+							new FormattableArgument("ImportData.Errors.Validate.GeneralError", true)).ToString()
+					);
+				}
+
+				return;
+			}
+
+			ValidationState.IsValidated = true;
 		}
 
 		private bool CanTestConnectionExecute(object sender)
@@ -117,12 +142,18 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 
 		public abstract IMailDistributor Create();
 
+		public override Task ReadSettings(IDictionary<string, string> settings)
+		{
+			SimpleWorkAsync(async () => await ValidateData(true));
+			return base.ReadSettings(settings);
+		}
+
 		public override bool CanGoNext()
 		{
 			return base.CanGoNext() && ValidationState.IsValidated;
 		}
 
-		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
+		public override Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			IoC.Resolve<MailComposer>().MailDistributor = Create();
 			return base.OnGoNext(defaultStepConfigurator);

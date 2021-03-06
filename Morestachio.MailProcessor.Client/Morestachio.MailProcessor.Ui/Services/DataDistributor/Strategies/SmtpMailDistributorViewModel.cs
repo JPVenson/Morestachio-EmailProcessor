@@ -112,7 +112,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			};
 		}
 
-		public override void ReadSettings(IDictionary<string, string> settings)
+		public override async Task ReadSettings(IDictionary<string, string> settings)
 		{
 			Host = settings.GetOrNull(nameof(Host))?.ToString();
 			if (settings.TryGetValue(nameof(HostPort), out var port))
@@ -121,6 +121,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			}
 			AuthUserName = settings.GetOrNull(nameof(AuthUserName))?.ToString();
 			AuthPassword = settings.GetOrNull(nameof(AuthPassword))?.ToString();
+			await base.ReadSettings(settings);
 		}
 
 		public override IMailDistributor Create()

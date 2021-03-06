@@ -21,6 +21,7 @@ using Morestachio.MailProcessor.Framework.Import;
 using Morestachio.MailProcessor.Ui.Services.Settings;
 using Morestachio.MailProcessor.Ui.Services.StructureCache;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
+using Morestachio.MailProcessor.Ui.Util.ObjectSchema;
 using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
@@ -230,7 +231,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			};
 		}
 
-		public override void ReadSettings(IDictionary<string, string> settings)
+		public override async Task ReadSettings(IDictionary<string, string> settings)
 		{
 			using (base.DeferNotification())
 			{
@@ -240,6 +241,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				MExpressionFromAddress = settings.GetOrNull(nameof(MExpressionFromAddress))?.ToString();
 				MExpressionFromName = settings.GetOrNull(nameof(MExpressionFromName))?.ToString();
 			}
+			await base.ReadSettings(settings);
 		}
 
 		public override async Task OnEntry(IDictionary<string, object> data,
@@ -266,7 +268,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 
 			Structure.Clear();
-			Structure.AddEach(MailDataStructureViewModel.GenerateStructure(ExampleMailData.Data));
+			Structure.AddEach(ObjectSchemaGenerator.GenerateStructure(ExampleMailData.Data));
 
 			await base.OnEntry(data, configurator);
 		}
@@ -312,7 +314,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			       ?? GetLike("name");
 		}
 
-		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
+		public override Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			var mailComposer = IoC.Resolve<MailComposer>();
 			mailComposer.ToAddressExpression = ExpressionParser.ParseExpression(MExpressionAddress, out _);

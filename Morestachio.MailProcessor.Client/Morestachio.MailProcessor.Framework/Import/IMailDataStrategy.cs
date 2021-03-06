@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Morestachio.MailProcessor.Framework.Import
 {
-	public interface IMailDataStrategy
+	public interface IMailDataStrategy : IAsyncDisposable
 	{
 		string Id { get; } 
 		

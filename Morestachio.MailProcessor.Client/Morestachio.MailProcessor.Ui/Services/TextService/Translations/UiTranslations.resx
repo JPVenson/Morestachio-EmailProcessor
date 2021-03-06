@@ -106,7 +106,7 @@
   <data name="Application.Navigation.Forward" xml:space="preserve">
     <value></value>
   </data>
-  <data name="DataImport.Strategy.CSV.FileName" xml:space="preserve">
+  <data name="DataImport.Strategy.FileName" xml:space="preserve">
     <value></value>
   </data>
   <data name="DataImport.PrepareStep.AddressPath" xml:space="preserve">
@@ -175,7 +175,7 @@
   <data name="Template.Errors.InvalidTemplate" xml:space="preserve">
     <value></value>
   </data>
-  <data name="DataImport.Strategy.CSV.Errors.InvalidPath" xml:space="preserve">
+  <data name="DataImport.Strategy.Errors.InvalidPath" xml:space="preserve">
     <value></value>
   </data>
   <data name="DataImport.Strategy.CSV.Errors.InvalidFile" xml:space="preserve">
@@ -467,6 +467,15 @@
     <value></value>
   </data>
   <data name="Welcome.Savefiles" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Json.Title" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Json.Name" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Json.Description" xml:space="preserve">
     <value></value>
   </data>
 </root>

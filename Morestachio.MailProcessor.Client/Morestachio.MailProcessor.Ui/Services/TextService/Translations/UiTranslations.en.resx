@@ -126,7 +126,7 @@
   <data name="Application.Navigation.Forward" xml:space="preserve">
     <value>Next</value>
   </data>
-  <data name="DataImport.Strategy.CSV.FileName" xml:space="preserve">
+  <data name="DataImport.Strategy.FileName" xml:space="preserve">
     <value>File Name</value>
   </data>
   <data name="DataImport.PrepareStep.AddressPath" xml:space="preserve">
@@ -179,8 +179,8 @@ You can use the "Help" bar to the bottom to get contextual help on most steps</v
   <data name="Template.Errors.InvalidTemplate" xml:space="preserve">
     <value>Error in Template</value>
   </data>
-  <data name="DataImport.Strategy.CSV.Errors.InvalidPath" xml:space="preserve">
-    <value>The path to the CSV file is not valid</value>
+  <data name="DataImport.Strategy.Errors.InvalidPath" xml:space="preserve">
+    <value>The path to the file is invalid as i does not exist</value>
   </data>
   <data name="DataImport.Strategy.CSV.Errors.InvalidFile" xml:space="preserve">
     <value>The contents of the file did not indicate a CSV file</value>
@@ -498,5 +498,14 @@ Error: {1}</value>
   </data>
   <data name="Welcome.Savefiles" xml:space="preserve">
     <value>Saved Configurations</value>
+  </data>
+  <data name="DataImport.Strategy.Json.Title" xml:space="preserve">
+    <value>Json Import</value>
+  </data>
+  <data name="DataImport.Strategy.Json.Name" xml:space="preserve">
+    <value>Json</value>
+  </data>
+  <data name="DataImport.Strategy.Json.Description" xml:space="preserve">
+    <value>This importers will import a JSON file with a array of JSON objects inside. The objects should all be of the same structure as the first one and should all be contained in one array.</value>
   </data>
 </root>

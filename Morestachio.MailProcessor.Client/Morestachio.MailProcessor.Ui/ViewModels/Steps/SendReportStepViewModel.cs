@@ -107,17 +107,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			defaultStepConfigurator.Workflow.Steps.RemoveWhere(e => e.GroupKey == "Report");
 			return base.OnGoPrevious(defaultStepConfigurator);
 		}
-
-		public override async Task<IDictionary<string, string>> SaveSetting()
-		{
-			await Task.CompletedTask;
-			return new Dictionary<string, string>();
-		}
-
-		public override void ReadSettings(IDictionary<string, string> settings)
-		{
-		}
-
+		
 		public override Task OnEntry(IDictionary<string, object> data,
 			DefaultStepConfigurator configurator)
 		{

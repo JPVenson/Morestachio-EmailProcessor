@@ -20,7 +20,7 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 
 		public PersistantSettingsService PersistantSettingsService { get; set; }
 
-		public void AddNextToMe(IWizardStepBaseViewModel step)
+		public async Task AddNextToMe(IWizardStepBaseViewModel step)
 		{
 			var index = Workflow.Steps.IndexOf(Step);
 
@@ -40,15 +40,14 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 
 			if (PersistantSettingsService.LoadedSettings != null)
 			{
-				step.ReadSettings(PersistantSettingsService.LoadedSettings.Values);
-				if (step is AsyncErrorProviderBase errorProvider)
-				{
-					errorProvider.ForceRefreshAsync();
-				}
+				await step.ReadSettings(PersistantSettingsService.LoadedSettings.Values);
+				//if (step is AsyncErrorProviderBase errorProvider)
+				//{
+				//	errorProvider.ForceRefreshAsync();
+				//}
 			}
-
-			var defaultGenericImportStepConfigurator = new DefaultStepConfigurator(step);
-			step.OnAdded(defaultGenericImportStepConfigurator);
+			
+			step.OnAdded( new DefaultStepConfigurator(step));
 		}
 
 		//public void AddPrecededByMe(IWizardStepBaseViewModel step)

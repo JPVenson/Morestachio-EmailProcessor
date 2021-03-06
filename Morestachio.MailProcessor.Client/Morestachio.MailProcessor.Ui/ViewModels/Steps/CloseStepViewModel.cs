@@ -30,14 +30,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return new Dictionary<string, string>();
 		}
 
-		public override void ReadSettings(IDictionary<string, string> settings)
-		{
-		}
-
-		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
+		public override Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			App.Current.Shutdown();
-			return false;
+			return Task.FromResult(false);
 		}
 	}
 }

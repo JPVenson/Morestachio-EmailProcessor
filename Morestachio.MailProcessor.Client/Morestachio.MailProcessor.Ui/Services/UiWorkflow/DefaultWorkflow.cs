@@ -151,14 +151,16 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 			return IsNotWorking && !HelpRequested && CurrentStep.CanGoPrevious();
 		}
 
-		private void NextPageExecute(object sender)
+		private async void NextPageExecute(object sender)
 		{
-			if (!CurrentStep.OnGoNext(new DefaultStepConfigurator(CurrentStep)))
+			if ((await CurrentStep.OnGoNext(new DefaultStepConfigurator(CurrentStep))) == false)
 			{
 				return;
 			}
 			TransitionType = TransitionType.Right;
+#pragma warning disable 4014
 			SimpleWorkAsync(async () =>
+#pragma warning restore 4014
 			{
 				var nextStep = Steps.ElementAt(Steps.IndexOf(CurrentStep) + 1);
 				await nextStep.OnEntry(Data, new DefaultStepConfigurator(nextStep));

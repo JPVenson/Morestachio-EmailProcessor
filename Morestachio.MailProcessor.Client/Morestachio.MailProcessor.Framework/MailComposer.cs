@@ -114,8 +114,8 @@ namespace Morestachio.MailProcessor.Framework
 			var parsedTemplate = await Parser.ParseWithOptionsAsync(parsingOptions);
 			var sendData = 0;
 			var sendFailed = new ConcurrentDictionary<MailData, SendMailStatus>();
-			var mailDatas = await MailDataStrategy.GetMails();
 			var maxSendData = await MailDataStrategy.Count();
+			var mailDatas = await MailDataStrategy.GetMails();
 
 			void Progress(SendMailTaskProgress taskProgress, MailData mailData)
 			{

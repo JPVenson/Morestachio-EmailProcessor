@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com">
     <DataTemplate x:Key="StructureDisplay">
-        <Grid IsSharedSizeScope="True">
+        <Grid IsSharedSizeScope="True" ShowGridLines="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid Margin="20,0,0,7">
                 <Grid.ColumnDefinitions>
@@ -19,7 +19,8 @@
             <TreeView ItemsSource="{Binding }"
                       Grid.Row="1"
                       VerticalAlignment="Top"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <Grid>
@@ -28,7 +29,7 @@
                                 <ColumnDefinition SharedSizeGroup="Value_Group" />
                             </Grid.ColumnDefinitions>
                             <Label Content="{Binding FieldName}" Grid.Column="0" />
-                            <Label Content="{Binding FieldType}" Grid.Column="1" />
+                            <Label Content="{Binding DisplayType}" Grid.Column="1" />
                         </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>

@@ -11,13 +11,13 @@ using CsvHelper;
 
 namespace Morestachio.MailProcessor.Framework.Import.Strategies
 {
-	public class CsvImportStrategy : IMailDataStrategy
+	public class CsvImportStrategy : IMailDataStrategy, IAsyncDisposable
 	{
-		private readonly string _file;
+		private readonly Stream _csvContents;
 
-		public CsvImportStrategy(string file)
+		public CsvImportStrategy(Stream csvContents)
 		{
-			_file = file;
+			_csvContents = csvContents;
 			Exclude = new List<string>();
 			Id = IdKey;
 		}
@@ -68,28 +68,33 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 
 			public async ValueTask<bool> MoveNextAsync()
 			{
-				return await _reader.ReadAsync();
+				if (!await _reader.ReadAsync())
+				{
+					return false;
+				}
+
+				var mailData = new MailData();
+				foreach (var header in _headers)
+				{
+					mailData.Data[header] = _reader.GetField<string>(header);
+				}
+
+				Current = mailData;
+				return true;
 			}
 
 			public MailData Current
 			{
-				get
-				{
-					var mailData = new MailData();
-					foreach (var header in _headers)
-					{
-						mailData.Data[header] = _reader.GetField<string>(header);
-					}
-
-					return mailData;
-				}
+				get;
+				private set;
 			}
 		}
 
 		public async Task<int> Count()
 		{
-			var fileReader = new StreamReader(_file);
-			var csvReader = new CsvReader(fileReader);
+			_csvContents.Position = 0;
+			var fileReader = new StreamReader(_csvContents, null, true, -1, true);
+			var csvReader = new CsvReader(fileReader, true);
 			
 			await csvReader.ReadAsync();
 			csvReader.ReadHeader();
@@ -105,8 +110,9 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 
 		public async Task<IAsyncEnumerable<MailData>> GetMails()
 		{
-			var fileReader = new StreamReader(_file);
-			var csvReader = new CsvReader(fileReader);
+			_csvContents.Position = 0;
+			var fileReader = new StreamReader(_csvContents, null, true, -1, true);
+			var csvReader = new CsvReader(fileReader, true);
 			
 			await csvReader.ReadAsync();
 			csvReader.ReadHeader();
@@ -115,19 +121,17 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 
 		public async Task<MailData> GetPreviewData()
 		{
-			var fileReader = new StreamReader(_file);
-			var csvReader = new CsvReader(fileReader);
-			
-			await csvReader.ReadAsync();
-			csvReader.ReadHeader();
-
-			var csvEnumerable = new CsvEnumerable(csvReader, csvReader.Context.HeaderRecord.Except(Exclude).ToArray());
-			await foreach (var item in csvEnumerable)
+			await foreach (var item in await GetMails())
 			{
 				return item;
 			}
 
 			return null;
+		}
+
+		public async ValueTask DisposeAsync()
+		{
+			await _csvContents.DisposeAsync();
 		}
 	}
 }

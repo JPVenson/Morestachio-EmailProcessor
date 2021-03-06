@@ -123,5 +123,10 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 		{
 			return -1;
 		}
+
+		public async ValueTask DisposeAsync()
+		{
+			await Task.CompletedTask;
+		}
 	}
 }

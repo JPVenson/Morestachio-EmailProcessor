@@ -28,29 +28,37 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public DelegateCommand InstallWebRuntimeCommand { get; private set; }
 		public DelegateCommand LoadSettingCommand { get; private set; }
 
-		private async void LoadSettingExecute(SettingsMetaEntry sender)
+		private bool _forceCanGoNext = false;
+
+		private void LoadSettingExecute(SettingsMetaEntry sender)
 		{
 			var uiWorkflow = IoC.Resolve<IUiWorkflow>();
 			var textService = IoC.Resolve<ITextService>();
-			
-			if (!PersistantSettingsService.LoadSettings(sender))
-			{
-				await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
-					textService.Compile("Application.LoadSettings.Error.Title", CultureInfo.CurrentUICulture, out _)
-						.ToString(),
-					textService.Compile("Application.LoadSettings.Error.Message", CultureInfo.CurrentUICulture,
-						out _).ToString()
-				);
-				return;
-			}
 
-			foreach (var wizardStepBaseViewModel in uiWorkflow.Steps)
-			{
-				wizardStepBaseViewModel.ReadSettings(PersistantSettingsService.LoadedSettings.Values);
-			}
+			SimpleWorkAsync(async () =>
+				{
+					if (!PersistantSettingsService.LoadSettings(sender))
+					{
+						await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
+							textService.Compile("Application.LoadSettings.Error.Title", CultureInfo.CurrentUICulture,
+									out _)
+								.ToString(),
+							textService.Compile("Application.LoadSettings.Error.Message", CultureInfo.CurrentUICulture,
+								out _).ToString()
+						);
+						return;
+					}
 
-			uiWorkflow.NextPageCommand.Execute(null);
+					foreach (var wizardStepBaseViewModel in uiWorkflow.Steps)
+					{
+						await wizardStepBaseViewModel.ReadSettings(PersistantSettingsService.LoadedSettings.Values);
+					}
 
+					
+					_forceCanGoNext = true;
+					uiWorkflow.NextPageCommand.Execute(null);
+					_forceCanGoNext = false;
+				});
 		}
 
 		private bool CanLoadSettingExecute(SettingsMetaEntry sender)
@@ -80,14 +88,9 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
 
-		public override async Task<IDictionary<string, string>> SaveSetting()
+		public override bool CanGoNext()
 		{
-			await Task.CompletedTask;
-			return new Dictionary<string, string>();
-		}
-
-		public override void ReadSettings(IDictionary<string, string> settings)
-		{
+			return _forceCanGoNext || base.CanGoNext();
 		}
 
 		public override bool CanGoPrevious()

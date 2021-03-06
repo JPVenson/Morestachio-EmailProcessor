@@ -17,9 +17,11 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			Description = new UiLocalizableString("DataImport.Selector.Description");
 			GroupKey = "MainGroup";
 			DataImportService = IoC.Resolve<DataImportService>();
+			MailComposer = IoC.Resolve<MailComposer>();
 		}
 
 		public DataImportService DataImportService { get; set; }
+		public MailComposer MailComposer { get; set; }
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
 
@@ -48,10 +50,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 		}
 
-		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
+		public override async Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
-			defaultStepConfigurator.AddNextToMe(SelectedStrategy);
-			return base.OnGoNext(defaultStepConfigurator);
+			await defaultStepConfigurator.AddNextToMe(SelectedStrategy);
+			return await base.OnGoNext(defaultStepConfigurator);
 		}
 
 		public override async Task<IDictionary<string, string>> SaveSetting()
@@ -63,12 +65,17 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			};
 		}
 
-		public override void ReadSettings(IDictionary<string, string> settings)
+		public override async Task ReadSettings(IDictionary<string, string> settings)
 		{
 			if (settings.TryGetValue("ImportDataStep.SelectedImporterStrategy", out var strategyId))
 			{
-				IoC.Resolve<MailComposer>().MailDataStrategy = DataImportService.MailDataStrategy
-					.FirstOrDefault(e => e.Id == strategyId)?.Create();
+				if (MailComposer.MailDataStrategy != null)
+				{
+					await MailComposer.MailDataStrategy.DisposeAsync();
+				}
+
+				SelectedStrategy = DataImportService.MailDataStrategy
+					.FirstOrDefault(e => e.Id == strategyId);
 			}
 		}
 
@@ -76,11 +83,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			DefaultStepConfigurator configurator)
 		{
 			await base.OnEntry(data, configurator);
-
-			var mailComposer = IoC.Resolve<MailComposer>();
+			
 			MailDataStrategies = DataImportService.MailDataStrategy;
-			SelectedStrategy = DataImportService.MailDataStrategy
-				.FirstOrDefault(e => e.Id == mailComposer.MailDataStrategy?.Id);
+			SelectedStrategy = SelectedStrategy ?? DataImportService.MailDataStrategy
+				.FirstOrDefault(e => e.Id == MailComposer.MailDataStrategy?.Id);
 		}
 
 		public override bool CanGoNext()

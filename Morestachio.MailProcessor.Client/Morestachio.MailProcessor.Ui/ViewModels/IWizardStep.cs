@@ -24,12 +24,12 @@ namespace Morestachio.MailProcessor.Ui.ViewModels
 		ObservableCollection<MenuBarCommand> Commands { get; set; }
 		string GroupKey { get; set; }
 		Task<IDictionary<string, string>> SaveSetting();
-		void ReadSettings(IDictionary<string, string> settings);
+		Task ReadSettings(IDictionary<string, string> settings);
 
 		void OnAdded(DefaultStepConfigurator configurator);
 		void OnRemoved(DefaultStepConfigurator configurator);
 		Task OnEntry(IDictionary<string, object> data, DefaultStepConfigurator configurator);
-		bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator);
+		Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator);
 		bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator);
 		bool CanGoNext();
 		bool CanGoPrevious();
@@ -80,8 +80,15 @@ namespace Morestachio.MailProcessor.Ui.ViewModels
 			}
 		}
 
-		public abstract Task<IDictionary<string, string>> SaveSetting();
-		public abstract void ReadSettings(IDictionary<string, string> settings);
+		public virtual Task<IDictionary<string, string>> SaveSetting()
+		{
+			return Task.FromResult<IDictionary<string, string>>(new Dictionary<string, string>());
+		}
+
+		public virtual Task ReadSettings(IDictionary<string, string> settings)
+		{
+			return Task.CompletedTask;
+		}
 
 		public virtual void OnAdded(DefaultStepConfigurator configurator)
 		{
@@ -100,9 +107,9 @@ namespace Morestachio.MailProcessor.Ui.ViewModels
 			await Task.CompletedTask;
 		}
 
-		public virtual bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
+		public virtual Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
-			return true;
+			return Task.FromResult(true);
 		}
 
 		public virtual bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator)

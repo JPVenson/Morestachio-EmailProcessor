@@ -54,9 +54,10 @@ namespace Morestachio.MailProcessor.Ui.Services.DataDistributor.Strategies
 			};
 		}
 
-		public override void ReadSettings(IDictionary<string, string> settings)
+		public override async Task ReadSettings(IDictionary<string, string> settings)
 		{
 			Directory = settings.GetOrNull(nameof(Directory))?.ToString();
+			await base.ReadSettings(settings);
 		}
 
 		public DelegateCommand PickDirectoryCommand { get; private set; }

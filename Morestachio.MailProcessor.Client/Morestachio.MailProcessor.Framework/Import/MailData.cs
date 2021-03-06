@@ -8,7 +8,12 @@ namespace Morestachio.MailProcessor.Framework.Import
 		{
 			Data = new Dictionary<string, object>();
 		}
-		
+
+		public MailData(IDictionary<string, object> data)
+		{
+			Data = data;
+		}
+
 		public IDictionary<string, object> Data { get; }
 	}
 }

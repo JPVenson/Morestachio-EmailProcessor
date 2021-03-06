@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error;
 using JPB.WPFToolsAwesome.Extensions;
 using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
@@ -14,9 +16,9 @@ using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 
 namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 {
-	public abstract class MailDataStrategyBaseViewModel<TErrors> : 
-		WizardStepBaseViewModel<TErrors>, 
-		IMailDataStrategyMetaViewModel 
+	public abstract class MailDataStrategyBaseViewModel<TErrors> :
+		WizardStepBaseViewModel<TErrors>,
+		IMailDataStrategyMetaViewModel
 		where TErrors : IErrorCollectionBase, new()
 	{
 		protected MailDataStrategyBaseViewModel(string id, params string[] contentProperties)
@@ -26,55 +28,77 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 			ValidateCommand = new DelegateCommand(ValidateExecute, CanValidateExecute);
 			PropertyChanged += SmtpMailDistributorViewModel_PropertyChanged;
 			_contentProperties = contentProperties;
-			ValidateionState = new StepValidationViewModel();
+			ValidationState = new StepValidationViewModel();
 
 			Commands.Add(new MenuBarCommand(ValidateCommand)
 			{
-				Content = ValidateionState
+				Content = ValidationState
 			});
-		}		
-		
+			MailComposer = IoC.Resolve<MailComposer>();
+		}
+
 		public DelegateCommand ValidateCommand { get; private set; }
-		
+		public MailComposer MailComposer { get; set; }
+
 		private readonly string[] _contentProperties;
 
 		private void SmtpMailDistributorViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			if (_contentProperties.Contains(e.PropertyName))
 			{
-				ValidateionState.IsValidated = false;
+				ValidationState.IsValidated = false;
 			}
 		}
 
 		private void ValidateExecute(object sender)
 		{
-			ValidateionState.IsValidated = false;
-			SimpleWorkAsync(async () =>
+			ValidationState.IsValidated = false;
+			SimpleWorkAsync(async () => { await ValidateData(false); });
+		}
+
+		private async Task ValidateData(bool silent)
+		{
+			var uiWorkflow = IoC.Resolve<IUiWorkflow>();
+			var textService = IoC.Resolve<ITextService>();
+			ProgressDialogController waiter = null;
+
+			if (!silent)
 			{
-				var uiWorkflow = IoC.Resolve<IUiWorkflow>();
-				var textService = IoC.Resolve<ITextService>();
-				var waiter = await DialogCoordinator.Instance.ShowProgressAsync(uiWorkflow,
+				waiter = await DialogCoordinator.Instance.ShowProgressAsync(uiWorkflow,
 					textService.Compile("Validate.Progress.Title", CultureInfo.CurrentUICulture, out _).ToString(),
 					textService.Compile("Validate.Progress.Message", CultureInfo.CurrentUICulture, out _).ToString()
-					);
+				);
 				waiter.SetIndeterminate();
+			}
 
-				try
+			try
+			{
+				MailData previewData;
+				await using (var strategy = Create())
 				{
-					var strategy = Create();
-					var previewData = await strategy.GetPreviewData();
-					ValidateionState.IsValidated = previewData != null;
+					previewData = await strategy.GetPreviewData();
+				}
+
+				ValidationState.IsValidated = previewData != null;
+
+				if (!silent)
+				{
 					await waiter.CloseAsync();
-					if (!ValidateionState.IsValidated)
+					if (!ValidationState.IsValidated)
 					{
 						await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
-							textService.Compile("ImportData.Errors.Validate.Title", CultureInfo.CurrentUICulture, out _).ToString(),
-							textService.Compile("ImportData.Errors.Validate.Description", CultureInfo.CurrentUICulture, out _,
+							textService.Compile("ImportData.Errors.Validate.Title", CultureInfo.CurrentUICulture, out _)
+								.ToString(),
+							textService.Compile("ImportData.Errors.Validate.Description", CultureInfo.CurrentUICulture,
+								out _,
 								new FormattableArgument("ImportData.Errors.Validate.GeneralError", true)).ToString()
 						);
 					}
 				}
-				catch (Exception e)
+			}
+			catch (Exception e)
+			{
+				if (!silent)
 				{
 					await waiter.CloseAsync();
 					await DialogCoordinator.Instance.ShowMessageAsync(uiWorkflow,
@@ -83,7 +107,7 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 							new FormattableArgument(e.Message, false)).ToString()
 					);
 				}
-			});
+			}
 		}
 
 		private bool CanValidateExecute(object sender)
@@ -93,19 +117,25 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 
 		public UiLocalizableString Name { get; set; }
 		public string Id { get; set; }
-		private StepValidationViewModel _validateionState;
+		private StepValidationViewModel _validationState;
 
-		public StepValidationViewModel ValidateionState
+		public StepValidationViewModel ValidationState
 		{
-			get { return _validateionState; }
-			set { SetProperty(ref _validateionState, value); }
+			get { return _validationState; }
+			set { SetProperty(ref _validationState, value); }
 		}
 
 		public abstract IMailDataStrategy Create();
 
+		public override Task ReadSettings(IDictionary<string, string> settings)
+		{
+			SimpleWorkAsync(async () => await ValidateData(true));
+			return base.ReadSettings(settings);
+		}
+
 		public override bool CanGoNext()
 		{
-			return base.CanGoNext() && ValidateionState.IsValidated;
+			return base.CanGoNext() && ValidationState.IsValidated;
 		}
 
 		public override bool OnGoPrevious(DefaultStepConfigurator defaultStepConfigurator)
@@ -114,10 +144,15 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 			return base.OnGoPrevious(defaultStepConfigurator);
 		}
 
-		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
+		public override async Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
-			IoC.Resolve<MailComposer>().MailDataStrategy = Create();
-			return base.OnGoNext(defaultStepConfigurator);
+			if (MailComposer.MailDataStrategy != null)
+			{
+				await MailComposer.MailDataStrategy.DisposeAsync();
+			}
+
+			MailComposer.MailDataStrategy = Create();
+			return await base.OnGoNext(defaultStepConfigurator);
 		}
 	}
 }

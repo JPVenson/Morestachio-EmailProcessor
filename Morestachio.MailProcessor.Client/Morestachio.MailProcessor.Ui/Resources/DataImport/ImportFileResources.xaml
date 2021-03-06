@@ -4,12 +4,12 @@
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:strategies="clr-namespace:Morestachio.MailProcessor.Ui.Services.DataImport.Strategies"
                     xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
-    <DataTemplate DataType="{x:Type strategies:CsvMailDataStrategyViewModel}">
+    <DataTemplate DataType="{x:Type strategies:IFileBaseDataStrategyViewModel}" x:Key="FileResourceFieldGridDataTemplate">
         <resources:FieldsetGrid
             Margin="15">
-            <Label Content="{lex:Loc DataImport.Strategy.CSV.FileName}" VerticalAlignment="Center"/>
+            <Label Content="{lex:Loc DataImport.Strategy.FileName}" VerticalAlignment="Center"/>
             <DockPanel Grid.Column="1">
-                
+
                 <Button Command="{Binding PickFileCommand}"
                         DockPanel.Dock="Right">
                     <iconPacks:Material Width="22"
@@ -19,8 +19,22 @@
                 <TextBox Text="{Binding FilePath, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
                          VerticalContentAlignment="Center"
                          DockPanel.Dock="Left"/>
-            
+
             </DockPanel>
         </resources:FieldsetGrid>
-    </DataTemplate>    
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type strategies:CsvMailDataStrategyViewModel}">
+        <Grid IsSharedSizeScope="True">
+            <StackPanel>
+                <ContentControl Content="{Binding ValidatesOnNotifyDataErrors=False}" ContentTemplate="{StaticResource FileResourceFieldGridDataTemplate}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type strategies:JsonMailDataStrategyViewModel}">
+        <Grid IsSharedSizeScope="True">
+            <StackPanel>
+                <ContentControl Content="{Binding ValidatesOnNotifyDataErrors=False}" ContentTemplate="{StaticResource FileResourceFieldGridDataTemplate}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

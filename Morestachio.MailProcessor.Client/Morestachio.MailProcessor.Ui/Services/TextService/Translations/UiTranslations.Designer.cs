@@ -396,24 +396,6 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string DataImport_Strategy_CSV_Errors_InvalidPath {
-            get {
-                return ResourceManager.GetString("DataImport.Strategy.CSV.Errors.InvalidPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string DataImport_Strategy_CSV_FileName {
-            get {
-                return ResourceManager.GetString("DataImport.Strategy.CSV.FileName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string DataImport_Strategy_CSV_Name {
             get {
                 return ResourceManager.GetString("DataImport.Strategy.CSV.Name", resourceCulture);
@@ -426,6 +408,51 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string DataImport_Strategy_CSV_Title {
             get {
                 return ResourceManager.GetString("DataImport.Strategy.CSV.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Errors_InvalidPath {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Errors.InvalidPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_FileName {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Json_Description {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Json.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Json_Name {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Json.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Json_Title {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Json.Title", resourceCulture);
             }
         }
         

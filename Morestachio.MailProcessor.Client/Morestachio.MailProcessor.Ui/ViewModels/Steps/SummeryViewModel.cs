@@ -83,11 +83,11 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public DelegateCommand ResetCommand { get; private set; }
 		public DelegateCommand SaveSendReportCommand { get; private set; }
 
-		private void SaveSendReportExecute(object sender)
+		private async void SaveSendReportExecute(object sender)
 		{
 			var uiWorkflow = IoC.Resolve<IUiWorkflow>();
 			var defaultGenericImportStepConfigurator = new DefaultStepConfigurator(this);
-			defaultGenericImportStepConfigurator.AddNextToMe(new SendReportStepViewModel()
+			await defaultGenericImportStepConfigurator.AddNextToMe(new SendReportStepViewModel()
 			{
 				SummeryStepViewModel = this
 			});
@@ -125,7 +125,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			};
 		}
 
-		public override void ReadSettings(IDictionary<string, string> settings)
+		public override async Task ReadSettings(IDictionary<string, string> settings)
 		{
 			if (settings.TryGetValue(nameof(MailComposer.SendInParallel), out var sendInParallel))
 			{
@@ -139,6 +139,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			{
 				MailComposer.ParallelReadAheadCount = int.Parse(readAhead);
 			}
+			await base.ReadSettings(settings);
 		}
 
 		public override Task OnEntry(IDictionary<string, object> data,
@@ -225,12 +226,12 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return base.CanGoPrevious() && !IsProcessed;
 		}
 
-		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
+		public override Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			if (IsProcessed == false)
 			{
 				SimpleWorkAsync(SendMails);
-				return false;
+				return Task.FromResult(false);
 			}
 
 			return base.OnGoNext(defaultStepConfigurator);

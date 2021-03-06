@@ -28,6 +28,7 @@ using Morestachio.MailProcessor.Ui.Services.StructureCache;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.Services.WebView;
+using Morestachio.MailProcessor.Ui.Util.ObjectSchema;
 using Morestachio.MailProcessor.Ui.ViewModels.Localization;
 using Morestachio.Parsing.ParserErrors;
 using Morestachio.TemplateContainers;
@@ -253,8 +254,9 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			PreviewGenerationRequested = true;
 			SimpleWorkAsync(async () =>
 			{
+				await Task.Delay(250);
 				await LoopPreview();
-			});
+			}, null, false);
 		}
 
 		private async Task LoopPreview()
@@ -362,16 +364,17 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			};
 		}
 
-		public override void ReadSettings(IDictionary<string, string> settings)
+		public override async Task ReadSettings(IDictionary<string, string> settings)
 		{
 			Template = settings.GetOrNull(nameof(Template))?.ToString();
+			await base.ReadSettings(settings);
 		}
 
 		public override Task OnEntry(IDictionary<string, object> data, DefaultStepConfigurator configurator)
 		{
 			ExampleMailData = IoC.Resolve<StructureCacheService>().ExampleMailData;
 			Structure.Clear();
-			Structure.AddEach(MailDataStructureViewModel.GenerateStructure(ExampleMailData.Data));
+			Structure.AddEach(ObjectSchemaGenerator.GenerateStructure(ExampleMailData.Data));
 
 			return base.OnEntry(data, configurator);
 		}
@@ -382,7 +385,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return base.OnGoPrevious(defaultStepConfigurator);
 		}
 
-		public override bool OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
+		public override Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
 		{
 			PreviewTemplateWindow?.Close();
 			IoC.Resolve<MailComposer>().Template = Template;

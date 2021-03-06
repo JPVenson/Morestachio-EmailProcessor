@@ -64,10 +64,11 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 			};
 		}
 
-		public override void ReadSettings(IDictionary<string, string> settings)
+		public override async Task ReadSettings(IDictionary<string, string> settings)
 		{
 			Query = settings.GetOrNull(nameof(Query))?.ToString();
 			ConnectionString = settings.GetOrNull(nameof(ConnectionString))?.ToString();
+			await base.ReadSettings(settings);
 		}
 
 		public override IMailDataStrategy Create()
