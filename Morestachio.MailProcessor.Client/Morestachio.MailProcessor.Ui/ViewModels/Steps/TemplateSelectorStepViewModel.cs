@@ -49,10 +49,9 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 						{
 							return true;
 						}
-						e.MorestachioErrors.Clear();
-						e.MorestachioErrors.AddEach(
-							await Parser.Validate(new StringTemplateContainer(e.Template)));
-						e.RefreshErrorMarkers();
+
+						await Task.Delay(250);
+						e.SyncErrors(await Parser.Validate(new StringTemplateContainer(e.Template)));
 						return e.MorestachioErrors.Count > 0;
 					},
 					nameof(Template)));
@@ -199,7 +198,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				return;
 			}
 
-			BeginViewModelAction(() =>
+			ViewModelAction(() =>
 			{
 				TextMarkerService.RemoveAll(f => true);
 				foreach (var morestachioError in MorestachioErrors)
@@ -262,16 +261,14 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		private async Task LoopPreview()
 		{
 			string preview = null;
+			MorestachioDocumentInfo morestachioDocumentInfo;
 			do
 			{
 				PreviewGenerationRequested = false;
-				MorestachioErrors.Clear();
 				var parser = new ParserOptions(Template);
-				var morestachioDocumentInfo = await Parser.ParseWithOptionsAsync(parser);
+				morestachioDocumentInfo = await Parser.ParseWithOptionsAsync(parser);
 				if (morestachioDocumentInfo.Errors.Any())
 				{
-					MorestachioErrors.AddEach(morestachioDocumentInfo.Errors);
-					RefreshErrorMarkers();
 					continue;
 				}
 
@@ -280,8 +277,10 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 			} while (PreviewGenerationRequested);
 
-			if (MorestachioErrors.Any())
+			if (morestachioDocumentInfo.Errors.Any())
 			{
+				SyncErrors(morestachioDocumentInfo.Errors);
+
 				if (ErrorDisplayTemplate != null)
 				{
 					Preview = (await ErrorDisplayTemplate(MorestachioErrors, CancellationToken.None)).Stream.Stringify(false, Encoding.UTF8);
@@ -290,6 +289,35 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			else
 			{
 				Preview = preview;
+			}
+		}
+
+		private void SyncErrors(IEnumerable<IMorestachioError> errors)
+		{
+			foreach (var morestachioError in errors)
+			{
+				if (MorestachioErrors.Any(e =>
+					ErrorComparer.Instance.Equals(e, morestachioError)))
+				{
+					continue;
+				}
+
+				MorestachioErrors.Add(morestachioError);
+			}
+
+			var obsoleteErrors = MorestachioErrors.Except(errors, ErrorComparer.Instance).ToArray();
+			foreach (var morestachioError in obsoleteErrors)
+			{
+				MorestachioErrors.Remove(morestachioError);
+			}
+
+			if (MorestachioErrors.Any())
+			{
+				RefreshErrorMarkers();
+			}
+			else
+			{
+				TextMarkerService.RemoveAll(f => true);
 			}
 		}
 
@@ -390,6 +418,46 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			PreviewTemplateWindow?.Close();
 			IoC.Resolve<MailComposer>().Template = Template;
 			return base.OnGoNext(defaultStepConfigurator);
+		}
+	}
+
+	internal class ErrorComparer : IEqualityComparer<IMorestachioError>
+	{
+		static ErrorComparer()
+		{
+			Instance = new ErrorComparer();
+		}
+
+		public static ErrorComparer Instance { get; private set; }
+
+		public bool Equals(IMorestachioError x, IMorestachioError y)
+		{
+			if (ReferenceEquals(x, y))
+			{
+				return true;
+			}
+
+			if (ReferenceEquals(x, null))
+			{
+				return false;
+			}
+
+			if (ReferenceEquals(y, null))
+			{
+				return false;
+			}
+
+			if (x.GetType() != y.GetType())
+			{
+				return false;
+			}
+
+			return x.Location.Equals(y.Location) && x.HelpText == y.HelpText;
+		}
+
+		public int GetHashCode(IMorestachioError obj)
+		{
+			return HashCode.Combine(obj.Location, obj.HelpText);
 		}
 	}
 }

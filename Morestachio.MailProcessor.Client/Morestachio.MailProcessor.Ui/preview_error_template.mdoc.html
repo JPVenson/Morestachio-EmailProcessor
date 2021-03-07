@@ -9,14 +9,14 @@
 	<table>
 		<thead>
 			<tr>
-				<td>Line</td>
+				<td>Line - Character</td>
 				<td>Error</td>
 			</tr>
 		</thead>
 		<tbody>
 			{{#EACH this AS error}}
 			<tr>
-				<td>{{error.Location}}</td>
+				<td>{{error.Location.Line}}-{{error.Location.Character}}</td>
 				<td>{{error.HelpText}}</td>
 			</tr>
 			{{/EACH}}
