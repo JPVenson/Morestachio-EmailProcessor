@@ -8,16 +8,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace Morestachio.MailProcessor.Framework.Import.Strategies
 {
 	public class CsvImportStrategy : IMailDataStrategy, IAsyncDisposable
 	{
 		private readonly Stream _csvContents;
+		private readonly Configuration _configuration;
 
-		public CsvImportStrategy(Stream csvContents)
+		public CsvImportStrategy(Stream csvContents, Configuration configuration)
 		{
 			_csvContents = csvContents;
+			_configuration = configuration;
 			Exclude = new List<string>();
 			Id = IdKey;
 		}
@@ -94,11 +97,11 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 		{
 			_csvContents.Position = 0;
 			var fileReader = new StreamReader(_csvContents, null, true, -1, true);
-			var csvReader = new CsvReader(fileReader, true);
-			
+			var csvReader = new CsvReader(fileReader, _configuration, true);
+
 			await csvReader.ReadAsync();
 			csvReader.ReadHeader();
-			
+
 			var count = 0;
 			while (await csvReader.ReadAsync())
 			{
@@ -112,8 +115,8 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 		{
 			_csvContents.Position = 0;
 			var fileReader = new StreamReader(_csvContents, null, true, -1, true);
-			var csvReader = new CsvReader(fileReader, true);
-			
+			var csvReader = new CsvReader(fileReader, _configuration, true);
+
 			await csvReader.ReadAsync();
 			csvReader.ReadHeader();
 			return new CsvEnumerable(csvReader, csvReader.Context.HeaderRecord.Except(Exclude).ToArray());

@@ -63,6 +63,24 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Application_Affirmative {
+            get {
+                return ResourceManager.GetString("Application.Affirmative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Cancel {
+            get {
+                return ResourceManager.GetString("Application.Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Application_ConfirmQuestion_Title {
             get {
                 return ResourceManager.GetString("Application.ConfirmQuestion.Title", resourceCulture);
@@ -75,6 +93,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string Application_Error_Title {
             get {
                 return ResourceManager.GetString("Application.Error.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Errors_RequiredField {
+            get {
+                return ResourceManager.GetString("Application.Errors.RequiredField", resourceCulture);
             }
         }
         
@@ -174,6 +201,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string Application_Navigation_Forward {
             get {
                 return ResourceManager.GetString("Application.Navigation.Forward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Application_Negative {
+            get {
+                return ResourceManager.GetString("Application.Negative", resourceCulture);
             }
         }
         
@@ -396,6 +432,60 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string DataImport_Strategy_CSV_Field_AllowComments {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.CSV.Field.AllowComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_CSV_Field_CommentChar {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.CSV.Field.CommentChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_CSV_Field_Delimiter {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.CSV.Field.Delimiter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_CSV_Field_IgnoreEmptyLines {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.CSV.Field.IgnoreEmptyLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_CSV_Field_IgnoreQuotes {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.CSV.Field.IgnoreQuotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_CSV_Field_QuoteChar {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.CSV.Field.QuoteChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string DataImport_Strategy_CSV_Name {
             get {
                 return ResourceManager.GetString("DataImport.Strategy.CSV.Name", resourceCulture);
@@ -408,6 +498,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         public static string DataImport_Strategy_CSV_Title {
             get {
                 return ResourceManager.GetString("DataImport.Strategy.CSV.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DataImport_Strategy_Errors_CharRequired {
+            get {
+                return ResourceManager.GetString("DataImport.Strategy.Errors.CharRequired", resourceCulture);
             }
         }
         

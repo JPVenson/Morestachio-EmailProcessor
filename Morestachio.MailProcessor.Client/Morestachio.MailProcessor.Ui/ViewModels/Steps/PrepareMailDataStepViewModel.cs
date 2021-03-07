@@ -65,7 +65,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				}
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					return (e.ExampleAddress = await ExportValue(e.MExpressionAddress, e.ExampleMailData.Data)) == null;
+					return (e.ExampleAddress = await ExportValue(e.MExpressionAddress, e.ExampleMailData)) == null;
 				}, nameof(MExpressionAddress), nameof(ExampleMailData)));
 
 				Add(new Error<PrepareMailDataStepViewModel>(invalidAddress, e =>
@@ -80,23 +80,23 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					return (e.ExampleName = await ExportValue(e.MExpressionName, e.ExampleMailData.Data)) == null; ;
+					return (e.ExampleName = await ExportValue(e.MExpressionName, e.ExampleMailData)) == null; ;
 				}, nameof(MExpressionName), nameof(ExampleMailData)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					return (e.ExampleSubject = await ExportValue(e.MExpressionSubject, e.ExampleMailData.Data)) == null;
+					return (e.ExampleSubject = await ExportValue(e.MExpressionSubject, e.ExampleMailData)) == null;
 				}, nameof(MExpressionSubject), nameof(ExampleMailData)));
 
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					return (e.ExampleFromName = await ExportValue(e.MExpressionFromName, e.ExampleMailData.Data)) == null;
+					return (e.ExampleFromName = await ExportValue(e.MExpressionFromName, e.ExampleMailData)) == null;
 				}, nameof(MExpressionFromName), nameof(ExampleMailData)));
 
 				Add(new AsyncError<PrepareMailDataStepViewModel>(invalidExpression, async e =>
 				{
-					return (e.ExampleFromAddress = await ExportValue(e.MExpressionFromAddress, e.ExampleMailData.Data)) == null;
+					return (e.ExampleFromAddress = await ExportValue(e.MExpressionFromAddress, e.ExampleMailData)) == null;
 				}, nameof(MExpressionFromAddress), nameof(ExampleMailData)));
 
 				Add(new Error<PrepareMailDataStepViewModel>(invalidAddress, e =>
@@ -115,15 +115,17 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			Title = new UiLocalizableString("MailDistributor.Prepare.Title");
 			Description = new UiLocalizableString("MailDistributor.Prepare.Description");
 			GroupKey = "MainGroup";
-			Structure = new ThreadSaveObservableCollection<MailDataStructureViewModel>();
+			MailComposer = IoC.Resolve<MailComposer>();
+			StructureCacheService = IoC.Resolve<StructureCacheService>();
 			ExampleMailData = new MailData();
 			//MExpressionFromName = "\"Mr Company\"";
 			//MExpressionFromAddress = "\"mr.company@test.com\"";
 			//MExpressionSubject = "\"Hot new Newsletter\"";
 		}
 
-
-		public ThreadSaveObservableCollection<MailDataStructureViewModel> Structure { get; set; }
+		
+		public MailComposer MailComposer { get; set; }
+		public StructureCacheService StructureCacheService { get; set; }
 
 		public MailData ExampleMailData
 		{
@@ -247,29 +249,16 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public override async Task OnEntry(IDictionary<string, object> data,
 			DefaultStepConfigurator configurator)
 		{
-
-			//#if DEBUG
-			//			MExpressionAddress = MExpressionAddress ?? "email";
-			//			MExpressionName = MExpressionName ?? "\"Mr or Ms \" + firstname + \", \" + lastname";
-			//			MExpressionSubject = MExpressionSubject ?? "\"Subject A\"";
-			//#endif
-
-			var mailComposer = IoC.Resolve<MailComposer>();
-			ExampleMailData = await mailComposer.MailDataStrategy.GetPreviewData();
-			IoC.Resolve<StructureCacheService>().ExampleMailData = ExampleMailData;
+			ExampleMailData = StructureCacheService.ExampleMailData;
 
 			using (base.DeferNotification())
 			{
-				MExpressionAddress = MExpressionAddress ?? StringifyExpression(mailComposer.ToAddressExpression) ?? GuessAddressExpression();
-				MExpressionName = MExpressionName ?? StringifyExpression(mailComposer.ToNameExpression) ?? GuessNameExpression();
-				MExpressionSubject = MExpressionSubject ?? StringifyExpression(mailComposer.SubjectExpression) ?? "\"subject\"";
-				MExpressionFromAddress = MExpressionFromAddress ?? StringifyExpression(mailComposer.FromAddressExpression);
-				MExpressionFromName = MExpressionFromName ?? StringifyExpression(mailComposer.FromNameExpression);
+				MExpressionAddress = MExpressionAddress ?? StringifyExpression(MailComposer.ToAddressExpression) ?? GuessAddressExpression();
+				MExpressionName = MExpressionName ?? StringifyExpression(MailComposer.ToNameExpression) ?? GuessNameExpression();
+				MExpressionSubject = MExpressionSubject ?? StringifyExpression(MailComposer.SubjectExpression) ?? "\"subject\"";
+				MExpressionFromAddress = MExpressionFromAddress ?? StringifyExpression(MailComposer.FromAddressExpression);
+				MExpressionFromName = MExpressionFromName ?? StringifyExpression(MailComposer.FromNameExpression);
 			}
-
-			Structure.Clear();
-			Structure.AddEach(ObjectSchemaGenerator.GenerateStructure(ExampleMailData.Data));
-
 			await base.OnEntry(data, configurator);
 		}
 
@@ -280,7 +269,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				if (o.Key.Contains(value, StringComparison.InvariantCultureIgnoreCase) ||
 					o.Key.Equals(value, StringComparison.InvariantCultureIgnoreCase))
 				{
-					return o.Key;
+					return "Data." + o.Key;
 				}
 			}
 

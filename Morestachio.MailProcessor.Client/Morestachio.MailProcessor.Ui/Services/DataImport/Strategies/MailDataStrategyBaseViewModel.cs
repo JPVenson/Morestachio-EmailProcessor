@@ -9,6 +9,7 @@ using JPB.WPFToolsAwesome.MVVM.DelegateCommand;
 using MahApps.Metro.Controls.Dialogs;
 using Morestachio.MailProcessor.Framework;
 using Morestachio.MailProcessor.Framework.Import;
+using Morestachio.MailProcessor.Ui.Services.StructureCache;
 using Morestachio.MailProcessor.Ui.Services.TextService;
 using Morestachio.MailProcessor.Ui.Services.UiWorkflow;
 using Morestachio.MailProcessor.Ui.ViewModels;
@@ -35,10 +36,12 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 				Content = ValidationState
 			});
 			MailComposer = IoC.Resolve<MailComposer>();
+			StructureCacheService = IoC.Resolve<StructureCacheService>();
 		}
 
 		public DelegateCommand ValidateCommand { get; private set; }
 		public MailComposer MailComposer { get; set; }
+		public StructureCacheService StructureCacheService { get; set; }
 
 		private readonly string[] _contentProperties;
 
@@ -80,7 +83,8 @@ namespace Morestachio.MailProcessor.Ui.Services.DataImport.Strategies
 				}
 
 				ValidationState.IsValidated = previewData != null;
-
+				StructureCacheService.SetExampleData(previewData);
+				
 				if (!silent)
 				{
 					await waiter.CloseAsync();

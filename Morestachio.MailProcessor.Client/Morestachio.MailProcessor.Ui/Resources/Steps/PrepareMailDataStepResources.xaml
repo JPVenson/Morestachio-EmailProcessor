@@ -17,10 +17,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ContentControl Content="{Binding Structure}"
+            <ContentControl Content="{Binding StructureCacheService}"
                             Grid.Column="1"
-                            VerticalAlignment="Stretch"
-                            ContentTemplate="{StaticResource StructureDisplay}" />
+                            VerticalAlignment="Stretch" />
             <ScrollViewer Grid.Column="0">
                 <Grid IsSharedSizeScope="True"
                       Margin="15">

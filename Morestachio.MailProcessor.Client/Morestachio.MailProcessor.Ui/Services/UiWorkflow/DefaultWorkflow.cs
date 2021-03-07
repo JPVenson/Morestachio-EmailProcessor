@@ -78,16 +78,30 @@ namespace Morestachio.MailProcessor.Ui.Services.UiWorkflow
 				var settingsToSave = persistantSettingsService.LoadedSettings;
 				if (persistantSettingsService.LoadedSettings != null)
 				{
-					if ((await DialogCoordinator.Instance.ShowMessageAsync(this,
+					var overwriteState = (await DialogCoordinator.Instance.ShowMessageAsync(this,
 						textService.Compile("Application.Storage.OverwriteExisting.Title",
 							CultureInfo.CurrentUICulture, out _).ToString(),
 						textService.Compile("Application.Storage.OverwriteExisting.Message",
 							CultureInfo.CurrentUICulture, out _,
 							new FormattableArgument(persistantSettingsService.LoadedSettings.Name, false)).ToString(),
-						MessageDialogStyle.AffirmativeAndNegative
-					)) == MessageDialogResult.Negative)
+						MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary,
+						new MetroDialogSettings()
+						{
+							AffirmativeButtonText = textService.Compile("Application.Affirmative",
+								CultureInfo.CurrentUICulture, out _).ToString(),
+							NegativeButtonText = textService.Compile("Application.Negative",
+								CultureInfo.CurrentUICulture, out _).ToString(),
+							FirstAuxiliaryButtonText = textService.Compile("Application.Cancel",
+								CultureInfo.CurrentUICulture, out _).ToString()
+						}
+					));
+					if (overwriteState == MessageDialogResult.Negative)
 					{
 						settingsToSave = new SettingsEntry();
+					}
+					if (overwriteState == MessageDialogResult.Canceled)
+					{
+						return;
 					}
 				}
 				else

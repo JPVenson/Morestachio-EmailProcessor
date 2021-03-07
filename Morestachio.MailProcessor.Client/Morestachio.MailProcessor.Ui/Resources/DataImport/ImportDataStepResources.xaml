@@ -8,7 +8,7 @@
                     xmlns:steps="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps">
     <DataTemplate DataType="{x:Type steps:ImportDataSelectorStepViewModel}">
         <resources:FieldsetGrid
-           Margin="15">
+            Margin="15">
             <Label Content="{lex:Loc DataImport.Selector.SelectTitle}" Grid.Column="0"></Label>
             <ListBox ItemsSource="{Binding MailDataStrategies}"
                     SelectedItem="{Binding SelectedStrategy, ValidatesOnNotifyDataErrors=False}"

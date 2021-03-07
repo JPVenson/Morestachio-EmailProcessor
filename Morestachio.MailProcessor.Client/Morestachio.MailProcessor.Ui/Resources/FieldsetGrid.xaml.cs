@@ -3,11 +3,13 @@ using System.Windows.Controls;
 
 namespace Morestachio.MailProcessor.Ui.Resources
 {
-	public class FieldsetGrid : Grid
+	public partial class FieldsetGrid : Grid
 	{
 		public FieldsetGrid()
 		{
 			VerticalAlignment = VerticalAlignment.Top;
+			HorizontalAlignment = HorizontalAlignment.Left;
+			InitializeComponent();
 			Margin = new Thickness(7,15,15,7);
 		}
 
@@ -22,17 +24,6 @@ namespace Morestachio.MailProcessor.Ui.Resources
 
 		public override void EndInit()
 		{
-			ColumnDefinitions.Add(new ColumnDefinition()
-			{
-				SharedSizeGroup = "Fieldset_Name",
-				Width = GridLength.Auto
-			});
-			ColumnDefinitions.Add(new ColumnDefinition()
-			{
-				SharedSizeGroup = "Fieldset_Value",
-				MinWidth = 275
-			});
-			
 			for (int i = 0; i < Columns - 2; i++)
 			{
 				ColumnDefinitions.Add(new ColumnDefinition()

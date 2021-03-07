@@ -3,37 +3,123 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:strategies="clr-namespace:Morestachio.MailProcessor.Ui.Services.DataImport.Strategies"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
-    <DataTemplate DataType="{x:Type strategies:IFileBaseDataStrategyViewModel}" x:Key="FileResourceFieldGridDataTemplate">
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:converter="clr-namespace:JPB.WPFToolsAwesome.Converter;assembly=JPB.WPFToolsAwesome">
+    <DataTemplate DataType="{x:Type strategies:IFileBaseDataStrategyViewModel}"
+                  x:Key="FileResourceFieldGridDataTemplate">
         <resources:FieldsetGrid
             Margin="15">
-            <Label Content="{lex:Loc DataImport.Strategy.FileName}" VerticalAlignment="Center"/>
-            <DockPanel Grid.Column="1">
-
+            <Label Content="{lex:Loc DataImport.Strategy.FileName}" VerticalAlignment="Center" />
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="35" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    Text="{Binding FilePath, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=250}"
+                    VerticalContentAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Grid.Column="0" />
                 <Button Command="{Binding PickFileCommand}"
+                        Grid.Column="1"
                         DockPanel.Dock="Right">
                     <iconPacks:Material Width="22"
                                         Height="22"
                                         Kind="FileExcel" />
                 </Button>
-                <TextBox Text="{Binding FilePath, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=250}" 
-                         VerticalContentAlignment="Center"
-                         DockPanel.Dock="Left"/>
-
-            </DockPanel>
+            </Grid>
         </resources:FieldsetGrid>
     </DataTemplate>
     <DataTemplate DataType="{x:Type strategies:CsvMailDataStrategyViewModel}">
         <Grid IsSharedSizeScope="True">
-            <StackPanel>
-                <ContentControl Content="{Binding ValidatesOnNotifyDataErrors=False}" ContentTemplate="{StaticResource FileResourceFieldGridDataTemplate}"/>
-            </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="350" Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition MinWidth="100" Width="150" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Column="0"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <Grid
+                    VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Content="{Binding ValidatesOnNotifyDataErrors=False}"
+                                Grid.Row="0"
+                                ContentTemplate="{StaticResource FileResourceFieldGridDataTemplate}" />
+
+                    <resources:FieldsetGrid
+                        HorizontalAlignment="Stretch"
+                        Grid.Row="2">
+                        <Label Content="{lex:Loc DataImport.Strategy.CSV.Field.Delimiter}" />
+                        <TextBox Grid.Column="1" Text="{Binding Delimiter}"
+                                 VerticalContentAlignment="Center"
+                                 HorizontalAlignment="Stretch"/>
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid
+                        Grid.Row="3">
+                        <Label Content="{lex:Loc DataImport.Strategy.CSV.Field.IgnoreQuotes}" />
+                        <mah:ToggleSwitch Grid.Column="1" IsOn="{Binding IgnoreQuotes}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid
+                        Grid.Row="4">
+                        <resources:FieldsetGrid.Visibility>
+                            <Binding Path="IgnoreQuotes">
+                                <Binding.Converter>
+                                    <converter:ChainConverter>
+                                        <converter:BooleanInverseConverter />
+                                        <StaticResource ResourceKey="BooleanToVisibilityConverter" />
+                                    </converter:ChainConverter>
+                                </Binding.Converter>
+                            </Binding>
+                        </resources:FieldsetGrid.Visibility>
+                        <Label Content="{lex:Loc DataImport.Strategy.CSV.Field.QuoteChar}" />
+                        <TextBox Grid.Column="1" Text="{Binding QuoteCharacter}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid
+                        Grid.Row="5">
+                        <Label Content="{lex:Loc DataImport.Strategy.CSV.Field.IgnoreEmptyLines}" />
+                        <mah:ToggleSwitch Grid.Column="1" IsOn="{Binding IgnoreEmptyLines, ValidatesOnNotifyDataErrors=False}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid
+                        Grid.Row="6">
+                        <Label Content="{lex:Loc DataImport.Strategy.CSV.Field.AllowComments}" />
+                        <mah:ToggleSwitch Grid.Column="1" IsOn="{Binding AllowComments, ValidatesOnNotifyDataErrors=False}" />
+                    </resources:FieldsetGrid>
+                    <resources:FieldsetGrid
+                        Grid.Row="7"
+                        Visibility="{Binding AllowComments, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Label Content="{lex:Loc DataImport.Strategy.CSV.Field.CommentChar}" />
+                        <TextBox Grid.Column="1" Text="{Binding CommentDelimiter}" />
+                    </resources:FieldsetGrid>
+                </Grid>
+            </ScrollViewer>
+            <GridSplitter Grid.Column="1" />
+            <Grid Column="2">
+                <ContentControl Content="{Binding StructureCacheService}" />
+            </Grid>
         </Grid>
     </DataTemplate>
     <DataTemplate DataType="{x:Type strategies:JsonMailDataStrategyViewModel}">
         <Grid IsSharedSizeScope="True">
             <StackPanel>
-                <ContentControl Content="{Binding ValidatesOnNotifyDataErrors=False}" ContentTemplate="{StaticResource FileResourceFieldGridDataTemplate}"/>
+                <ContentControl Content="{Binding ValidatesOnNotifyDataErrors=False}"
+                                ContentTemplate="{StaticResource FileResourceFieldGridDataTemplate}" />
             </StackPanel>
         </Grid>
     </DataTemplate>

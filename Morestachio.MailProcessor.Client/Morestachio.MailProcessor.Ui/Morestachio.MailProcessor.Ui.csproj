@@ -21,6 +21,7 @@
     <None Remove="MorestachioHightlight-lightThemeColors.xml" />
     <None Remove="MorestachioHightlight.xml" />
     <None Remove="Resources\DataImport\SqlImportResources.xaml" />
+    <None Remove="Resources\FieldsetGrid.xaml" />
     <None Remove="Resources\Steps\PreviewTemplateWindow.xaml" />
     <None Remove="Resources\Steps\StructureDisplayResources.xaml" />
   </ItemGroup>

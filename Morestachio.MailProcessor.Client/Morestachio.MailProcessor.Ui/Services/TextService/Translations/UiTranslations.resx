@@ -478,4 +478,37 @@
   <data name="DataImport.Strategy.Json.Description" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Application.Affirmative" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Negative" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Cancel" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.Delimiter" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.IgnoreQuotes" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.QuoteChar" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.IgnoreEmptyLines" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.AllowComments" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.CommentChar" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Application.Errors.RequiredField" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DataImport.Strategy.Errors.CharRequired" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

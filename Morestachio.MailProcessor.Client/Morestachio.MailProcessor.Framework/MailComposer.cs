@@ -86,7 +86,7 @@ namespace Morestachio.MailProcessor.Framework
 			CompiledExpression compiledFromAddressExpression,
 			CompiledExpression compiledFromNameExpression)
 		{
-			var context = new ContextObject(parsedTemplate?.ParserOptions ?? new ParserOptions(), ".", null, mailData.Data);
+			var context = new ContextObject(parsedTemplate?.ParserOptions ?? new ParserOptions(), ".", null, mailData);
 
 			return new DistributorData
 			{
@@ -95,7 +95,7 @@ namespace Morestachio.MailProcessor.Framework
 				FromAddress = compiledFromAddressExpression != null ? (await compiledFromAddressExpression(context, new ScopeData())).Value.ToString() : null,
 				From = compiledFromNameExpression != null ? (await compiledFromNameExpression(context, new ScopeData())).Value.ToString() : null,
 				Subject = compiledSubjectExpression != null ? (await compiledSubjectExpression(context, new ScopeData())).Value.ToString() : null,
-				Content = parsedTemplate != null ? (await parsedTemplate.CreateAsync(mailData.Data)).Stream : null,
+				Content = parsedTemplate != null ? (await parsedTemplate.CreateAsync(mailData)).Stream : null,
 			};
 		}
 

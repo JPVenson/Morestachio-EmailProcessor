@@ -49,16 +49,7 @@ namespace Morestachio.MailProcessor.Ui.Behaviors
 
 		protected override void OnAttached()
 		{
-			//try
-			//{
-			//	var coreWebView2Environment = IoC.Resolve<WebViewService>().CoreWebView2Environment;
-			//	AssociatedObject.EnsureCoreWebView2Async().GetAwaiter().GetResult();
-			//}
-			//catch (Exception e)
-			//{
-			//	Console.WriteLine(e);
-			//	throw;
-			//}
+			
 		}
 	}
 }

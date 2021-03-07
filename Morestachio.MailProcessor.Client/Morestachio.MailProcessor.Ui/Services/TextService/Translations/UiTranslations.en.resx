@@ -508,4 +508,37 @@ Error: {1}</value>
   <data name="DataImport.Strategy.Json.Description" xml:space="preserve">
     <value>This importers will import a JSON file with a array of JSON objects inside. The objects should all be of the same structure as the first one and should all be contained in one array.</value>
   </data>
+  <data name="Application.Affirmative" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Application.Negative" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Application.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.Delimiter" xml:space="preserve">
+    <value>Delimiter</value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.IgnoreQuotes" xml:space="preserve">
+    <value>Ignore Quotes</value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.QuoteChar" xml:space="preserve">
+    <value>Quote Character</value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.IgnoreEmptyLines" xml:space="preserve">
+    <value>Ignore Empty Lines</value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.AllowComments" xml:space="preserve">
+    <value>Enable Comments</value>
+  </data>
+  <data name="DataImport.Strategy.CSV.Field.CommentChar" xml:space="preserve">
+    <value>Comment Character</value>
+  </data>
+  <data name="Application.Errors.RequiredField" xml:space="preserve">
+    <value>The field {0} cannot be empty.</value>
+  </data>
+  <data name="DataImport.Strategy.Errors.CharRequired" xml:space="preserve">
+    <value>Please only use one character as text</value>
+  </data>
 </root>

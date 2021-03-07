@@ -147,8 +147,7 @@
                 </ListBox>
             </Grid>
             <GridSplitter Grid.Column="1" />
-            <ContentControl Content="{Binding Structure}"
-                            ContentTemplate="{StaticResource StructureDisplay}"
+            <ContentControl Content="{Binding StructureCacheService}"
                             Grid.Column="2"/>
         </Grid>
     </DataTemplate>

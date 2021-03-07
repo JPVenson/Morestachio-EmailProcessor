@@ -62,10 +62,11 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		{
 			Title = new UiLocalizableString("Template.Title");
 			Description = new UiLocalizableString("Template.Description");
-			Structure = new ThreadSaveObservableCollection<MailDataStructureViewModel>();
 			SetTemplateCommand = new DelegateCommand(SetTemplateExecute, CanSetTemplateExecute);
 			MailTemplateService = IoC.Resolve<MailTemplateService>();
 			WebViewService = IoC.Resolve<WebViewService>();
+			StructureCacheService = IoC.Resolve<StructureCacheService>();
+
 			GeneratePreviewCommand = new DelegateCommand(GeneratePreviewExecute, CanGeneratePreviewExecute);
 			MorestachioErrors = new ThreadSaveObservableCollection<IMorestachioError>();
 			ShowPreviewWindowCommand = new DelegateCommand(ShowPreviewWindowExecute, CanShowPreviewWindowExecute);
@@ -145,6 +146,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		private MailTemplate _selectedTemplate;
 		private IHighlightingDefinition _morestachioHtmlMixDefinition;
 		private ITextMarkerService _textMarkerService;
+		
 
 		public ITextMarkerService TextMarkerService
 		{
@@ -178,17 +180,19 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 		public override UiLocalizableString Title { get; }
 		public override UiLocalizableString Description { get; }
-		public ThreadSaveObservableCollection<MailDataStructureViewModel> Structure { get; set; }
 		public MailData ExampleMailData { get; set; }
 		public DelegateCommand SetTemplateCommand { get; private set; }
-
-		public MailTemplateService MailTemplateService { get; set; }
 		public DelegateCommand GeneratePreviewCommand { get; private set; }
-		public ThreadSaveObservableCollection<IMorestachioError> MorestachioErrors { get; set; }
 		public DelegateCommand ShowPreviewWindowCommand { get; private set; }
+
+		public ThreadSaveObservableCollection<IMorestachioError> MorestachioErrors { get; set; }
 		public PreviewTemplateWindow PreviewTemplateWindow { get; set; }
 		public bool PreviewGenerationRequested { get; set; }
+
 		public WebViewService WebViewService { get; set; }
+		public StructureCacheService StructureCacheService { get; set; }
+		public MailTemplateService MailTemplateService { get; set; }
+
 		public CompilationResult ErrorDisplayTemplate { get; set; }
 
 		private void RefreshErrorMarkers()
@@ -273,7 +277,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 				}
 
 				preview = await morestachioDocumentInfo.CreateAndStringifyAsync(IoC.Resolve<StructureCacheService>()
-					.ExampleMailData.Data);
+					.ExampleMailData);
 
 			} while (PreviewGenerationRequested);
 
@@ -400,10 +404,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 		public override Task OnEntry(IDictionary<string, object> data, DefaultStepConfigurator configurator)
 		{
-			ExampleMailData = IoC.Resolve<StructureCacheService>().ExampleMailData;
-			Structure.Clear();
-			Structure.AddEach(ObjectSchemaGenerator.GenerateStructure(ExampleMailData.Data));
-
+			ExampleMailData = StructureCacheService.ExampleMailData;
 			return base.OnEntry(data, configurator);
 		}
 
