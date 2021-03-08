@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using JPB.WPFToolsAwesome.Error;
 using JPB.WPFToolsAwesome.Error.ValidationRules;
@@ -44,6 +45,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels
 			Commands = new ObservableCollection<MenuBarCommand>();
 			NextButtonText = new UiLocalizableString("Application.Navigation.Forward");
 			PreviousButtonText = new UiLocalizableString("Application.Navigation.Back");
+			//ActiveValidationCases.First();
 		}
 
 		public abstract UiLocalizableString Title { get; }

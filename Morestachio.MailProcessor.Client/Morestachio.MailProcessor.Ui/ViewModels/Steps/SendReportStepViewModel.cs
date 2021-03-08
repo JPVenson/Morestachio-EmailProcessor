@@ -71,7 +71,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 						},
 						{"FailReason", e.Value.ErrorText}
 					};
-				});
+				}).ToArray();
 				data["numSuccess"] = SummeryStepViewModel.Result.SendSuccessfully;
 				data["startedAt"] = SummeryStepViewModel.CreatedAt;
 				data["doneAt"] = SummeryStepViewModel.FinishedAt;

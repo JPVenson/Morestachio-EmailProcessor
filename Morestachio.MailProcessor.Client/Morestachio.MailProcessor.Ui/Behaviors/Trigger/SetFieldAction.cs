@@ -31,7 +31,7 @@ namespace Morestachio.MailProcessor.Ui.Behaviors.Trigger
 				nameof(FalseValue), typeof(object), typeof(SetFieldAction),
 				new FrameworkPropertyMetadata(default(object)));
 			ConverterProperty = DependencyProperty.Register(
-				nameof(Converter), typeof(IValueConverter), typeof(SetControlPropertyFieldNameAction),
+				nameof(Converter), typeof(IValueConverter), typeof(SetFieldAction),
 				new PropertyMetadata(default(IValueConverter)));
 
 		}

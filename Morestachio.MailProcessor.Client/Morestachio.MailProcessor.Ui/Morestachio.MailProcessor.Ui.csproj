@@ -20,8 +20,10 @@
     <None Remove="MorestachioHightlight-darkThemeColors.xml" />
     <None Remove="MorestachioHightlight-lightThemeColors.xml" />
     <None Remove="MorestachioHightlight.xml" />
+    <None Remove="Resources\Bar.xaml" />
     <None Remove="Resources\DataImport\SqlImportResources.xaml" />
     <None Remove="Resources\FieldsetGrid.xaml" />
+    <None Remove="Resources\MultiProgressBar.xaml" />
     <None Remove="Resources\Steps\PreviewTemplateWindow.xaml" />
     <None Remove="Resources\Steps\StructureDisplayResources.xaml" />
   </ItemGroup>

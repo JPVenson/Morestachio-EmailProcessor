@@ -45,12 +45,12 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 					new UiLocalizableString("Template.Errors.InvalidTemplate"),
 					async e =>
 					{
+						await Task.Delay(250);
 						if (string.IsNullOrWhiteSpace(e.Template))
 						{
 							return true;
 						}
 
-						await Task.Delay(250);
 						e.SyncErrors(await Parser.Validate(new StringTemplateContainer(e.Template)));
 						return e.MorestachioErrors.Count > 0;
 					},
@@ -321,7 +321,8 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 			else
 			{
-				TextMarkerService.RemoveAll(f => true);
+				ViewModelAction(() => 
+					TextMarkerService.RemoveAll(f => true));
 			}
 		}
 
@@ -405,6 +406,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		public override Task OnEntry(IDictionary<string, object> data, DefaultStepConfigurator configurator)
 		{
 			ExampleMailData = StructureCacheService.ExampleMailData;
+			ForceRefreshAsync();
 			return base.OnEntry(data, configurator);
 		}
 

@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Morestachio.MailProcessor.Framework.Import;
 
 namespace Morestachio.MailProcessor.Framework.Sender
 {
 	public class DistributorData
 	{
-		public string To { get; set; }
-		public string ToAddress { get; set; }
+		public DistributorData(MailDataInfo mailInfo, MorestachioDocumentResult documentResult)
+		{
+			MailInfo = mailInfo;
+			DocumentResult = documentResult;
+		}
 
-		public string From { get; set; }
-		public string FromAddress { get; set; }
-
-		public Stream Content { get; set; }
-		public string Subject { get; set; }
+		public MailDataInfo MailInfo { get; }
+		public MorestachioDocumentResult DocumentResult { get; }
 	}
 }

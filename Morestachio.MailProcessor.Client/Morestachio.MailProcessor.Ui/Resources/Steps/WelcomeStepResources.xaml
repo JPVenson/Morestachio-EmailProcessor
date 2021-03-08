@@ -9,8 +9,8 @@
     <converter:BooleanVisibilityInverseConverter x:Key="BooleanVisibilityInverseConverter" />
     <DataTemplate DataType="{x:Type steps1:WelcomeStepViewModel}">
         <DockPanel LastChildFill="True" Margin="15">
-            <StackPanel DockPanel.Dock="Left">
-                <Label Content="{lex:Loc Welcome.Savefiles}"></Label>
+          <StackPanel DockPanel.Dock="Left">
+                <Label Content="{lex:Loc Welcome.Savefiles}" />
                 <Grid IsSharedSizeScope="True">
                     <ItemsControl ItemsSource="{Binding PersistantSettingsService.Settings}"
                                   VerticalAlignment="Center"
@@ -19,17 +19,18 @@
                             <DataTemplate DataType="{x:Type settings:SettingsMetaEntry}">
                                 <Grid HorizontalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition SharedSizeGroup="LoadSetting_Name" Width="*"/>
+                                        <ColumnDefinition SharedSizeGroup="LoadSetting_Name" Width="*" />
                                         <ColumnDefinition SharedSizeGroup="LoadSetting_Action" Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Label Content="{Binding Name}"
                                            HorizontalAlignment="Stretch"
-                                           Grid.Column="1"/>
-                                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.LoadSettingCommand}"
-                                            CommandParameter="{Binding}"
-                                            HorizontalAlignment="Right"
-                                            HorizontalContentAlignment="Right"
-                                            Grid.Column="0">
+                                           Grid.Column="1" />
+                                    <Button
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.LoadSettingCommand}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalAlignment="Right"
+                                        HorizontalContentAlignment="Right"
+                                        Grid.Column="0">
                                         <iconPacks:PackIconMaterial Margin="1" Kind="OpenInNew" />
                                     </Button>
                                 </Grid>
@@ -43,20 +44,24 @@
                         HorizontalAlignment="Center"
                         DockPanel.Dock="Left"
                         Margin="15">
-                <Label FontSize="22" Content="{lex:Loc Welcome.Title}"/>
-                <Label Content="{lex:Loc Welcome.Content}"/>
+                <Label FontSize="22" Content="{lex:Loc Welcome.Title}" />
+                <Label Content="{lex:Loc Welcome.Content}" />
 
-                <StackPanel Visibility="{Binding WebViewService.IsSupported, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel
+                    Visibility="{Binding WebViewService.IsSupported, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid>
-                        <StackPanel Visibility="{Binding WebViewService.IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    Orientation="Horizontal">
+                        <StackPanel
+                            Visibility="{Binding WebViewService.IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Orientation="Horizontal">
 
                             <iconPacks:PackIconMaterial Margin="6" Kind="Check" />
-                            <Label Content="{lex:Loc Welcome.WebViewerInstalled.Title}"/>
+                            <Label Content="{lex:Loc Welcome.WebViewerInstalled.Title}" />
                         </StackPanel>
-                        <StackPanel Visibility="{Binding WebViewService.IsInstalled, Converter={StaticResource BooleanVisibilityInverseConverter}}">
-                            <Label Content="{lex:Loc Welcome.WebViewerNotInstalled.Title}"/>
-                            <Button Command="{Binding InstallWebRuntimeCommand}" Content="{lex:Loc Welcome.InstallWebViewer}"/>
+                        <StackPanel
+                            Visibility="{Binding WebViewService.IsInstalled, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                            <Label Content="{lex:Loc Welcome.WebViewerNotInstalled.Title}" />
+                            <Button Command="{Binding InstallWebRuntimeCommand}"
+                                    Content="{lex:Loc Welcome.InstallWebViewer}" />
                         </StackPanel>
                     </Grid>
                 </StackPanel>

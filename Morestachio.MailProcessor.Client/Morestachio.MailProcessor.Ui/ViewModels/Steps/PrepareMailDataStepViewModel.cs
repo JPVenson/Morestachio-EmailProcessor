@@ -123,7 +123,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			//MExpressionSubject = "\"Hot new Newsletter\"";
 		}
 
-		
+
 		public MailComposer MailComposer { get; set; }
 		public StructureCacheService StructureCacheService { get; set; }
 
@@ -279,7 +279,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		private string GuessAddressExpression()
 		{
 			return GetLike("mail")
-				   ?? GetLike("webaddress")
+				   ?? GetLike("webaddress") ?? GetLike("web-address") ?? GetLike("web_address") ?? GetLike("web address")
 				   ?? GetLike("www")
 				   ?? GetLike("web")
 				   ?? GetLike("message")
@@ -289,18 +289,18 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		private string GuessNameExpression()
 		{
 			return GetLike("firstname")
-			       ?? GetLike("christian name") ?? GetLike("christian_name") ?? GetLike("christianname")
-			       ?? GetLike("given name") ?? GetLike("given_name") ?? GetLike("givenname")
-			       ?? GetLike("prename")
-			       ?? GetLike("birth name") ?? GetLike("birth_name") ?? GetLike("birthname")
-			       ?? GetLike("fore name") ?? GetLike("fore_name") ?? GetLike("forename")
-			       ?? GetLike("proper name") ?? GetLike("proper_name") ?? GetLike("propername")
-			       ?? GetLike("maiden name") ?? GetLike("maiden_name") ?? GetLike("maidenname")
-			       ?? GetLike("salutation")
-			       ?? GetLike("family name") ?? GetLike("family_name") ?? GetLike("familyname")
-			       ?? GetLike("surname")
-			       ?? GetLike("last name") ?? GetLike("last_name") ?? GetLike("lastname")
-			       ?? GetLike("name");
+				   ?? GetLike("christian name") ?? GetLike("christian_name") ?? GetLike("christianname")
+				   ?? GetLike("given name") ?? GetLike("given_name") ?? GetLike("givenname")
+				   ?? GetLike("prename")
+				   ?? GetLike("birth name") ?? GetLike("birth_name") ?? GetLike("birthname")
+				   ?? GetLike("fore name") ?? GetLike("fore_name") ?? GetLike("forename")
+				   ?? GetLike("proper name") ?? GetLike("proper_name") ?? GetLike("propername")
+				   ?? GetLike("maiden name") ?? GetLike("maiden_name") ?? GetLike("maidenname")
+				   ?? GetLike("salutation")
+				   ?? GetLike("family name") ?? GetLike("family_name") ?? GetLike("familyname")
+				   ?? GetLike("surname")
+				   ?? GetLike("last name") ?? GetLike("last_name") ?? GetLike("lastname")
+				   ?? GetLike("name");
 		}
 
 		public override Task<bool> OnGoNext(DefaultStepConfigurator defaultStepConfigurator)
@@ -311,6 +311,13 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			mailComposer.SubjectExpression = ExpressionParser.ParseExpression(MExpressionSubject, out _);
 			mailComposer.FromAddressExpression = ExpressionParser.ParseExpression(MExpressionFromAddress, out _);
 			mailComposer.FromNameExpression = ExpressionParser.ParseExpression(MExpressionFromName, out _);
+			ExampleMailData.MailInfo.ToAddress = ExampleAddress;
+			ExampleMailData.MailInfo.ToName = ExampleName;
+
+			ExampleMailData.MailInfo.FromAddress = ExampleFromAddress;
+			ExampleMailData.MailInfo.FromName = ExampleFromName;
+			ExampleMailData.MailInfo.Subject = ExampleSubject;
+
 			return base.OnGoNext(defaultStepConfigurator);
 		}
 	}

@@ -511,4 +511,7 @@
   <data name="DataImport.Strategy.Errors.CharRequired" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Summery.Fields.Buffered" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

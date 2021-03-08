@@ -88,7 +88,7 @@ namespace Morestachio.MailProcessor.Framework.Import.Strategies
 
 				public async ValueTask<bool> MoveNextAsync()
 				{
-					if (!(await _reader.ReadAsync()))
+					if (!(await _reader.ReadAsync()) || _reader.TokenType == JsonToken.EndArray)
 					{
 						return false;
 					}

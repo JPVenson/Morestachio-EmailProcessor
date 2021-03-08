@@ -972,6 +972,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Summery_Fields_Buffered {
+            get {
+                return ResourceManager.GetString("Summery.Fields.Buffered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Summery_Fields_GenerateAndSendParallel {
             get {
                 return ResourceManager.GetString("Summery.Fields.GenerateAndSendParallel", resourceCulture);

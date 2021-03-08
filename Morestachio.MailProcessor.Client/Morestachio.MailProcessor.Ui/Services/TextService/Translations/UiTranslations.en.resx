@@ -541,4 +541,7 @@ Error: {1}</value>
   <data name="DataImport.Strategy.Errors.CharRequired" xml:space="preserve">
     <value>Please only use one character as text</value>
   </data>
+  <data name="Summery.Fields.Buffered" xml:space="preserve">
+    <value>Buffered</value>
+  </data>
 </root>

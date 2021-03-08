@@ -6,6 +6,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
+using MimeKit.Utils;
 using Morestachio.Helper;
 
 namespace Morestachio.MailProcessor.Framework.Sender.Strategies
@@ -63,28 +64,34 @@ namespace Morestachio.MailProcessor.Framework.Sender.Strategies
 
 		public async Task<IMailDistributorState> SendMail(DistributorData data, IMailDistributorState state)
 		{
-			var mailMessage = new MimeMessage();
-			
-			mailMessage.To.Add(new MailboxAddress(data.To, data.ToAddress));
-			mailMessage.From.Add(new MailboxAddress(data.From, data.FromAddress));
-			mailMessage.Subject = data.Subject;
-			mailMessage.Body = new TextPart(TextFormat.Html)
-			{
-				Text = data.Content.Stringify(true, Encoding.UTF8),
-			};
 			try
 			{
-				await (state as State).SmtpClient.SendAsync(mailMessage);
-			}
-			catch (Exception e)
-			{
-				return new SendMailStatus()
+				var mailMessage = new MimeMessage();
+			
+				mailMessage.To.Add(new MailboxAddress(data.MailInfo.ToName, data.MailInfo.ToAddress));
+				mailMessage.From.Add(new MailboxAddress(data.MailInfo.FromName, data.MailInfo.FromAddress));
+				mailMessage.Subject = data.MailInfo.Subject;
+				var mailMessageBody = new TextPart(TextFormat.Html);
+				mailMessageBody.Content = new MimeContent(data.DocumentResult.Stream);
+				mailMessage.Body = mailMessageBody;
+				try
 				{
-					Success = false,
-					ErrorText = e.Message
-				};
+					await (state as State).SmtpClient.SendAsync(mailMessage);
+				}
+				catch (Exception e)
+				{
+					return new SendMailStatus()
+					{
+						Success = false,
+						ErrorText = e.Message
+					};
+				}
+				return SendMailStatus.Ok();
 			}
-			return SendMailStatus.Ok();
+			finally
+			{
+				await data.DocumentResult.Stream.DisposeAsync();
+			}
 		}
 
 		public async Task<IMailDistributorState> EndSendMail(IMailDistributorState state)

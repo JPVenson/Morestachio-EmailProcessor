@@ -24,11 +24,12 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		{
 			Title = new UiLocalizableString("Summery.Title");
 			Description = new UiLocalizableString("Summery.Description");
-			Progress = new SendMailProgress("", 0, 0, true);
+			Progress = new SendMailProgress("", 0, 0, true,0,0,0);
 			NextButtonText = new UiLocalizableString("Application.Header.StartSend");
 			ResetCommand = new DelegateCommand(ResetExecute, CanResetExecute);
 			SaveSendReportCommand = new DelegateCommand(SaveSendReportExecute, CanSaveSendReportExecute);
 			MailComposer = IoC.Resolve<MailComposer>();
+			StopRequested = new CancellationTokenSource();
 		}
 
 		public override UiLocalizableString Title { get; }
@@ -46,9 +47,15 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 		private DateTime _createdAt;
 		private DateTime _finishedAt;
-		private SendMailProgress _progress;
 		private bool _isProcessed;
 		private ComposeMailResult _result;
+		private bool _isProcessing;
+
+		public bool IsProcessing
+		{
+			get { return _isProcessing; }
+			set { SetProperty(ref _isProcessing, value); }
+		}
 
 		public DateTime FinishedAt
 		{
@@ -74,11 +81,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			set { SetProperty(ref _isProcessed, value); }
 		}
 
-		public SendMailProgress Progress
-		{
-			get { return _progress; }
-			set { _progress = value; }
-		}
+		public SendMailProgress Progress { get; set; }
 
 		public DelegateCommand ResetCommand { get; private set; }
 		public DelegateCommand SaveSendReportCommand { get; private set; }
@@ -101,7 +104,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 		private void ResetExecute(object sender)
 		{
-			Progress = new SendMailProgress("", 0, 100, true);
+			Progress = new SendMailProgress("", 0, 100, true,0,0,0);
 			Result = null;
 			IsProcessed = false;
 			Commands.RemoveWhere(e => ((string)e.Tag).StartsWith("AfterButton."));
@@ -167,22 +170,26 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			return base.OnEntry(data, configurator);
 		}
 
+		public CancellationTokenSource StopRequested { get; set; }
+
 		private async Task SendMails()
 		{
 			CreatedAt = DateTime.Now;
+			IsProcessing = true;
+			StopRequested = new CancellationTokenSource();
 
 			var done = new CancellationTokenSource();
 			var task = Task.Run(async () =>
 			{
 				while (!done.IsCancellationRequested)
 				{
-					await Task.Delay(1000, done.Token);
+					await Task.Delay(250, done.Token);
 					SendPropertyChanged(() => Progress);
 				}
 			}, done.Token);
 			try
 			{
-				Result = await MailComposer.ComposeAndSend(this);
+				Result = await MailComposer.ComposeAndSend(this, StopRequested.Token);
 			}
 			catch (Exception e)
 			{
@@ -198,6 +205,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 			finally
 			{
+				IsProcessing = false;
 				done.Cancel();
 			}
 

@@ -4,19 +4,35 @@
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:converter="clr-namespace:JPB.WPFToolsAwesome.Converter;assembly=JPB.WPFToolsAwesome"
                     xmlns:steps1="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps"
-                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources">
-    <converter:BooleanVisibilityInverseConverter x:Key="BooleanVisibilityInverseConverter"/>
+                    xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
+                    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:eval="clr-namespace:JPB.WPFToolsAwesome.Behaviors.Eval;assembly=JPB.WPFToolsAwesome"
+                    xmlns:trigger="clr-namespace:JPB.WPFToolsAwesome.Behaviors.Eval.Trigger;assembly=JPB.WPFToolsAwesome"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    <converter:BooleanVisibilityInverseConverter x:Key="BooleanVisibilityInverseConverter" />
+
+    <system:Boolean x:Key="True">True</system:Boolean>
+    <system:Boolean x:Key="False">False</system:Boolean>
     <DataTemplate DataType="{x:Type steps1:SummeryStepViewModel}">
         <ScrollViewer>
-
             <DockPanel LastChildFill="False">
-
                 <Grid IsSharedSizeScope="True"
-                  DockPanel.Dock="Left" 
-                  Margin="15,15,0,15"
-                  HorizontalAlignment="Left"
-                  Visibility="{Binding IsProcessed, Converter={StaticResource BooleanVisibilityInverseConverter}}"
-                  IsEnabled="{Binding IsNotWorking}">
+                      DockPanel.Dock="Left"
+                      Margin="15,15,0,15"
+                      HorizontalAlignment="Left"
+                      IsEnabled="{Binding IsNotWorking}">
+                    <b:Interaction.Behaviors>
+                        <eval:TriggerVisibilityBehavior>
+                            <eval:TriggerBehavior.TriggerStep>
+                                <trigger:InverseTrigger>
+                                    <trigger:OrTrigger>
+                                        <trigger:ValueTrigger Binding="{Binding IsProcessing}" />
+                                        <trigger:ValueTrigger Binding="{Binding IsProcessed}" />
+                                    </trigger:OrTrigger>
+                                </trigger:InverseTrigger>
+                            </eval:TriggerBehavior.TriggerStep>
+                        </eval:TriggerVisibilityBehavior>
+                    </b:Interaction.Behaviors>
                     <StackPanel>
                         <resources:FieldsetGrid>
                             <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.ImportFrom}" />
@@ -42,52 +58,97 @@
                             <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.GenerateAndSendParallel}" />
                             <mah:ToggleSwitch Grid.Column="1" IsOn="{Binding MailComposer.SendInParallel}" />
                         </resources:FieldsetGrid>
-                        <resources:FieldsetGrid Visibility="{Binding MailComposer.SendInParallel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <resources:FieldsetGrid
+                            Visibility="{Binding MailComposer.SendInParallel, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.NoOfParallism}" />
-                            <mah:NumericUpDown Grid.Column="1" Value="{Binding MailComposer.ParallelNoOfParallism}" Minimum="1"/>
+                            <mah:NumericUpDown Grid.Column="1" Value="{Binding MailComposer.ParallelNoOfParallism}"
+                                               Minimum="1" />
                         </resources:FieldsetGrid>
-                        <resources:FieldsetGrid Visibility="{Binding MailComposer.SendInParallel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <resources:FieldsetGrid
+                            Visibility="{Binding MailComposer.SendInParallel, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.ParallelReadAheadCount}" />
-                            <mah:NumericUpDown Grid.Column="1" Value="{Binding MailComposer.ParallelReadAheadCount}" Minimum="1"/>
+                            <mah:NumericUpDown Grid.Column="1" Value="{Binding MailComposer.ParallelReadAheadCount}"
+                                               Minimum="1" />
                         </resources:FieldsetGrid>
                     </StackPanel>
                 </Grid>
                 <Grid DockPanel.Dock="Left"
-                  Margin="15"
-                  IsSharedSizeScope="True"
-                  HorizontalAlignment="Left">
+                      Margin="15"
+                      IsSharedSizeScope="True"
+                      HorizontalAlignment="Left">
+                    <b:Interaction.Behaviors>
+                        <eval:TriggerVisibilityBehavior>
+                            <eval:TriggerBehavior.TriggerStep>
+                                <trigger:OrTrigger>
+                                    <trigger:ValueTrigger Binding="{Binding IsProcessing}" />
+                                    <trigger:ValueTrigger Binding="{Binding IsProcessed}" />
+                                </trigger:OrTrigger>
+                            </eval:TriggerBehavior.TriggerStep>
+                        </eval:TriggerVisibilityBehavior>
+                    </b:Interaction.Behaviors>
                     <HeaderedContentControl Header="{lex:Loc Summery.Result.Title}">
                         <StackPanel>
                             <resources:FieldsetGrid>
                                 <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress}" />
 
-                                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1" Width="250">
-                                    <mah:MetroProgressBar Maximum="{Binding Progress.MaxProgress, Mode=OneWay}"
-                                                      Value="{Binding Progress.Progress, Mode=OneWay}"
-                                                      VerticalAlignment="Stretch"
-                                                      HorizontalAlignment="Stretch" />
-                                    <Label Content="{Binding Progress.To, Mode=OneWay}" VerticalAlignment="Center"
-                                       HorizontalAlignment="Center" />
+                                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1"
+                                      Width="250">
+                                    <resources:MultiProgressBar Maximum="{Binding Progress.MaxProgress}"
+                                                                VerticalAlignment="Stretch"
+                                                                HorizontalAlignment="Stretch"
+                                                                Grid.Column="0">
+                                        <resources:MultiProgressBar.Bars>
+                                            <resources:Bar Value="{Binding Progress.Buffered}" 
+                                                           ProgressColor="#D5D527" 
+                                                           IsAbsoluteValue="False">
+                                                <resources:Bar.Content>
+                                                    <Label Content="{lex:Loc Summery.Fields.Buffered}"
+                                                           Foreground="#000000"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
+                                                </resources:Bar.Content>
+                                            </resources:Bar>
+                                            <resources:Bar Value="{Binding Progress.SuccessfullySend}" 
+                                                           ProgressColor="LimeGreen" IsAbsoluteValue="False">
+                                                <resources:Bar.Content>
+                                                    <Label Content="{lex:Loc Summery.Fields.Progress.Success}"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
+                                                </resources:Bar.Content>
+                                            </resources:Bar>
+                                            <resources:Bar Value="{Binding Progress.FailedToSend}" 
+                                                           ProgressColor="OrangeRed" IsAbsoluteValue="False">
+                                                <resources:Bar.Content>
+                                                    <Label Content="{lex:Loc Summery.Fields.Progress.Failed}"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
+                                                </resources:Bar.Content>
+                                            </resources:Bar>
+                                        </resources:MultiProgressBar.Bars>
+                                    </resources:MultiProgressBar>
+                                  
+                                    <!--<Label Content="{Binding Progress.To, Mode=OneWay}" VerticalAlignment="Center"
+                                           HorizontalAlignment="Center" />-->
                                 </Grid>
                             </resources:FieldsetGrid>
                             <resources:FieldsetGrid>
                                 <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.ProcessedNumber}" />
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <Label Content="{Binding Progress.Progress}"/>
-                                    <Label Content=" - "/>
-                                    <Label Content="{Binding Progress.MaxProgress}"/>
+                                    <Label Content="{Binding Progress.Progress}" />
+                                    <Label Content=" - " />
+                                    <Label Content="{Binding Progress.MaxProgress}" />
                                 </StackPanel>
                             </resources:FieldsetGrid>
                             <resources:FieldsetGrid>
                                 <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Success}" />
                                 <StackPanel Grid.Column="1">
-                                    <Label Content="{Binding Result.SendSuccessfully}"/>
+                                    <Label Content="{Binding Progress.SuccessfullySend}" />
                                 </StackPanel>
                             </resources:FieldsetGrid>
                             <resources:FieldsetGrid>
                                 <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Failed}" />
                                 <StackPanel Grid.Column="1">
-                                    <Label Content="{Binding Result.SendFailed.Count}"/>
+                                    <Label Content="{Binding Progress.FailedToSend}" />
                                 </StackPanel>
                             </resources:FieldsetGrid>
                         </StackPanel>

@@ -77,23 +77,23 @@ namespace Morestachio.MailProcessor.Ui.Util.ObjectSchema
 			{
 				for (int i = 0; i < rec.FieldCount; i++)
 				{
-					yield return GenerateSubStructure(rec.GetName(i), rec.GetValue(i));
+					yield return GenerateSubStructure(rec.GetName(i), rec.GetValue(i), rec.GetFieldType(i));
 				}
 			}
 			else
 			{
 				foreach (var propertyInfo in value.GetType().GetProperties())
 				{
-					yield return GenerateSubStructure(propertyInfo.Name, propertyInfo.GetValue(value));
+					yield return GenerateSubStructure(propertyInfo.Name, propertyInfo.GetValue(value), propertyInfo.PropertyType);
 				}
 			}
 		}
 
-		public static MailDataStructureViewModel GenerateSubStructure(string name, object value)
+		public static MailDataStructureViewModel GenerateSubStructure(string name, object value, Type supposedType = null)
 		{
 			var field = new MailDataStructureViewModel();
 			field.FieldName = name;
-			var fieldType = value?.GetType() ?? typeof(object);
+			var fieldType = value?.GetType() ?? supposedType ?? typeof(object);
 			field.FieldType = fieldType;
 			field.IsCollection = typeof(IEnumerable).IsAssignableFrom(field.FieldType) 
 			                     && !CoreTypes.ContainsKey(fieldType);

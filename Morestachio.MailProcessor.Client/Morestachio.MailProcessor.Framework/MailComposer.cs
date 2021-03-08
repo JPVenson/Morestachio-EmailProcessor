@@ -17,15 +17,28 @@ namespace Morestachio.MailProcessor.Framework
 {
 	public readonly struct SendMailProgress
 	{
-		public SendMailProgress(string to, int progress, int maxProgress, bool success)
+		public SendMailProgress(string to,
+			int progress,
+			int maxProgress,
+			bool success,
+			int successfullySend,
+			int failedToSend,
+			int buffered)
 		{
 			To = to;
 			Progress = progress;
 			MaxProgress = maxProgress;
 			Success = success;
+			SuccessfullySend = successfullySend;
+			FailedToSend = failedToSend;
+			Buffered = buffered;
 		}
 
 		public int Progress { get; }
+		public int SuccessfullySend { get; }
+		public int FailedToSend { get; }
+		public int Buffered { get; }
+
 		public int MaxProgress { get; }
 		public string To { get; }
 		public bool Success { get; }
@@ -87,19 +100,28 @@ namespace Morestachio.MailProcessor.Framework
 			CompiledExpression compiledFromNameExpression)
 		{
 			var context = new ContextObject(parsedTemplate?.ParserOptions ?? new ParserOptions(), ".", null, mailData);
+			mailData.MailInfo.ToName = compiledNameExpression != null
+				? (await compiledNameExpression(context, new ScopeData())).Value.ToString()
+				: null;
+			mailData.MailInfo.ToAddress = compiledAddressExpression != null
+				? (await compiledAddressExpression(context, new ScopeData())).Value.ToString()
+				: null;
+			mailData.MailInfo.FromAddress = compiledFromAddressExpression != null
+				? (await compiledFromAddressExpression(context, new ScopeData())).Value.ToString()
+				: null;
+			mailData.MailInfo.FromName = compiledFromNameExpression != null
+				? (await compiledFromNameExpression(context, new ScopeData())).Value.ToString()
+				: null;
+			mailData.MailInfo.Subject = compiledSubjectExpression != null
+				? (await compiledSubjectExpression(context, new ScopeData())).Value.ToString()
+				: null;
 
-			return new DistributorData
-			{
-				ToAddress = compiledAddressExpression != null ? (await compiledAddressExpression(context, new ScopeData())).Value.ToString() : null,
-				To = compiledNameExpression != null ? (await compiledNameExpression(context, new ScopeData())).Value.ToString() : null,
-				FromAddress = compiledFromAddressExpression != null ? (await compiledFromAddressExpression(context, new ScopeData())).Value.ToString() : null,
-				From = compiledFromNameExpression != null ? (await compiledFromNameExpression(context, new ScopeData())).Value.ToString() : null,
-				Subject = compiledSubjectExpression != null ? (await compiledSubjectExpression(context, new ScopeData())).Value.ToString() : null,
-				Content = parsedTemplate != null ? (await parsedTemplate.CreateAsync(mailData)).Stream : null,
-			};
+			return new DistributorData(mailData.MailInfo,
+				parsedTemplate != null ? (await parsedTemplate.CreateAsync(mailData)) : null);
 		}
 
-		public async Task<ComposeMailResult> ComposeAndSend(IProgress<SendMailProgress> progress)
+		public async Task<ComposeMailResult> ComposeAndSend(IProgress<SendMailProgress> progress,
+			CancellationToken stopRequestedToken)
 		{
 			var compiledAddressExpression = ToAddressExpression.Compile();
 			var compiledNameExpression = ToNameExpression.Compile();
@@ -113,9 +135,16 @@ namespace Morestachio.MailProcessor.Framework
 			parsingOptions.Formatters.AddFromType(typeof(DynamicLinq));
 			var parsedTemplate = await Parser.ParseWithOptionsAsync(parsingOptions);
 			var sendData = 0;
+			var sendSuccess = 0;
+			var buffered = 0;
+
 			var sendFailed = new ConcurrentDictionary<MailData, SendMailStatus>();
 			var maxSendData = await MailDataStrategy.Count();
 			var mailDatas = await MailDataStrategy.GetMails();
+
+#if DEBUG
+			var rand = new Random(1337);
+#endif
 
 			void Progress(SendMailTaskProgress taskProgress, MailData mailData)
 			{
@@ -124,27 +153,145 @@ namespace Morestachio.MailProcessor.Framework
 				{
 					sendFailed.TryAdd(mailData, new SendMailStatus() { ErrorText = taskProgress.Error });
 				}
+				else
+				{
+					Interlocked.Add(ref sendSuccess, 1);
+				}
 
-				progress.Report(new SendMailProgress(taskProgress.To, sendData, maxSendData, true));
+				progress.Report(new SendMailProgress(taskProgress.To, sendData, maxSendData, true, sendSuccess, sendFailed.Count, buffered));
 			}
 
 			if (SendInParallel)
 			{
-				await SendParallel(mailDatas,
-					Progress,
-					parsedTemplate,
-					compiledAddressExpression,
-					compiledSubjectExpression,
-					compiledNameExpression,
-					compiledFromAddressExpression,
-					compiledFromNameExpression);
+				var consumerItems = new BlockingCollection<MailData>(new ConcurrentBag<MailData>());
+				IMailDistributorState globalState = null;
+
+				if (MailDistributor.ParallelSupport == ParallelSupport.Full)
+				{
+					globalState = await MailDistributor.BeginSendMail();
+				}
+
+				var threads = new Thread[ParallelNoOfParallism];
+				for (int i = 0; i < threads.Length; i++)
+				{
+					void Start()
+					{
+						try
+						{
+							IMailDistributorState threadState = globalState;
+							if (MailDistributor.ParallelSupport == ParallelSupport.MultiInstance)
+							{
+								threadState = MailDistributor.BeginSendMail().ConfigureAwait(true).GetAwaiter().GetResult();
+							}
+
+							while (consumerItems.TryTake(out var mailData))
+							{
+								Interlocked.Exchange(ref buffered, consumerItems.Count);
+								if (stopRequestedToken.IsCancellationRequested)
+								{
+									break;
+								}
+#if DEBUG
+								Task.Delay(rand.Next(1050, 2000), stopRequestedToken)
+									.ConfigureAwait(true).GetAwaiter().GetResult();
+#endif
+								SendSingleItem(taskProgress =>
+									{
+#if DEBUG
+										if (rand.Next(0, 2) == 1)
+										{
+											taskProgress = new SendMailTaskProgress(taskProgress.To, "");
+										}
+#endif
+										
+										Progress(taskProgress, mailData);
+									},
+									mailData,
+									parsedTemplate,
+									compiledAddressExpression,
+									compiledSubjectExpression,
+									compiledNameExpression,
+									compiledFromAddressExpression,
+									compiledFromNameExpression,
+									threadState).ConfigureAwait(true).GetAwaiter().GetResult();
+							}
+
+							if (MailDistributor.ParallelSupport == ParallelSupport.MultiInstance)
+							{
+								threadState = MailDistributor.EndSendMail(threadState).ConfigureAwait(true).GetAwaiter().GetResult();
+							}
+						}
+						catch (Exception e)
+						{
+							
+						}
+					}
+
+					var thread = new Thread(Start);
+					thread.IsBackground = true;
+					thread.Name = "MailComposerConsumer_" + i;
+					thread.Priority = ThreadPriority.Normal;
+					thread.TrySetApartmentState(ApartmentState.MTA);
+					threads[i] = thread;
+				}
+
+				foreach (var thread in threads)
+				{
+					thread.Start();
+				}
+
+				var readAheadCount = ParallelReadAheadCount;
+				await foreach (var item in mailDatas.WithCancellation(stopRequestedToken))
+				{
+					consumerItems.Add(item, stopRequestedToken);
+					while (consumerItems.Count >= readAheadCount)
+					{
+						await Task.Delay(250, stopRequestedToken);
+					}
+				}
+
+				consumerItems.CompleteAdding();
+				try
+				{
+					foreach (var thread in threads)
+					{
+						thread.Join();
+					}
+				}
+				catch (Exception e)
+				{
+					
+				}
+
+				if (MailDistributor.ParallelSupport == ParallelSupport.Full)
+				{
+					globalState = await MailDistributor.EndSendMail(globalState);
+				}
 			}
 			else
 			{
 				var beginSend = await MailDistributor.BeginSendMail();
-				await foreach (var mailData in mailDatas)
+				await foreach (var mailData in mailDatas.WithCancellation(stopRequestedToken))
 				{
-					await SendSingleItem(taskProgress => Progress(taskProgress, mailData),
+					buffered = 1;
+					if (stopRequestedToken.IsCancellationRequested)
+					{
+						break;
+					}
+
+#if DEBUG
+					await Task.Delay(rand.Next(150, 200), stopRequestedToken);
+#endif
+					await SendSingleItem(taskProgress =>
+						{
+#if DEBUG
+							if (rand.Next(0, 2) == 1)
+							{
+								taskProgress = new SendMailTaskProgress(taskProgress.To, "");
+							}
+#endif
+							Progress(taskProgress, mailData);
+						},
 						mailData,
 						parsedTemplate,
 						compiledAddressExpression,
@@ -154,6 +301,7 @@ namespace Morestachio.MailProcessor.Framework
 						compiledFromNameExpression,
 						beginSend);
 				}
+				buffered = 0;
 
 				await MailDistributor.EndSendMail(beginSend);
 			}
@@ -161,90 +309,9 @@ namespace Morestachio.MailProcessor.Framework
 			var resultData = new ComposeMailResult();
 			resultData.SendSuccessfully = sendData;
 			resultData.SendFailed = sendFailed.ToDictionary(e => e.Key, e => e.Value);
+
+			progress.Report(new SendMailProgress("", sendData, maxSendData, true, sendSuccess, sendFailed.Count, buffered));
 			return resultData;
-		}
-
-		private async Task SendParallel(IAsyncEnumerable<MailData> producer,
-			Action<SendMailTaskProgress, MailData> progress,
-			MorestachioDocumentInfo parsedTemplate,
-			CompiledExpression compiledAddressExpression,
-			CompiledExpression compiledSubjectExpression,
-			CompiledExpression compiledNameExpression,
-			CompiledExpression compiledFromAddressExpression,
-			CompiledExpression compiledFromNameExpression)
-		{
-			var consumerItems = new BlockingCollection<MailData>();
-			IMailDistributorState globalState = null;
-
-			if (MailDistributor.ParallelSupport == ParallelSupport.Full)
-			{
-				globalState = await MailDistributor.BeginSendMail();
-			}
-
-			var threads = new Thread[ParallelNoOfParallism];
-			for (int i = 0; i < threads.Length; i++)
-			{
-				async void Start()
-				{
-					IMailDistributorState threadState = globalState;
-					if (MailDistributor.ParallelSupport == ParallelSupport.MultiInstance)
-					{
-						threadState = await MailDistributor.BeginSendMail();
-					}
-
-					foreach (var mailData in consumerItems.GetConsumingEnumerable())
-					{
-						await SendSingleItem(taskProgress => progress(taskProgress, mailData),
-							mailData,
-							parsedTemplate,
-							compiledAddressExpression,
-							compiledSubjectExpression,
-							compiledNameExpression,
-							compiledFromAddressExpression,
-							compiledFromNameExpression,
-							threadState);
-					}
-
-					if (MailDistributor.ParallelSupport == ParallelSupport.MultiInstance)
-					{
-						threadState = await MailDistributor.EndSendMail(threadState);
-					}
-				}
-
-				var thread = new Thread(Start);
-				thread.IsBackground = true;
-				thread.Priority = ThreadPriority.Normal;
-				thread.TrySetApartmentState(ApartmentState.MTA);
-				threads[i] = thread;
-			}
-
-			foreach (var thread in threads)
-			{
-				thread.Start();
-			}
-
-			var readAheadCount = ParallelReadAheadCount;
-			await foreach (var item in producer)
-			{
-				consumerItems.Add(item);
-				while (consumerItems.Count >= readAheadCount)
-				{
-					await Task.Delay(250);
-				}
-			}
-
-			consumerItems.CompleteAdding();
-
-			foreach (var thread in threads)
-			{
-				thread.Join();
-			}
-
-
-			if (MailDistributor.ParallelSupport == ParallelSupport.Full)
-			{
-				globalState = await MailDistributor.EndSendMail(globalState);
-			}
 		}
 
 		private async Task SendSingleItem(Action<SendMailTaskProgress> progress,
@@ -257,19 +324,27 @@ namespace Morestachio.MailProcessor.Framework
 			CompiledExpression compiledFromNameExpression,
 			IMailDistributorState state)
 		{
-			var distributorData = await Compose(mailData, parsedTemplate, compiledAddressExpression,
-				compiledSubjectExpression,
-				compiledNameExpression,
-				compiledFromAddressExpression,
-				compiledFromNameExpression);
-			var sendMailResult = await MailDistributor.SendMail(distributorData, state);
-			if (!sendMailResult.Success)
+			DistributorData distributorData = null;
+			try
 			{
-				progress(new SendMailTaskProgress(distributorData.ToAddress, sendMailResult.ErrorText));
+				distributorData = await Compose(mailData, parsedTemplate, compiledAddressExpression,
+					compiledSubjectExpression,
+					compiledNameExpression,
+					compiledFromAddressExpression,
+					compiledFromNameExpression);
+				var sendMailResult = await MailDistributor.SendMail(distributorData, state);
+				if (!sendMailResult.Success)
+				{
+					progress(new SendMailTaskProgress(distributorData.MailInfo.ToAddress, sendMailResult.ErrorText));
+				}
+				else
+				{
+					progress(new SendMailTaskProgress(distributorData.MailInfo.ToAddress));
+				}
 			}
-			else
+			catch (Exception e)
 			{
-				progress(new SendMailTaskProgress(distributorData.ToAddress));
+				progress(new SendMailTaskProgress(distributorData?.MailInfo.ToAddress, e.Message));
 			}
 		}
 	}

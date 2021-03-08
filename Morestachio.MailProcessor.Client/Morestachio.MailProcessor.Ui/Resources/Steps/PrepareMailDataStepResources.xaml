@@ -11,15 +11,13 @@
     <DataTemplate DataType="{x:Type steps:PrepareMailDataStepViewModel}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition />
+                <ColumnDefinition MinWidth="450" Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition MinWidth="180" Width="180" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ContentControl Content="{Binding StructureCacheService}"
-                            Grid.Column="1"
-                            VerticalAlignment="Stretch" />
             <ScrollViewer Grid.Column="0">
                 <Grid IsSharedSizeScope="True"
                       Margin="15">
@@ -79,6 +77,10 @@
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
+            <GridSplitter Grid.Column="1" />
+            <ContentControl Content="{Binding StructureCacheService}"
+                            Grid.Column="2"
+                            VerticalAlignment="Stretch" />
         </Grid>
     </DataTemplate>
 </ResourceDictionary>
