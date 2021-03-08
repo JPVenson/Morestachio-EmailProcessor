@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -87,8 +88,9 @@ namespace Morestachio.MailProcessor.Ui.Resources
 			{
 				Width = 1;
 			}
+
+			Height = ProgressbarHost.ActualHeight - 4 < 0 ? ProgressbarHost.ActualHeight : ProgressbarHost.ActualHeight - 4;
 			Canvas.SetLeft(this, (previous?.Width ?? 0) + (previous != null ? Canvas.GetLeft(previous) : 0));
-			//LayoutTransform = new TranslateTransform(, 0);
 		}
 	}
 }

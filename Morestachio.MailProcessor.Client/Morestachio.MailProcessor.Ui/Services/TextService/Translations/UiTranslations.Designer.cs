@@ -1017,6 +1017,15 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Summery_Fields_Processing {
+            get {
+                return ResourceManager.GetString("Summery.Fields.Processing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Summery_Fields_Progress {
             get {
                 return ResourceManager.GetString("Summery.Fields.Progress", resourceCulture);
@@ -1035,18 +1044,18 @@ namespace Morestachio.MailProcessor.Ui.Services.TextService.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Summery_Fields_Progress_ProcessedNumber {
+        public static string Summery_Fields_Progress_Success {
             get {
-                return ResourceManager.GetString("Summery.Fields.Progress.ProcessedNumber", resourceCulture);
+                return ResourceManager.GetString("Summery.Fields.Progress.Success", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Summery_Fields_Progress_Success {
+        public static string Summery_Fields_Progress_Total {
             get {
-                return ResourceManager.GetString("Summery.Fields.Progress.Success", resourceCulture);
+                return ResourceManager.GetString("Summery.Fields.Progress.Total", resourceCulture);
             }
         }
         

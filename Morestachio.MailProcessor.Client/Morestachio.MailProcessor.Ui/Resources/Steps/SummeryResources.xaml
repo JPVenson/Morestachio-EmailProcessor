@@ -87,68 +87,116 @@
                         </eval:TriggerVisibilityBehavior>
                     </b:Interaction.Behaviors>
                     <HeaderedContentControl Header="{lex:Loc Summery.Result.Title}">
+                        <HeaderedContentControl.Resources>
+                            <SolidColorBrush Color="#D5D527" x:Key="BufferedProgressColor"/>
+                            <SolidColorBrush Color="#4348FE" x:Key="ProcessingProgressColor"/>
+                            <SolidColorBrush Color="LimeGreen" x:Key="SuccessProgressColor"/>
+                            <SolidColorBrush Color="OrangeRed" x:Key="ErrorProgressColor"/>
+
+                        </HeaderedContentControl.Resources>
                         <StackPanel>
-                            <resources:FieldsetGrid>
-                                <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress}" />
+                            <resources:FieldsetGrid Columns="3">
+                                <Label Grid.Column="0" 
+                                       Content="{lex:Loc Summery.Fields.Progress}"
+                                       VerticalAlignment="Center"/>
 
                                 <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1"
                                       Width="250">
                                     <resources:MultiProgressBar Maximum="{Binding Progress.MaxProgress}"
                                                                 VerticalAlignment="Stretch"
                                                                 HorizontalAlignment="Stretch"
-                                                                Grid.Column="0">
+                                                                Grid.Column="0"
+                                                                Height="35">
                                         <resources:MultiProgressBar.Bars>
                                             <resources:Bar Value="{Binding Progress.Buffered}" 
-                                                           ProgressColor="#D5D527" 
+                                                           ProgressColor="{StaticResource BufferedProgressColor}" 
                                                            IsAbsoluteValue="False">
                                                 <resources:Bar.Content>
-                                                    <Label Content="{lex:Loc Summery.Fields.Buffered}"
-                                                           Foreground="#000000"
+                                                    <Label Content="{Binding Progress.Buffered}"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
+                                                </resources:Bar.Content>
+                                            </resources:Bar>
+                                            <resources:Bar Value="{Binding Progress.CurrentlyProcessing}" 
+                                                           ProgressColor="{StaticResource ProcessingProgressColor}" 
+                                                           IsAbsoluteValue="False">
+                                                <resources:Bar.Content>
+                                                    <Label Content="{Binding Progress.CurrentlyProcessing}"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Center"/>
                                                 </resources:Bar.Content>
                                             </resources:Bar>
                                             <resources:Bar Value="{Binding Progress.SuccessfullySend}" 
-                                                           ProgressColor="LimeGreen" IsAbsoluteValue="False">
+                                                           ProgressColor="{StaticResource SuccessProgressColor}" IsAbsoluteValue="False">
                                                 <resources:Bar.Content>
-                                                    <Label Content="{lex:Loc Summery.Fields.Progress.Success}"
+                                                    <Label Content="{Binding Progress.SuccessfullySend}"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Center"/>
                                                 </resources:Bar.Content>
                                             </resources:Bar>
                                             <resources:Bar Value="{Binding Progress.FailedToSend}" 
-                                                           ProgressColor="OrangeRed" IsAbsoluteValue="False">
+                                                           ProgressColor="{StaticResource ErrorProgressColor}" IsAbsoluteValue="False">
                                                 <resources:Bar.Content>
-                                                    <Label Content="{lex:Loc Summery.Fields.Progress.Failed}"
+                                                    <Label Content="{Binding Progress.FailedToSend}"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Center"/>
                                                 </resources:Bar.Content>
                                             </resources:Bar>
                                         </resources:MultiProgressBar.Bars>
                                     </resources:MultiProgressBar>
-                                  
-                                    <!--<Label Content="{Binding Progress.To, Mode=OneWay}" VerticalAlignment="Center"
-                                           HorizontalAlignment="Center" />-->
                                 </Grid>
                             </resources:FieldsetGrid>
+
                             <resources:FieldsetGrid>
-                                <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.ProcessedNumber}" />
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <Label Content="{Binding Progress.Progress}" />
-                                    <Label Content=" - " />
-                                    <Label Content="{Binding Progress.MaxProgress}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid Height="10" Width="20" Background="{StaticResource BufferedProgressColor}"/>
+                                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Buffered}" />
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Column="1">
+                                    <Label Content="{Binding Progress.Buffered}" />
                                 </StackPanel>
                             </resources:FieldsetGrid>
+
                             <resources:FieldsetGrid>
-                                <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Success}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid Height="10" Width="20" Background="{StaticResource ProcessingProgressColor}"/>
+                                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Processing}" />
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Column="1">
+                                    <Label Content="{Binding Progress.CurrentlyProcessing}" />
+                                </StackPanel>
+                            </resources:FieldsetGrid>
+
+                            <resources:FieldsetGrid>
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid Height="10" Width="20" Background="{StaticResource SuccessProgressColor}"/>
+                                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Success}" />
+                                </StackPanel>
+                                
                                 <StackPanel Grid.Column="1">
                                     <Label Content="{Binding Progress.SuccessfullySend}" />
                                 </StackPanel>
                             </resources:FieldsetGrid>
+
                             <resources:FieldsetGrid>
-                                <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Failed}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid Height="10" Width="20" Background="{StaticResource ErrorProgressColor}"/>
+                                    <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Failed}" />
+                                </StackPanel>
+                                
                                 <StackPanel Grid.Column="1">
                                     <Label Content="{Binding Progress.FailedToSend}" />
+                                </StackPanel>
+                            </resources:FieldsetGrid>
+
+                            <resources:FieldsetGrid>
+                                <Label Grid.Column="0" Content="{lex:Loc Summery.Fields.Progress.Total}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Label Content="{Binding Progress.Progress}" />
+                                    <Label Content=" - " />
+                                    <Label Content="{Binding Progress.MaxProgress}" />
                                 </StackPanel>
                             </resources:FieldsetGrid>
                         </StackPanel>

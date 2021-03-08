@@ -23,7 +23,8 @@ namespace Morestachio.MailProcessor.Framework
 			bool success,
 			int successfullySend,
 			int failedToSend,
-			int buffered)
+			int buffered, 
+			int currentlyProcessing)
 		{
 			To = to;
 			Progress = progress;
@@ -32,12 +33,14 @@ namespace Morestachio.MailProcessor.Framework
 			SuccessfullySend = successfullySend;
 			FailedToSend = failedToSend;
 			Buffered = buffered;
+			CurrentlyProcessing = currentlyProcessing;
 		}
 
 		public int Progress { get; }
 		public int SuccessfullySend { get; }
 		public int FailedToSend { get; }
 		public int Buffered { get; }
+		public int CurrentlyProcessing { get; }
 
 		public int MaxProgress { get; }
 		public string To { get; }
@@ -137,6 +140,7 @@ namespace Morestachio.MailProcessor.Framework
 			var sendData = 0;
 			var sendSuccess = 0;
 			var buffered = 0;
+			var currentlyProcessing = 0;
 
 			var sendFailed = new ConcurrentDictionary<MailData, SendMailStatus>();
 			var maxSendData = await MailDataStrategy.Count();
@@ -158,7 +162,7 @@ namespace Morestachio.MailProcessor.Framework
 					Interlocked.Add(ref sendSuccess, 1);
 				}
 
-				progress.Report(new SendMailProgress(taskProgress.To, sendData, maxSendData, true, sendSuccess, sendFailed.Count, buffered));
+				progress.Report(new SendMailProgress(taskProgress.To, sendData, maxSendData, true, sendSuccess, sendFailed.Count, buffered, currentlyProcessing));
 			}
 
 			if (SendInParallel)
@@ -181,20 +185,22 @@ namespace Morestachio.MailProcessor.Framework
 							IMailDistributorState threadState = globalState;
 							if (MailDistributor.ParallelSupport == ParallelSupport.MultiInstance)
 							{
-								threadState = MailDistributor.BeginSendMail().ConfigureAwait(true).GetAwaiter().GetResult();
+								threadState = MailDistributor.BeginSendMail().ConfigureAwait(true).GetAwaiter()
+									.GetResult();
 							}
 
-							while (consumerItems.TryTake(out var mailData))
+							foreach (var mailData in consumerItems.GetConsumingEnumerable())
 							{
+								Interlocked.Add(ref currentlyProcessing, 1);
 								Interlocked.Exchange(ref buffered, consumerItems.Count);
 								if (stopRequestedToken.IsCancellationRequested)
 								{
 									break;
 								}
-#if DEBUG
-								Task.Delay(rand.Next(1050, 2000), stopRequestedToken)
-									.ConfigureAwait(true).GetAwaiter().GetResult();
-#endif
+//#if DEBUG
+//								Task.Delay(rand.Next(1050, 2000), stopRequestedToken)
+//									.ConfigureAwait(true).GetAwaiter().GetResult();
+//#endif
 								SendSingleItem(taskProgress =>
 									{
 #if DEBUG
@@ -203,7 +209,7 @@ namespace Morestachio.MailProcessor.Framework
 											taskProgress = new SendMailTaskProgress(taskProgress.To, "");
 										}
 #endif
-										
+
 										Progress(taskProgress, mailData);
 									},
 									mailData,
@@ -214,16 +220,20 @@ namespace Morestachio.MailProcessor.Framework
 									compiledFromAddressExpression,
 									compiledFromNameExpression,
 									threadState).ConfigureAwait(true).GetAwaiter().GetResult();
+								Interlocked.Add(ref currentlyProcessing, -1);
 							}
 
 							if (MailDistributor.ParallelSupport == ParallelSupport.MultiInstance)
 							{
-								threadState = MailDistributor.EndSendMail(threadState).ConfigureAwait(true).GetAwaiter().GetResult();
+								threadState = MailDistributor.EndSendMail(threadState).ConfigureAwait(true).GetAwaiter()
+									.GetResult();
 							}
 						}
 						catch (Exception e)
 						{
-							
+						}
+						finally
+						{
 						}
 					}
 
@@ -246,7 +256,7 @@ namespace Morestachio.MailProcessor.Framework
 					consumerItems.Add(item, stopRequestedToken);
 					while (consumerItems.Count >= readAheadCount)
 					{
-						await Task.Delay(250, stopRequestedToken);
+						await Task.Delay(10, stopRequestedToken);
 					}
 				}
 
@@ -271,6 +281,8 @@ namespace Morestachio.MailProcessor.Framework
 			else
 			{
 				var beginSend = await MailDistributor.BeginSendMail();
+				
+				Interlocked.Add(ref currentlyProcessing, 1);
 				await foreach (var mailData in mailDatas.WithCancellation(stopRequestedToken))
 				{
 					buffered = 1;
@@ -279,9 +291,9 @@ namespace Morestachio.MailProcessor.Framework
 						break;
 					}
 
-#if DEBUG
-					await Task.Delay(rand.Next(150, 200), stopRequestedToken);
-#endif
+//#if DEBUG
+//					await Task.Delay(rand.Next(150, 200), stopRequestedToken);
+//#endif
 					await SendSingleItem(taskProgress =>
 						{
 #if DEBUG
@@ -302,7 +314,7 @@ namespace Morestachio.MailProcessor.Framework
 						beginSend);
 				}
 				buffered = 0;
-
+				Interlocked.Add(ref currentlyProcessing, -1);
 				await MailDistributor.EndSendMail(beginSend);
 			}
 
@@ -310,7 +322,7 @@ namespace Morestachio.MailProcessor.Framework
 			resultData.SendSuccessfully = sendData;
 			resultData.SendFailed = sendFailed.ToDictionary(e => e.Key, e => e.Value);
 
-			progress.Report(new SendMailProgress("", sendData, maxSendData, true, sendSuccess, sendFailed.Count, buffered));
+			progress.Report(new SendMailProgress("", sendData, maxSendData, true, sendSuccess, sendFailed.Count, buffered, currentlyProcessing));
 			return resultData;
 		}
 

@@ -3,7 +3,14 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:local="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
          xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-         Height="25">
+         xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
+         HorizontalAlignment="Stretch"
+         VerticalAlignment="Stretch">
+    <Control.Style>
+        <Style TargetType="{x:Type resources:Bar}">
+            <Setter Property="ProgressColor" Value="Green"/>
+        </Style>
+    </Control.Style>
     <Control.Template>
         <ControlTemplate TargetType="{x:Type local:Bar}">
             <Grid VerticalAlignment="Stretch"
@@ -11,6 +18,7 @@
                   Background="{TemplateBinding ProgressColor}">
                 <ContentControl Content="{TemplateBinding Content}"
                                 Background="Transparent"
+                                ToolTip="{TemplateBinding ToolTip}"
                                 Width="{TemplateBinding ActualWidth}"/>
             </Grid>
         </ControlTemplate>

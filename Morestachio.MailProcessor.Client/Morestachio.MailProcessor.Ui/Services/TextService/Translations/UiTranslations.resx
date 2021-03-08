@@ -253,7 +253,7 @@
   <data name="Summery.Result.Title" xml:space="preserve">
     <value></value>
   </data>
-  <data name="Summery.Fields.Progress.ProcessedNumber" xml:space="preserve">
+  <data name="Summery.Fields.Progress.Total" xml:space="preserve">
     <value></value>
   </data>
   <data name="Summery.Fields.Progress.Failed" xml:space="preserve">
@@ -512,6 +512,9 @@
     <value></value>
   </data>
   <data name="Summery.Fields.Buffered" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Summery.Fields.Processing" xml:space="preserve">
     <value></value>
   </data>
 </root>

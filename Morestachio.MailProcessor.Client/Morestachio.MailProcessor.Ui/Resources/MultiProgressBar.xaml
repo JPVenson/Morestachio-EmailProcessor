@@ -5,9 +5,14 @@
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:resources="clr-namespace:Morestachio.MailProcessor.Ui.Resources"
          xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase">
+    <Control.Style>
+        <Style TargetType="{x:Type resources:MultiProgressBar}">
+            <Setter Property="Height" Value="25"/>
+        </Style>
+    </Control.Style>
     <Control.Template>
         <ControlTemplate TargetType="{x:Type resources:MultiProgressBar}">
-            <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
+            <Border BorderThickness="2" BorderBrush="Black" CornerRadius="0">
                 <ItemsControl ItemsSource="{TemplateBinding Bars}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

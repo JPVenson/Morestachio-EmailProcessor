@@ -248,8 +248,8 @@ You can use the "Help" bar to the bottom to get contextual help on most steps</v
   <data name="Summery.Result.Title" xml:space="preserve">
     <value>Result</value>
   </data>
-  <data name="Summery.Fields.Progress.ProcessedNumber" xml:space="preserve">
-    <value>Processed Mails</value>
+  <data name="Summery.Fields.Progress.Total" xml:space="preserve">
+    <value>Total</value>
   </data>
   <data name="Summery.Fields.Progress.Failed" xml:space="preserve">
     <value>Failed to Send or Create</value>
@@ -543,5 +543,8 @@ Error: {1}</value>
   </data>
   <data name="Summery.Fields.Buffered" xml:space="preserve">
     <value>Buffered</value>
+  </data>
+  <data name="Summery.Fields.Processing" xml:space="preserve">
+    <value>Processing</value>
   </data>
 </root>

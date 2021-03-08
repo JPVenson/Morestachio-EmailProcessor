@@ -24,12 +24,20 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 		{
 			Title = new UiLocalizableString("Summery.Title");
 			Description = new UiLocalizableString("Summery.Description");
-			Progress = new SendMailProgress("", 0, 0, true,0,0,0);
+			Progress = new SendMailProgress("", 0, 0, true, 0, 0, 0, 0);
 			NextButtonText = new UiLocalizableString("Application.Header.StartSend");
 			ResetCommand = new DelegateCommand(ResetExecute, CanResetExecute);
 			SaveSendReportCommand = new DelegateCommand(SaveSendReportExecute, CanSaveSendReportExecute);
+			AbortSendingCommand = new DelegateCommand(AbortSendingExecute, CanAbortSendingExecute);
+
 			MailComposer = IoC.Resolve<MailComposer>();
 			StopRequested = new CancellationTokenSource();
+
+			Commands.Add(new MenuBarCommand(AbortSendingCommand)
+			{
+				Content = new UiLocalizableString("Application.Cancel"),
+				Tag = ""
+			});
 		}
 
 		public override UiLocalizableString Title { get; }
@@ -85,6 +93,17 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 		public DelegateCommand ResetCommand { get; private set; }
 		public DelegateCommand SaveSendReportCommand { get; private set; }
+		public DelegateCommand AbortSendingCommand { get; private set; }
+
+		private void AbortSendingExecute(object sender)
+		{
+			StopRequested.Cancel();
+		}
+
+		private bool CanAbortSendingExecute(object sender)
+		{
+			return IsProcessing && !StopRequested.IsCancellationRequested;
+		}
 
 		private async void SaveSendReportExecute(object sender)
 		{
@@ -104,7 +123,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 
 		private void ResetExecute(object sender)
 		{
-			Progress = new SendMailProgress("", 0, 100, true,0,0,0);
+			Progress = new SendMailProgress("", 0, 100, true, 0, 0, 0, 0);
 			Result = null;
 			IsProcessed = false;
 			Commands.RemoveWhere(e => ((string)e.Tag).StartsWith("AfterButton."));
@@ -193,6 +212,11 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 			}
 			catch (Exception e)
 			{
+				if (StopRequested.IsCancellationRequested)
+				{
+					return;
+				}
+
 				var uiWorkflow = IoC.Resolve<IUiWorkflow>();
 				var textService = IoC.Resolve<ITextService>();
 

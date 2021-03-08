@@ -83,6 +83,10 @@ namespace Morestachio.MailProcessor.Ui.Resources
 			{
 				barModel.RefreshLayout(previous);
 				previous = barModel;
+				if (barModel.ToolTip != null && barModel.ToolTip is ToolTip toolTip)
+				{
+					toolTip.UpdateLayout();
+				}
 			}
 		}
 	}

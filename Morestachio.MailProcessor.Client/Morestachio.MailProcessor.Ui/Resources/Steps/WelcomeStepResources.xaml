@@ -9,7 +9,7 @@
     <converter:BooleanVisibilityInverseConverter x:Key="BooleanVisibilityInverseConverter" />
     <DataTemplate DataType="{x:Type steps1:WelcomeStepViewModel}">
         <DockPanel LastChildFill="True" Margin="15">
-          <StackPanel DockPanel.Dock="Left">
+            <StackPanel DockPanel.Dock="Left">
                 <Label Content="{lex:Loc Welcome.Savefiles}" />
                 <Grid IsSharedSizeScope="True">
                     <ItemsControl ItemsSource="{Binding PersistantSettingsService.Settings}"
