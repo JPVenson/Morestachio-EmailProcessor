@@ -4,16 +4,22 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Send Report from {{startedAt.ToString("d")}}</title>
-	<meta name="createdAt" content="{{startedAt}}"/>
-	<meta name="finishedAt" content="{{doneAt}}"/>
+	<meta name="createdAt" content="{{startedAt}}" />
+	<meta name="finishedAt" content="{{doneAt}}" />
+	<meta name="numberOfMails" content="{{failedToSend.Length + numSuccess}}" />
+	<meta name="failedToSend" content="{{failedToSend.Length}}" />
+	<meta name="sendSuccess" content="{{numSuccess}}" />
 </head>
 <body>
-	<p>
-		Send out {{failedToSend.Length + numSuccess}}
-	</p>
-	<p>
-		{{failedToSend.Length}} failed to send
-	</p>
+<p id="sendAll">
+	Tried so send '{{failedToSend.Length + numSuccess}}'
+</p>
+<p>
+	'{{failedToSend.Length}}' failed to send
+</p>
+<p>
+	'{{numSuccess}}' were send
+</p>
 <table>
 	<thead>
 	<tr>
@@ -22,10 +28,10 @@
 	</tr>
 	</thead>
 	<tbody>
-	{{#EACH failedToSend AS failed}}
+	{{#EACH failedToSend AS failed |--}}
 	<tr>
-		<td>{{failed.ComposeValues.Address}}</td>
-		<td>{{failed.FailReason}}</td>
+		<td name="toAddress">{{failed.ComposeValues.MailInfo.ToAddress}}</td>
+		<td name="failReason">{{failed.FailReason}}</td>
 	</tr>
 	{{/EACH}}
 	</tbody>

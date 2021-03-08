@@ -1,70 +1,72 @@
 ﻿<mah:MetroWindow x:Class="Morestachio.MailProcessor.Ui.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:delegateCommand="clr-namespace:JPB.WPFToolsAwesome.MVVM.DelegateCommand;assembly=JPB.WPFToolsAwesome"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:eval="clr-namespace:JPB.WPFToolsAwesome.Behaviors.Eval;assembly=JPB.WPFToolsAwesome"
-        xmlns:trigger="clr-namespace:JPB.WPFToolsAwesome.Behaviors.Eval.Trigger;assembly=JPB.WPFToolsAwesome"
-        xmlns:templates="clr-namespace:JPB.WPFToolsAwesome.Error.Resources.Templates;assembly=JPB.WPFToolsAwesome"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:converter="clr-namespace:JPB.WPFToolsAwesome.Converter;assembly=JPB.WPFToolsAwesome"
-        xmlns:viewModels="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels"
-        xmlns:behaviors="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors"
-        xmlns:trigger1="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors.Trigger"
-        xmlns:ui="clr-namespace:Morestachio.MailProcessor.Ui"
-        xmlns:localization="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Localization"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        mc:Ignorable="d"
-        x:Name="MainWindowRef"
-        Title="{lex:Loc Application.Header.Title}" 
-        MinHeight="350"
-        MinWidth="800"
-        Height="450" 
-        Width="800" 
-        mah:DialogParticipation.Register="{Binding UiWorkflow}"
-        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                 xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:eval="clr-namespace:JPB.WPFToolsAwesome.Behaviors.Eval;assembly=JPB.WPFToolsAwesome"
+                 xmlns:trigger="clr-namespace:JPB.WPFToolsAwesome.Behaviors.Eval.Trigger;assembly=JPB.WPFToolsAwesome"
+                 xmlns:templates="clr-namespace:JPB.WPFToolsAwesome.Error.Resources.Templates;assembly=JPB.WPFToolsAwesome"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:converter="clr-namespace:JPB.WPFToolsAwesome.Converter;assembly=JPB.WPFToolsAwesome"
+                 xmlns:viewModels="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels"
+                 xmlns:behaviors="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors"
+                 xmlns:trigger1="clr-namespace:Morestachio.MailProcessor.Ui.Behaviors.Trigger"
+                 xmlns:ui="clr-namespace:Morestachio.MailProcessor.Ui"
+                 xmlns:localization="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Localization"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 mc:Ignorable="d"
+                 x:Name="MainWindowRef"
+                 Title="{lex:Loc Application.Header.Title}"
+                 MinHeight="350"
+                 MinWidth="800"
+                 Height="450"
+                 Width="800"
+                 mah:DialogParticipation.Register="{Binding UiWorkflow}"
+                 d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Steps/TemplateSelectorStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/Steps/WelcomeStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/Steps/SummeryResources.xaml"/>
-                <ResourceDictionary Source="Resources/Steps/EndStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/Steps/SendReportStepResources.xaml"/>
+                <ResourceDictionary Source="Resources/Steps/TemplateSelectorStepResources.xaml" />
+                <ResourceDictionary Source="Resources/Steps/WelcomeStepResources.xaml" />
+                <ResourceDictionary Source="Resources/Steps/SummeryResources.xaml" />
+                <ResourceDictionary Source="Resources/Steps/EndStepResources.xaml" />
+                <ResourceDictionary Source="Resources/Steps/SendReportStepResources.xaml" />
 
-                <ResourceDictionary Source="Resources/DataImport/ImportDataStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/DataImport/ImportFileResources.xaml"/>
-                <ResourceDictionary Source="Resources/DataImport/SqlImportResources.xaml"/>
-                <ResourceDictionary Source="Resources/Steps/PrepareMailDataStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/Distributor/MailDistributionStepResources.xaml"/>
-                <ResourceDictionary Source="Resources/Distributor/WriteToDirectoryDistributorResources.xaml"/>
-                <ResourceDictionary Source="Resources/Distributor/SmtpMailDistributorResources.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/JPB.WPFToolsAwesome;component/Error/Resources/Templates/CommonErrorResources.xaml"/>
+                <ResourceDictionary Source="Resources/DataImport/ImportDataStepResources.xaml" />
+                <ResourceDictionary Source="Resources/DataImport/ImportFileResources.xaml" />
+                <ResourceDictionary Source="Resources/DataImport/SqlImportResources.xaml" />
+                <ResourceDictionary Source="Resources/Steps/PrepareMailDataStepResources.xaml" />
+                <ResourceDictionary Source="Resources/Distributor/MailDistributionStepResources.xaml" />
+                <ResourceDictionary Source="Resources/Distributor/WriteToDirectoryDistributorResources.xaml" />
+                <ResourceDictionary Source="Resources/Distributor/SmtpMailDistributorResources.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/JPB.WPFToolsAwesome;component/Error/Resources/Templates/CommonErrorResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <SolidColorBrush x:Key="SetStepColor" Color="{DynamicResource MahApps.Colors.Highlight}"/>
+            <SolidColorBrush x:Key="SetStepColor" Color="{DynamicResource MahApps.Colors.Highlight}" />
             <SolidColorBrush x:Key="UnsetStepColor" Color="Transparent" />
 
-            <SolidColorBrush x:Key="UnsetStepForegroundColor" Color="{DynamicResource MahApps.Colors.ThemeForeground}"/>
+            <SolidColorBrush x:Key="UnsetStepForegroundColor" Color="{DynamicResource MahApps.Colors.ThemeForeground}" />
             <SolidColorBrush x:Key="SetStepForegroundColor" Color="{DynamicResource MahApps.Colors.IdealForeground}" />
 
 
-            <behaviors:UiLocalizableStringResolverConverter ExpectFormattingArgumentsOn2ndPlace="True" 
+            <behaviors:UiLocalizableStringResolverConverter ExpectFormattingArgumentsOn2ndPlace="True"
                                                             x:Key="StringFormatConverter" />
 
-            <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.Fill}" Color="Red"/>
-            <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.BorderBrush}" Color="Red"/>
-            <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.Background}" Color="Red"/>
+            <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.Fill}" Color="Red" />
+            <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.BorderBrush}"
+                             Color="Red" />
+            <SolidColorBrush x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.Background}"
+                             Color="Red" />
             <DataTemplate x:Key="{templates:GetStyleInfoKey templates:ErrorTemplateStyleResources.ErrorItemTemplate}">
                 <TextBlock TextTrimming="None"
                            TextWrapping="Wrap">
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource StringFormatConverter}">
-                            <Binding Path="ErrorContent.ErrorText.Key"/>
-                            <Binding Path="ErrorContent.ErrorText.Arguments"/>
+                            <Binding Path="ErrorContent.ErrorText.Key" />
+                            <Binding Path="ErrorContent.ErrorText.Arguments" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
@@ -74,35 +76,35 @@
                 <Setter Property="Validation.ErrorTemplate" Value="{StaticResource MultiErrorControlEx}" />
             </Style>
 
-            <Style TargetType="{x:Type TextBox}" 
-                   BasedOn="{StaticResource ControlWithValidation}">
-            </Style>
+            <Style TargetType="{x:Type TextBox}"
+                   BasedOn="{StaticResource ControlWithValidation}" />
 
-            <Style TargetType="{x:Type ComboBox}" 
-                   BasedOn="{StaticResource ControlWithValidation}">
-            </Style>
+            <Style TargetType="{x:Type ComboBox}"
+                   BasedOn="{StaticResource ControlWithValidation}" />
 
             <DataTemplate DataType="{x:Type localization:UiLocalizableString}">
                 <TextBlock TextTrimming="None"
                            TextWrapping="Wrap">
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource StringFormatConverter}">
-                            <Binding Path="Key"/>
-                            <Binding Path="Arguments"/>
+                            <Binding Path="Key" />
+                            <Binding Path="Arguments" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
             </DataTemplate>
 
-            <SolidColorBrush x:Key="BackgroundPanelColor" Color="{DynamicResource MahApps.Colors.Accent4}"></SolidColorBrush>
-            <SolidColorBrush x:Key="BackgroundPanelColorSolid" Color="{DynamicResource MahApps.Colors.ThemeBackground}"></SolidColorBrush>
+            <SolidColorBrush x:Key="BackgroundPanelColor" Color="{DynamicResource MahApps.Colors.Accent4}" />
+            <SolidColorBrush x:Key="BackgroundPanelColorSolid" Color="{DynamicResource MahApps.Colors.ThemeBackground}" />
             <converter:BooleanInverseConverter x:Key="BooleanInverseConverter" />
 
             <DataTemplate DataType="{x:Type viewModels:StepValidationViewModel}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterial Margin="6" Kind="CheckboxMarked" Visibility="{Binding IsValidated, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    <iconPacks:PackIconMaterial Margin="6" Kind="CheckboxBlank" Visibility="{Binding IsValidated, Converter={StaticResource BooleanVisibilityInverseConverter}}"/>
-                    <Label Content="{lex:Loc Validate.Title}" VerticalAlignment="Center"/>
+                    <iconPacks:PackIconMaterial Margin="6" Kind="CheckboxMarked"
+                                                Visibility="{Binding IsValidated, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <iconPacks:PackIconMaterial Margin="6" Kind="CheckboxBlank"
+                                                Visibility="{Binding IsValidated, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
+                    <Label Content="{lex:Loc Validate.Title}" VerticalAlignment="Center" />
                 </StackPanel>
             </DataTemplate>
 
@@ -110,14 +112,15 @@
     </Window.Resources>
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Label Content="{Binding UiWorkflow.CurrentStep.Title}"/>
-            <mah:ToggleSwitch Content="Dark Mode" IsOn="{Binding EnableDarkMode}" Command="{Binding SwitchDarkModeCommand}"/>
+            <Label Content="{Binding UiWorkflow.CurrentStep.Title}" />
+            <mah:ToggleSwitch Content="Dark Mode" IsOn="{Binding EnableDarkMode}"
+                              Command="{Binding SwitchDarkModeCommand}" />
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
             <RowDefinition Height="45" />
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0"
@@ -125,65 +128,87 @@
                    Background="{DynamicResource BackgroundPanelColor}">
             <Label DockPanel.Dock="Left"
                    VerticalAlignment="Center"
-                   Content="{lex:Loc Application.Header.Title}"/>
+                   Content="{lex:Loc Application.Header.Title}" />
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <Label Content="{lex:Loc Application.Save.Title}"
-                       VerticalAlignment="Center"/>
+                       VerticalAlignment="Center" />
                 <Button Command="{Binding UiWorkflow.SaveCurrentStateCommand}">
                     <iconPacks:PackIconMaterial Margin="1" Kind="Floppy" />
                 </Button>
             </StackPanel>
-            <ItemsControl ItemsSource="{Binding UiWorkflow.Steps}" Margin="0,0,0,5"
-                          mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True"
-                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                          VerticalAlignment="Center"
-                          DockPanel.Dock="Left">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Border BorderThickness="1" CornerRadius="15">
-                                <b:Interaction.Behaviors>
-                                    <eval:TriggerBehavior>
-                                        <eval:TriggerBehavior.TriggerStep>
-                                            <trigger:EqualityTrigger Left="{Binding Title}"
-                                                                     Right="{Binding Source={x:Reference MainWindowRef}, Path=DataContext.UiWorkflow.CurrentStep.Title}"/>
-                                        </eval:TriggerBehavior.TriggerStep>
-                                        <eval:TriggerBehavior.TriggerActions>
-                                            <trigger1:SetFieldAction FieldName="Background" 
-                                                                     TrueValue="{StaticResource SetStepColor}"
-                                                                     FalseValue="{StaticResource UnsetStepColor}"/>
-                                            <trigger1:SetFieldAction FieldName="Background" 
-                                                                     TrueValue="{StaticResource SetStepColor}"
-                                                                     FalseValue="{StaticResource UnsetStepColor}"/>
-                                        </eval:TriggerBehavior.TriggerActions>
-                                    </eval:TriggerBehavior>
-                                </b:Interaction.Behaviors>
-                                <Label Content="{Binding Title}" 
-                                       VerticalAlignment="Center">
+            <ScrollViewer
+                DockPanel.Dock="Left"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Disabled"
+                mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True"
+                >
+                <ScrollViewer.Resources>
+                    <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+                        <Setter Property="Stylus.IsFlicksEnabled" Value="True" />
+                        <Style.Triggers>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter Property="Height" Value="2" />
+                                <Setter Property="MinHeight" Value="2" />
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Vertical">
+                                <Setter Property="Width" Value="5" />
+                                <Setter Property="MinWidth" Value="5" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ScrollViewer.Resources>
+
+                <ItemsControl ItemsSource="{Binding UiWorkflow.Steps}"
+                              Margin="0,0,0,5"
+                              VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" IsItemsHost="True"
+                                        CanHorizontallyScroll="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Border BorderThickness="1" CornerRadius="15">
                                     <b:Interaction.Behaviors>
                                         <eval:TriggerBehavior>
                                             <eval:TriggerBehavior.TriggerStep>
                                                 <trigger:EqualityTrigger Left="{Binding Title}"
-                                                                         Right="{Binding Source={x:Reference MainWindowRef}, Path=DataContext.UiWorkflow.CurrentStep.Title}"/>
+                                                                         Right="{Binding Source={x:Reference MainWindowRef}, Path=DataContext.UiWorkflow.CurrentStep.Title}" />
                                             </eval:TriggerBehavior.TriggerStep>
                                             <eval:TriggerBehavior.TriggerActions>
-                                                <trigger1:SetFieldAction FieldName="Foreground" 
-                                                                         TrueValue="{StaticResource SetStepForegroundColor}"
-                                                                         FalseValue="{StaticResource UnsetStepForegroundColor}"/>
+                                                <trigger1:SetFieldAction FieldName="Background"
+                                                                         TrueValue="{StaticResource SetStepColor}"
+                                                                         FalseValue="{StaticResource UnsetStepColor}" />
+                                                <trigger1:SetFieldAction FieldName="Background"
+                                                                         TrueValue="{StaticResource SetStepColor}"
+                                                                         FalseValue="{StaticResource UnsetStepColor}" />
                                             </eval:TriggerBehavior.TriggerActions>
                                         </eval:TriggerBehavior>
                                     </b:Interaction.Behaviors>
-                                </Label>
-                            </Border>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                    <Label Content="{Binding Title}"
+                                           VerticalAlignment="Center">
+                                        <b:Interaction.Behaviors>
+                                            <eval:TriggerBehavior>
+                                                <eval:TriggerBehavior.TriggerStep>
+                                                    <trigger:EqualityTrigger Left="{Binding Title}"
+                                                                             Right="{Binding Source={x:Reference MainWindowRef}, Path=DataContext.UiWorkflow.CurrentStep.Title}" />
+                                                </eval:TriggerBehavior.TriggerStep>
+                                                <eval:TriggerBehavior.TriggerActions>
+                                                    <trigger1:SetFieldAction FieldName="Foreground"
+                                                                             TrueValue="{StaticResource SetStepForegroundColor}"
+                                                                             FalseValue="{StaticResource UnsetStepForegroundColor}" />
+                                                </eval:TriggerBehavior.TriggerActions>
+                                            </eval:TriggerBehavior>
+                                        </b:Interaction.Behaviors>
+                                    </Label>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </DockPanel>
         <Grid Grid.Row="1">
             <mah:TransitioningContentControl
@@ -191,10 +216,9 @@
                 Margin="0,0,0,35"
                 IsEnabled="{Binding UiWorkflow.HelpRequested, Converter={StaticResource BooleanInverseConverter}}"
                 VerticalAlignment="Stretch"
-                Transition="{Binding UiWorkflow.TransitionType}">
-            </mah:TransitioningContentControl>
+                Transition="{Binding UiWorkflow.TransitionType}" />
 
-            <Expander VerticalAlignment="Bottom" 
+            <Expander VerticalAlignment="Bottom"
                       Header="{lex:Loc Help.Title}"
                       Background="{StaticResource BackgroundPanelColorSolid}"
                       IsExpanded="{Binding UiWorkflow.HelpRequested}"
@@ -211,48 +235,49 @@
                 </Expander.Visibility>
                 <Expander.Content>
                     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <ContentControl VerticalAlignment="Stretch" 
+                        <ContentControl VerticalAlignment="Stretch"
                                         FontSize="22"
-                                        HorizontalAlignment="Stretch" 
-                                        Content="{Binding UiWorkflow.CurrentStep.Description, ValidatesOnNotifyDataErrors=False, ValidatesOnDataErrors=False}"/>
+                                        HorizontalAlignment="Stretch"
+                                        Content="{Binding UiWorkflow.CurrentStep.Description, ValidatesOnNotifyDataErrors=False, ValidatesOnDataErrors=False}" />
                     </Grid>
                 </Expander.Content>
             </Expander>
         </Grid>
-        
+
         <DockPanel Grid.Row="2"
                    LastChildFill="False"
                    Background="{DynamicResource BackgroundPanelColor}">
-            <Button Command="{Binding UiWorkflow.PreviousPageCommand}" 
+            <Button Command="{Binding UiWorkflow.PreviousPageCommand}"
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                     DockPanel.Dock="Left">
                 <Button.Content>
                     <PriorityBinding>
-                        <Binding Path="UiWorkflow.CurrentStep.PreviousButtonText"/>
+                        <Binding Path="UiWorkflow.CurrentStep.PreviousButtonText" />
                     </PriorityBinding>
                 </Button.Content>
             </Button>
-            <Button Command="{Binding UiWorkflow.NextPageCommand}" 
+            <Button Command="{Binding UiWorkflow.NextPageCommand}"
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                     DockPanel.Dock="Right">
                 <Button.Content>
                     <PriorityBinding>
-                        <Binding Path="UiWorkflow.CurrentStep.NextButtonText"/>
+                        <Binding Path="UiWorkflow.CurrentStep.NextButtonText" />
                     </PriorityBinding>
                 </Button.Content>
             </Button>
-            <ItemsControl ItemsSource="{Binding UiWorkflow.CurrentStep.Commands}" DockPanel.Dock="Right" Margin="0,0,15,0">
+            <ItemsControl ItemsSource="{Binding UiWorkflow.CurrentStep.Commands}" DockPanel.Dock="Right"
+                          Margin="0,0,15,0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <DockPanel IsItemsHost="True" LastChildFill="False"/>
+                        <DockPanel IsItemsHost="True" LastChildFill="False" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:MenuBarCommand}">
-                        <Button Content="{Binding Content}" 
+                        <Button Content="{Binding Content}"
                                 Command="{Binding Command}"
                                 Margin="0,0,15,0"
-                                DockPanel.Dock="{Binding Dock}"/>
+                                DockPanel.Dock="{Binding Dock}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

@@ -206,7 +206,7 @@ namespace Morestachio.MailProcessor.Framework
 #if DEBUG
 										if (rand.Next(0, 2) == 1)
 										{
-											taskProgress = new SendMailTaskProgress(taskProgress.To, "");
+											taskProgress = new SendMailTaskProgress(taskProgress.To, "RAND");
 										}
 #endif
 
@@ -299,7 +299,7 @@ namespace Morestachio.MailProcessor.Framework
 #if DEBUG
 							if (rand.Next(0, 2) == 1)
 							{
-								taskProgress = new SendMailTaskProgress(taskProgress.To, "");
+								taskProgress = new SendMailTaskProgress(taskProgress.To, "RAND");
 							}
 #endif
 							Progress(taskProgress, mailData);

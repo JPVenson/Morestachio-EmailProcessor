@@ -67,7 +67,7 @@ namespace Morestachio.MailProcessor.Ui.ViewModels.Steps
 						{
 							"ComposeValues", MailComposer.Compose(e.Key, null, addressCompiled, null, null,
 								compiledFromAddressExpression,
-								compiledFromNameExpression)
+								compiledFromNameExpression).Result
 						},
 						{"FailReason", e.Value.ErrorText}
 					};

@@ -2,7 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:steps="clr-namespace:Morestachio.MailProcessor.Ui.ViewModels.Steps">
     <DataTemplate DataType="{x:Type steps:SendReportStepViewModel}">
-        <TextBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding Report}"
+        <TextBox VerticalAlignment="Stretch" 
+                 HorizontalAlignment="Stretch" 
+                 Text="{Binding Report}"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
                  Margin="15"/>
     </DataTemplate>
 </ResourceDictionary>

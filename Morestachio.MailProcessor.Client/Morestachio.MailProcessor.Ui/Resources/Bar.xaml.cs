@@ -83,7 +83,12 @@ namespace Morestachio.MailProcessor.Ui.Resources
 
 		public void RefreshLayout(Bar previous)
 		{
-			Width = ProgressbarHost.ActualWidth / 100 * (Value / ProgressbarHost.Maximum * 100);
+			var width = ProgressbarHost.ActualWidth / 100 * (Value / ProgressbarHost.Maximum * 100);
+			if (width > ProgressbarHost.ActualWidth)
+			{
+				width = ProgressbarHost.ActualWidth;
+			}
+			Width = width;
 			if (Width < 1 && Value > 1)
 			{
 				Width = 1;
