@@ -13,7 +13,7 @@
     <PackageReference Include="Morestachio.Linq" Version="5.0.0.504" />
     <PackageReference Include="Morestachio.Newtonsoft.Json" Version="5.0.0.504" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <!--Fake path from https://github.com/wixtoolset/issues/issues/5705-->
